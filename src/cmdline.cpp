@@ -83,7 +83,7 @@ namespace boost { namespace program_options {
 namespace boost { namespace program_options { namespace detail {
 
     // vc6 needs this, but borland chokes when this is added.
-#if BOOST_WORKAROUND(_MSC_VER, <= 1200)
+#if BOOST_WORKAROUND(_MSC_VER, < 1300)
     using namespace std;
     using namespace program_options;
 #endif
@@ -248,6 +248,7 @@ namespace boost { namespace program_options { namespace detail {
             if (!ok) {
                 option opt;
                 opt.value.push_back(args[0]);
+                opt.original_tokens.push_back(args[0]);
                 result.push_back(opt);
                 args.erase(args.begin());
             }
@@ -331,6 +332,7 @@ namespace boost { namespace program_options { namespace detail {
             // Everything's OK, move the values to the result.            
             for(;!other_tokens.empty() && max_tokens--; ) {
                 opt.value.push_back(other_tokens[0]);
+                opt.original_tokens.push_back(other_tokens[0]);
                 other_tokens.erase(other_tokens.begin());
             }
         }
@@ -368,6 +370,7 @@ namespace boost { namespace program_options { namespace detail {
             opt.string_key = name;
             if (!adjacent.empty())
                 opt.value.push_back(adjacent);
+            opt.original_tokens.push_back(tok);
             result.push_back(opt);
             args.erase(args.begin());
         }
@@ -416,6 +419,7 @@ namespace boost { namespace program_options { namespace detail {
                     
                     option opt;
                     opt.string_key = name;
+                    opt.original_tokens.push_back(tok);
                     if (!adjacent.empty())
                         opt.value.push_back(adjacent);
                     result.push_back(opt);
@@ -442,6 +446,7 @@ namespace boost { namespace program_options { namespace detail {
             opt.string_key = name;
             if (!adjacent.empty())
                 opt.value.push_back(adjacent);
+            opt.original_tokens.push_back(tok);
             result.push_back(opt);
             args.erase(args.begin());
         }
