@@ -24,6 +24,11 @@ namespace boost { namespace program_options {
     class value_semantic;
     class variables_map;
 
+    // forward declaration
+    BOOST_PROGRAM_OPTIONS_DECL void  
+    store(const basic_parsed_options<char>& options, variables_map& m, bool);
+    BOOST_PROGRAM_OPTIONS_DECL void notify(variables_map& m);
+
     /** Class holding value of option. Contains details about how the 
         value is set and allows to conveniently obtain the value.
     */
