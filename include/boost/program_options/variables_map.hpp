@@ -66,10 +66,9 @@ namespace boost { namespace program_options {
         // be easily accessible, so we need to store semantic here.
         shared_ptr<const value_semantic> m_value_semantic;
 
-        friend BOOST_PROGRAM_OPTIONS_DECL void  
-        store(const basic_parsed_options<char>& options, 
+        friend void store(const basic_parsed_options<char>& options, 
               variables_map& m, bool);
-        friend BOOST_PROGRAM_OPTIONS_DECL void notify(variables_map& m);
+        friend void notify(variables_map& m);
     };
 
     /** Implements string->string mapping with convenient value casting
