@@ -25,8 +25,24 @@ namespace boost { namespace program_options {
     class variables_map;
 
     // forward declaration
-    BOOST_PROGRAM_OPTIONS_DECL void  
-    store(const basic_parsed_options<char>& options, variables_map& m, bool);
+
+    /** Stores in 'm' all options that are defined in 'options'. 
+        If 'm' already has a non-defaulted value of an option, that value
+        is not changed, even if 'options' specify some value.        
+    */
+    BOOST_PROGRAM_OPTIONS_DECL void store(const basic_parsed_options<char>& options, variables_map& m,
+                    bool utf8 = false);
+
+    /** Stores in 'm' all options that are defined in 'options'. 
+        If 'm' already has a non-defaulted value of an option, that value
+        is not changed, even if 'options' specify some value.        
+        This is wide character variant.
+    */
+    BOOST_PROGRAM_OPTIONS_DECL void store(const basic_parsed_options<wchar_t>& options, 
+                    variables_map& m);
+
+
+    /** Runs all 'notify' function for options in 'm'. */
     BOOST_PROGRAM_OPTIONS_DECL void notify(variables_map& m);
 
     /** Class holding value of option. Contains details about how the 
@@ -137,25 +153,6 @@ namespace boost { namespace program_options {
                           variables_map& xm,
                           bool utf8);
     };
-
-    /** Stores in 'm' all options that are defined in 'options'. 
-        If 'm' already has a non-defaulted value of an option, that value
-        is not changed, even if 'options' specify some value.        
-    */
-    BOOST_PROGRAM_OPTIONS_DECL void store(const basic_parsed_options<char>& options, variables_map& m,
-                    bool utf8 = false);
-
-    /** Stores in 'm' all options that are defined in 'options'. 
-        If 'm' already has a non-defaulted value of an option, that value
-        is not changed, even if 'options' specify some value.        
-        This is wide character variant.
-    */
-    BOOST_PROGRAM_OPTIONS_DECL void store(const basic_parsed_options<wchar_t>& options, 
-                    variables_map& m);
-
-
-    /** Runs all 'notify' function for options in 'm'. */
-    BOOST_PROGRAM_OPTIONS_DECL void notify(variables_map& m);
 
 
     /*
