@@ -411,9 +411,9 @@ namespace boost { namespace program_options {
                 
                         if (last_space != line_begin)
                         {                 
-                            // is last_space within the second half ot the 
+                            // is last_space within the second half of the 
                             // current line
-                            if (unsigned(distance(last_space, line_end)) < 
+                            if ((unsigned)std::distance(last_space, line_end) < 
                                 (line_length - indent) / 2)
                             {
                                 line_end = last_space;
