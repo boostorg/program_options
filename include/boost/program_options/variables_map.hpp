@@ -36,15 +36,10 @@ namespace boost { namespace program_options {
 
         /** If stored value if of type T, returns that value. Otherwise,
             throws boost::bad_any_cast exception. */
-       template<class T>
-       const T& as() const {
-           return boost::any_cast<const T&>(v);
-       }
-       /** @overload */
-       template<class T>
-       T& as() {
-           return boost::any_cast<T&>(v);
-       }
+        template<class T> const T& as() const;
+
+        /** @overload */
+        template<class T> T& as();
 
         /// Returns true if no value is stored.
         bool empty() const;
@@ -66,10 +61,10 @@ namespace boost { namespace program_options {
         // be easily accessible, so we need to store semantic here.
         shared_ptr<const value_semantic> m_value_semantic;
 
-        friend BOOST_PROGRAM_OPTIONS_DECL void 
+        friend void BOOST_PROGRAM_OPTIONS_DECL 
         store(const basic_parsed_options<char>& options, 
               variables_map& m, bool);
-        friend BOOST_PROGRAM_OPTIONS_DECL void notify(variables_map& m);
+        friend void BOOST_PROGRAM_OPTIONS_DECL notify(variables_map& m);
     };
 
     /** Implements string->string mapping with convenient value casting
@@ -189,6 +184,18 @@ namespace boost { namespace program_options {
         return v;
     }
 
+
+    template<class T>
+    const T&
+    variable_value::as() const {
+        return boost::any_cast<const T&>(v);
+    }
+
+    template<class T>
+    T&
+    variable_value::as() {
+        return boost::any_cast<T&>(v);
+    }
 }}
 
 #endif
