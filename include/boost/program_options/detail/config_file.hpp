@@ -62,7 +62,7 @@ namespace boost { namespace program_options { namespace detail {
          TODO: maybe, we should just accept a pointer to options_description
          class.
      */    
-    class common_config_file_iterator 
+    class BOOST_PROGRAM_OPTIONS_DECL common_config_file_iterator
         : public eof_iterator<common_config_file_iterator, option>
     {
     public:
