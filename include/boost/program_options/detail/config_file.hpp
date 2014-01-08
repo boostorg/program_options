@@ -27,6 +27,11 @@
 #include <boost/type_traits/is_same.hpp>
 #include <boost/shared_ptr.hpp>
 
+#ifdef BOOST_MSVC
+# pragma warning(push)
+# pragma warning(disable: 4251) // class XYZ needs to have dll-interface to be used by clients of class XYZ
+#endif
+
 
 
 namespace boost { namespace program_options { namespace detail {
@@ -77,6 +82,11 @@ namespace boost { namespace program_options { namespace detail {
         
         void get();
         
+#if BOOST_WORKAROUND(_MSC_VER, <= 1800)
+        void decrement() {}
+        void advance(difference_type) {}
+#endif
+
     protected: // Stubs for derived classes
 
         // Obtains next line from the config file
@@ -176,5 +186,9 @@ namespace boost { namespace program_options { namespace detail {
     
 
 }}}
+
+#ifdef BOOST_MSVC
+# pragma warning(pop)
+#endif
 
 #endif
