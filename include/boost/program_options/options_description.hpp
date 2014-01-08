@@ -236,6 +236,11 @@ namespace program_options {
         void print(std::ostream& os, unsigned width = 0) const;
 
     private:
+#if BOOST_WORKAROUND(BOOST_MSVC, BOOST_TESTED_AT(1800))
+        // prevent warning C4512: assignment operator could not be generated
+        options_description& operator=(const options_description&);
+#endif
+
         typedef std::map<std::string, int>::const_iterator name2index_iterator;
         typedef std::pair<name2index_iterator, name2index_iterator> 
             approximation_range;
