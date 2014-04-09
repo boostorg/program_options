@@ -268,12 +268,7 @@ namespace boost { namespace program_options {
 
     void error_with_option_name::replace_token(const string& from, const string& to) const
     {
-#if BOOST_WORKAROUND(BOOST_MSVC, BOOST_TESTED_AT(1800))
-// prevent warning C4127: conditional expression is constant
         for (;;)
-#else
-        while (1)
-#endif
         {
             std::size_t pos = m_message.find(from.c_str(), 0, from.length());
             // not found: all replaced
