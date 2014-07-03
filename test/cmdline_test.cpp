@@ -126,9 +126,9 @@ void test_cmdline(const char* syntax,
         try {
             vector<option> options = cmd.run();
 
-            for(unsigned i = 0; i < options.size(); ++i)
+            for(unsigned j = 0; j < options.size(); ++j)
             {
-                option opt = options[i];
+                option opt = options[j];
 
                 if (opt.position_key != -1) {
                     if (!result.empty())
@@ -138,18 +138,18 @@ void test_cmdline(const char* syntax,
                     if (!result.empty())
                         result += " ";
                     result += opt.string_key + ":";
-                    for (size_t j = 0; j < opt.value.size(); ++j) {
-                        if (j != 0)
+                    for (size_t k = 0; k < opt.value.size(); ++k) {
+                        if (k != 0)
                             result += "-";
                         result += opt.value[j];
                     }                    
                 }
             }
         }
-        catch(unknown_option& e) {
+        catch(unknown_option&) {
             status = s_unknown_option;
         }
-        catch(ambiguous_option& e) {
+        catch(ambiguous_option&) {
             status = s_ambiguous_option;
         }
         catch(invalid_command_line_syntax& e) {

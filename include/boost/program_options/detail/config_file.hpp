@@ -82,7 +82,7 @@ namespace boost { namespace program_options { namespace detail {
         
         void get();
         
-#if BOOST_WORKAROUND(_MSC_VER, <= 1800)
+#if BOOST_WORKAROUND(_MSC_VER, <= 1900)
         void decrement() {}
         void advance(difference_type) {}
 #endif
