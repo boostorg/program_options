@@ -17,7 +17,7 @@
 #include <string>
 #include <vector>
 #include <typeinfo>
-#include <limit>
+#include <limits>
 
 namespace boost { namespace program_options {
 
