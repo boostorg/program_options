@@ -17,6 +17,7 @@
 #include <string>
 #include <vector>
 #include <typeinfo>
+#include <limits>
 
 namespace boost { namespace program_options {
 
@@ -313,7 +314,7 @@ namespace boost { namespace program_options {
 
         unsigned max_tokens() const {
             if (m_multitoken) {
-                return 32000;
+                return std::numeric_limits<unsigned>::max();
             } else if (m_zero_tokens) {
                 return 0;
             } else {
