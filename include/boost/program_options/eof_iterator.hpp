@@ -12,7 +12,7 @@ namespace boost {
 
     /** The 'eof_iterator' class is useful for constructing forward iterators
         in cases where iterator extract data from some source and it's easy
-        to detect 'eof' -- i.e. the situation where there's no data. One
+        to detect 'eof' \-- i.e. the situation where there's no data. One
         apparent example is reading lines from a file.
 
         Implementing such iterators using 'iterator_facade' directly would

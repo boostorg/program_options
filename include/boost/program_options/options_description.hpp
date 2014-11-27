@@ -41,7 +41,7 @@ namespace program_options {
         are used only to validate input. Second affect interpretation of the
         option, for example default value for it or function that should be
         called  when the value is finally known. Routines which perform parsing
-        never use second kind of properties -- they are side effect free.
+        never use second kind of properties \-- they are side effect free.
         @sa options_description
     */
     class BOOST_PROGRAM_OPTIONS_DECL option_description {
@@ -71,7 +71,7 @@ namespace program_options {
             The 'name' parameter is interpreted by the following rules:
             - if there's no "," character in 'name', it specifies long name
             - otherwise, the part before "," specifies long name and the part
-            after -- short name.
+            after \-- short name.
         */
         option_description(const char* name,
                            const value_semantic* s);

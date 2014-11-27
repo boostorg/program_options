@@ -101,14 +101,14 @@ namespace boost { namespace program_options {
 
         The class allows one to specify all the information needed for parsing
         and to parse the command line. It is primarily needed to
-        emulate named function parameters -- a regular function with 5
+        emulate named function parameters \-- a regular function with 5
         parameters will be hard to use and creating overloads with a smaller
         number of parameters will be confusing.
 
         For the most common case, the function parse_command_line is a better
         alternative.
 
-        There are two typedefs -- command_line_parser and wcommand_line_parser,
+        There are two typedefs \-- command_line_parser and wcommand_line_parser,
         for charT == char and charT == wchar_t cases.
     */
     template<class charT>

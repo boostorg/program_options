@@ -164,7 +164,7 @@ namespace boost { namespace program_options {
             which does 'find' in *this. */
         const variable_value& get(const std::string& name) const;
 
-        /** Names of option with 'final' values -- which should not
+        /** Names of option with 'final' values \-- which should not
             be changed by subsequence assignments. */
         std::set<std::string> m_final;
 
