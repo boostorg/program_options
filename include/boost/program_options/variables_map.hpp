@@ -118,11 +118,11 @@ namespace boost { namespace program_options {
                 - otherwise, returns empty value
 
             - if there's defaulted value
-                - if there's next varaible map, which has a non-defauled
+                - if there's next variable map, which has a non-defaulted
                   value, return that
                 - otherwise, return value from *this
 
-            - if there's a non-defauled value, returns it.
+            - if there's a non-defaulted value, returns it.
         */
         const variable_value& operator[](const std::string& name) const;
 

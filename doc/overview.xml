@@ -280,9 +280,9 @@ bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla");
                         bla bla bla
         </screen>
         The tab character is removed before output. Only one tabulator per
-        paragraph is allowed, otherwisee an exception of type
+        paragraph is allowed, otherwise an exception of type
         program_options::error is thrown. Finally, the tabulator is ignored if
-        it's is not on the first line of the paragraph or is on the last
+        it is not on the first line of the paragraph or is on the last
         possible position of the first line.
         </para>
 

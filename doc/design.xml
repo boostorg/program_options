@@ -68,8 +68,8 @@
       Second, imagine a reusable library which has some options and exposes
       options description in its interface. If <emphasis>all</emphasis>
       options are either ascii or Unicode, and the library does not use any
-      Unicode strings, then the author will likely to use ascii options, which
-      would make the library unusable inside Unicode
+      Unicode strings, then the author is likely to use ascii options, making
+      the library unusable inside Unicode
       applications. Essentially, it would be necessary to provide two versions
       of the library -- ascii and Unicode.
     </para>

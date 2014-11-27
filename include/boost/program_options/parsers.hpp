@@ -103,7 +103,7 @@ namespace boost { namespace program_options {
         and to parse the command line. It is primarily needed to
         emulate named function parameters -- a regular function with 5
         parameters will be hard to use and creating overloads with a smaller
-        nuber of parameters will be confusing.
+        number of parameters will be confusing.
 
         For the most common case, the function parse_command_line is a better
         alternative.
