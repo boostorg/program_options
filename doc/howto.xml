@@ -382,7 +382,7 @@ locale::global(locale(""));
           <para>Go the the "test" directory and build the "test_convert" binary.</para>
         </listitem>
         <listitem>
-          <para>Set some non-ascii locale in the environmemt. On Linux, one can
+          <para>Set some non-ascii locale in the environment. On Linux, one can
           run, for example: <screen>
 $ export LC_CTYPE=ru_RU.KOI8-R
 </screen>
@@ -426,7 +426,7 @@ parsed_options parsed =
       <para>If you want to pass the unrecognized options further, the
       <functionname alt="boost::program_options::collect_unrecognized">collect_unrecognized</functionname> function can be used.
       The function will collect original tokens for all unrecognized values, and optionally, all found positional options.
-      Say, if your code handles a few options, but does not handles positional options at all, you can use the function like this:
+      Say, if your code handles a few options, but does not handle positional options at all, you can use the function like this:
       <programlisting>
 vector&lt;string&gt; to_pass_further = collect_unrecognized(parsed.options, include_positional);
       </programlisting>
