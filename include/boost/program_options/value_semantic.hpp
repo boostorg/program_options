@@ -49,7 +49,11 @@ namespace boost { namespace program_options {
 
         */
         virtual bool is_required() const = 0;
-        
+
+        /** Returns true if has an implicit value
+        */
+        virtual bool has_implicit_value() const = 0;
+
         /** Parses a group of tokens that specify a value of option.
             Stores the result in 'value_store', using whatever representation
             is desired. May be be called several times if value of the same
@@ -139,6 +143,8 @@ namespace boost { namespace program_options {
         bool is_composing() const { return false; }
 
         bool is_required() const { return false; }
+
+        bool has_implicit_value() const { return false; }
         
         /** If 'value_store' is already initialized, or new_tokens
             has more than one elements, throws. Otherwise, assigns
@@ -323,6 +329,8 @@ namespace boost { namespace program_options {
         }
 
         bool is_required() const { return m_required; }
+
+        bool has_implicit_value() const { return !m_implicit_value.empty(); }
 
         /** Creates an instance of the 'validator' class and calls
             its operator() to perform the actual conversion. */

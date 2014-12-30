@@ -313,6 +313,9 @@ namespace boost { namespace program_options { namespace detail {
             if (!xd)
                 continue;
 
+            if(xd->semantic()->has_implicit_value())
+                continue;
+
             unsigned min_tokens = xd->semantic()->min_tokens();
             unsigned max_tokens = xd->semantic()->max_tokens();
             if (min_tokens < max_tokens && opt.value.size() < max_tokens)
