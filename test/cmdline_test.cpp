@@ -141,7 +141,7 @@ void test_cmdline(const char* syntax,
                     for (size_t k = 0; k < opt.value.size(); ++k) {
                         if (k != 0)
                             result += "-";
-                        result += opt.value[j];
+                        result += opt.value[k];
                     }                    
                 }
             }
