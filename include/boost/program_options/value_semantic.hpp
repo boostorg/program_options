@@ -320,7 +320,7 @@ namespace boost { namespace program_options {
 
         unsigned max_tokens() const {
             if (m_multitoken) {
-                return std::numeric_limits<unsigned>::max();
+                return std::numeric_limits<unsigned>::max BOOST_PREVENT_MACRO_SUBSTITUTION();
             } else if (m_zero_tokens) {
                 return 0;
             } else {
