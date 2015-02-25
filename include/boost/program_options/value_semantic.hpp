@@ -191,8 +191,8 @@ namespace boost { namespace program_options {
             the value when it's known. The parameter can be NULL. */
         typed_value(T* store_to) 
         : m_store_to(store_to), m_composing(false),
-          m_multitoken(false), m_zero_tokens(false),
-          m_required(false)
+          m_implicit(false), m_multitoken(false),
+          m_zero_tokens(false), m_required(false)
         {} 
 
         /** Specifies default value, which will be used
