@@ -25,15 +25,17 @@ void test_type()
         ("bar", value<string>(), "")
         ;
     
+#ifndef BOOST_NO_RTTI
     const typed_value_base* b = dynamic_cast<const typed_value_base*>
         (desc.find("foo", false).semantic().get());
     BOOST_CHECK(b);
-    BOOST_CHECK(b->value_type() == typeid(int));
+    BOOST_CHECK(b->value_type() == boost::typeindex::type_id<int>());
 
     const typed_value_base* b2 = dynamic_cast<const typed_value_base*>
         (desc.find("bar", false).semantic().get());
     BOOST_CHECK(b2);
-    BOOST_CHECK(b2->value_type() == typeid(string));
+    BOOST_CHECK(b2->value_type() == boost::typeindex::type_id<string>());
+#endif
 }
 
 void test_approximation()
