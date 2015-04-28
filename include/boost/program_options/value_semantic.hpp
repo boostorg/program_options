@@ -12,11 +12,11 @@
 #include <boost/any.hpp>
 #include <boost/function/function1.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/type_index.hpp>
 
 
 #include <string>
 #include <vector>
-#include <typeinfo>
 #include <limits>
 
 namespace boost { namespace program_options {
@@ -163,6 +163,7 @@ namespace boost { namespace program_options {
         bool m_zero_tokens;
     };
 
+#ifndef BOOST_NO_RTTI
     /** Base class for all option that have a fixed type, and are
         willing to announce this type to the outside world.
         Any 'value_semantics' for which you want to find out the
@@ -174,17 +175,20 @@ namespace boost { namespace program_options {
     public:
         // Returns the type of the value described by this
         // object.
-        virtual const std::type_info& value_type() const = 0;
+        virtual const boost::typeindex::type_info& value_type() const = 0;
         // Not really needed, since deletion from this
         // class is silly, but just in case.
         virtual ~typed_value_base() {}
     };
+#endif
 
 
     /** Class which handles value of a specific type. */
     template<class T, class charT = char>
-    class typed_value : public value_semantic_codecvt_helper<charT>,
-                        public typed_value_base
+    class typed_value : public value_semantic_codecvt_helper<charT>
+#ifndef BOOST_NO_RTTI
+                      , public typed_value_base
+#endif
     {
     public:
         /** Ctor. The 'store_to' parameter tells where to store
@@ -359,10 +363,12 @@ namespace boost { namespace program_options {
 
     public: // typed_value_base overrides
         
-        const std::type_info& value_type() const
+#ifndef BOOST_NO_RTTI
+        const boost::typeindex::type_info& value_type() const
         {
-            return typeid(T);
+            return boost::typeindex::type_id<T>().type_info();
         }
+#endif
         
 
     private:
