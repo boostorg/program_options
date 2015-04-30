@@ -175,7 +175,7 @@ namespace boost { namespace program_options {
     public:
         // Returns the type of the value described by this
         // object.
-        virtual const std::type_info& value_type() const = 0;
+        virtual const boost::typeindex::type_info& value_type() const = 0;
         // Not really needed, since deletion from this
         // class is silly, but just in case.
         virtual ~typed_value_base() {}
@@ -366,7 +366,7 @@ namespace boost { namespace program_options {
 #ifndef BOOST_NO_RTTI
         const boost::typeindex::type_info& value_type() const
         {
-            return typeid(T);
+            return boost::typeindex::type_id<T>().type_info();
         }
 #endif
         
