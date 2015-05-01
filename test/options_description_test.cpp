@@ -29,12 +29,12 @@ void test_type()
     const typed_value_base* b = dynamic_cast<const typed_value_base*>
         (desc.find("foo", false).semantic().get());
     BOOST_CHECK(b);
-    BOOST_CHECK(b->value_type() == boost::typeindex::type_id<int>());
+    BOOST_CHECK(b->value_type() == typeid(int));
 
     const typed_value_base* b2 = dynamic_cast<const typed_value_base*>
         (desc.find("bar", false).semantic().get());
     BOOST_CHECK(b2);
-    BOOST_CHECK(b2->value_type() == boost::typeindex::type_id<string>());
+    BOOST_CHECK(b2->value_type() == typeid(string));
 #endif
 }
 

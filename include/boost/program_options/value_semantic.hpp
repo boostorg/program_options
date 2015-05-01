@@ -12,11 +12,10 @@
 #include <boost/any.hpp>
 #include <boost/function/function1.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/type_index.hpp>
-
 
 #include <string>
 #include <vector>
+#include <typeinfo>
 #include <limits>
 
 namespace boost { namespace program_options {
