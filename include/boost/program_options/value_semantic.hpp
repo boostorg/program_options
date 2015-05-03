@@ -363,7 +363,7 @@ namespace boost { namespace program_options {
     public: // typed_value_base overrides
         
 #ifndef BOOST_NO_RTTI
-        const boost::typeindex::type_info& value_type() const
+        const std::type_info& value_type() const
         {
             return typeid(T);
         }
