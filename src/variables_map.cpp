@@ -49,9 +49,6 @@ namespace boost { namespace program_options {
             for (i = 0; i < options.options.size(); ++i) {
 
                 option_name = options.options[i].string_key;
-                original_token = options.options[i].original_tokens.size() ?
-                                options.options[i].original_tokens[0] :
-                                option_name;
                 // Skip positional options without name
                 if (option_name.empty())
                     continue;
@@ -68,7 +65,7 @@ namespace boost { namespace program_options {
                 if (xm.m_final.count(option_name))
                     continue;
 
-                string original_token = options.options[i].original_tokens.size() ?
+                original_token = options.options[i].original_tokens.size() ?
                                         options.options[i].original_tokens[0]     : "";
                 const option_description& d = desc.find(option_name, false,
                                                         false, false);
