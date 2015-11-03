@@ -325,8 +325,14 @@ namespace boost { namespace program_options {
     {
         m_message = error_template;
         std::map<std::string, std::string> substitutions(m_substitutions);
+        try
+        {
         substitutions["canonical_option"]   = get_canonical_option_name();
         substitutions["prefix"]             = get_canonical_option_prefix();
+        }
+        catch(...)
+        {
+        }
 
 
         //
