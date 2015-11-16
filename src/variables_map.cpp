@@ -42,7 +42,9 @@ namespace boost { namespace program_options {
         string option_name;
         string original_token;
 
+#ifndef BOOST_NO_EXCEPTIONS
         try
+#endif
         {
 
             // First, convert/store all given options
