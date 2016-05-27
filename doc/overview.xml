@@ -565,7 +565,8 @@ desc.add_options()
       function, any function taking a <code>std::string</code> and returning
       <code>std::string</code>. That function will be called for each
       environment variable and should return either the name of the option, or
-      empty string if the variable should be ignored.
+      empty string if the variable should be ignored. An example showing this
+      method can be found in "example/env_options.cpp".
       </para>
 
     </section>
