@@ -31,6 +31,8 @@ void check_file_types()
    ss << "# This file checks parsing of various types of config values\n";
    //FAILS: ss << "; a windows style comment\n";
 
+   ss << "global_string = global value\n\n";
+
    ss << "[strings]\n";
    ss << "word = word\n";
    ss << "phrase = this is a phrase\n";
@@ -75,6 +77,8 @@ void check_file_types()
 
    po::options_description opts;
    opts.add_options()
+      ("global_string", po::value<string>())
+
       ("strings.word", po::value<string>())
       ("strings.phrase", po::value<string>())
       ("strings.quoted", po::value<string>())
@@ -132,6 +136,8 @@ void check_file_types()
    
 
    // Check that we got the correct values back
+   string expected_global_string = "global value":
+
    string expected_strings_word = "word";
    string expected_strings_phrase = "this is a phrase";
    string expected_strings_quoted = "\"quotes are in result\"";
@@ -165,6 +171,8 @@ void check_file_types()
    bool expected_onoff_false = false;
    bool expected_present_equal_true = true;
    bool expected_present_no_equal_true = true;
+
+   assert(vm["global_string"].as<string>() == expected_global_string);
 
    assert(vm["strings.word"].as<string>() == expected_strings_word);
    assert(vm["strings.phrase"].as<string>() == expected_strings_phrase);
