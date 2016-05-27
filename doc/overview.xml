@@ -512,7 +512,13 @@ visual_bell=yes
       <screen>
 gui.accessibility.visual_bell=yes
       </screen>
-
+      <para>When the option "gui.accessibility.visual_bell" has been added to the options</para>
+      <programlisting>
+options_description desc;
+desc.add_options()
+    ("gui.accessibility.visual_bell", value&lt;string&gt;(), "flash screen for bell")
+    ;
+    </programlisting>
     </section>
 
     <section>
