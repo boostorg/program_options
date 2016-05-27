@@ -3,7 +3,8 @@
 // (See accompanying file LICENSE_1_0.txt
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-/* Shows how to use both command line and config file. */
+// This example shows a config file (in ini format) being parsed by the
+// program_options library. It includes a numebr of different value types.
 
 #include <boost/program_options.hpp>
 namespace po = boost::program_options;
