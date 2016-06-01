@@ -32,6 +32,7 @@ stringstream make_file()
    //FAILS: ss << "; a windows style comment\n";
 
    ss << "global_string = global value\n";
+   ss << "unregistered_entry = unregistered value\n";
 
    ss << "\n[strings]\n";
    ss << "word = word\n";
@@ -136,10 +137,11 @@ po::options_description set_options()
 
 po::variables_map parse_file(stringstream &file, po::options_description &opts)
 {
+   const bool ALLOW_UNREGISTERED = true;
    cout << file.str() << endl;
 
    po::variables_map vm;
-   store(parse_config_file(file, opts), vm);
+   store(parse_config_file(file, opts, ALLOW_UNREGISTERED), vm);
    notify(vm);
 
    return vm;
