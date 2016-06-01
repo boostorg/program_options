@@ -25,20 +25,20 @@ bool check_float(double test, double expected)
    return false;
 }
 
-void check_file_types()
+stringstream make_file()
 {
    stringstream ss;
    ss << "# This file checks parsing of various types of config values\n";
    //FAILS: ss << "; a windows style comment\n";
 
-   ss << "global_string = global value\n\n";
+   ss << "global_string = global value\n";
 
-   ss << "[strings]\n";
+   ss << "\n[strings]\n";
    ss << "word = word\n";
    ss << "phrase = this is a phrase\n";
    ss << "quoted = \"quotes are in result\"\n";
    
-   ss << "[ints]\n";
+   ss << "\n[ints]\n";
    ss << "positive = 41\n";
    ss << "negative = -42\n";
    //FAILS: Lexical cast doesn't support hex, oct, or bin
@@ -46,7 +46,7 @@ void check_file_types()
    //ss << "oct = 044\n";
    //ss << "bin = 0b101010\n";
 
-   ss << "[floats]\n";
+   ss << "\n[floats]\n";
    ss << "positive = 51.1\n";
    ss << "negative = -52.1\n";
    ss << "double = 53.1234567890\n";
@@ -60,7 +60,7 @@ void check_file_types()
    ss << "exp_negative_val = -61.1e5\n";
    ss << "exp_negative_negative_val = -62.1e-5\n";
 
-   ss << "[booleans]\n";
+   ss << "\n[booleans]\n";
    ss << "number_true = 1\n";
    ss << "number_false = 0\n";
    ss << "yn_true = yes\n";
@@ -74,7 +74,11 @@ void check_file_types()
    //ss << "present_no_equal_true\n";
 
    ss.seekp(ios_base::beg);
+   return ss;
+}
 
+po::options_description set_options()
+{
    po::options_description opts;
    opts.add_options()
       ("global_string", po::value<string>())
@@ -127,14 +131,22 @@ void check_file_types()
       ("booleans.present_equal_true", po::bool_switch())
       ("booleans.present_no_equal_true", po::bool_switch())
       ;
+   return opts;
+}
 
-   cout << ss.str() << endl;
+po::variables_map parse_file(stringstream &file, po::options_description &opts)
+{
+   cout << file.str() << endl;
 
    po::variables_map vm;
-   store(parse_config_file(ss, opts), vm);
+   store(parse_config_file(file, opts), vm);
    notify(vm);
-   
 
+   return vm;
+}
+
+void check_results(po::variables_map &vm)
+{
    // Check that we got the correct values back
    string expected_global_string = "global value";
 
@@ -211,7 +223,10 @@ void check_file_types()
 
 int main(int ac, char* av[])
 {
-   check_file_types();
+   auto file = make_file();
+   auto opts = set_options();
+   auto vars = parse_file(file, opts);
+   check_results(vars);   
 
    return 0;
 }
