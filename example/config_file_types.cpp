@@ -136,7 +136,7 @@ void check_file_types()
    
 
    // Check that we got the correct values back
-   string expected_global_string = "global value":
+   string expected_global_string = "global value";
 
    string expected_strings_word = "word";
    string expected_strings_phrase = "this is a phrase";
