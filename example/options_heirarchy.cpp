@@ -393,7 +393,7 @@ We can easily override that environment path with a simple option:
     Network Port: 12345
 
 You can use a space or equals sign after long options, also backslashes are
-treated literally.
+treated literally on windows, on POSIX they need to be escaped.
 
     > example.exe --path=a\b\c\;d\e\\f
     First 75 chars of the system path:
