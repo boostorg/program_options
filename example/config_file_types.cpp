@@ -135,22 +135,26 @@ po::options_description set_options()
    return opts;
 }
 
-po::variables_map parse_file(stringstream &file, po::options_description &opts)
+vector<string> parse_file(stringstream &file, po::options_description &opts, po::variables_map &vm)
 {
    const bool ALLOW_UNREGISTERED = true;
    cout << file.str() << endl;
 
-   po::variables_map vm;
-   store(parse_config_file(file, opts, ALLOW_UNREGISTERED), vm);
+   po::parsed_options parsed = parse_config_file(file, opts, ALLOW_UNREGISTERED);
+   store(parsed, vm);
+   vector<string> unregistered = po::collect_unrecognized(parsed.options, po::exclude_positional);
    notify(vm);
 
-   return vm;
+   return unregistered;
 }
 
-void check_results(po::variables_map &vm)
+void check_results(po::variables_map &vm, vector<string> unregistered)
 {
    // Check that we got the correct values back
    string expected_global_string = "global value";
+
+   string expected_unreg_option = "unregistered_entry";
+   string expected_unreg_value = "unregistered value";
 
    string expected_strings_word = "word";
    string expected_strings_phrase = "this is a phrase";
@@ -187,6 +191,9 @@ void check_results(po::variables_map &vm)
    bool expected_present_no_equal_true = true;
 
    assert(vm["global_string"].as<string>() == expected_global_string);
+
+   assert(unregistered[0] == expected_unreg_option);
+   assert(unregistered[1] == expected_unreg_value);
 
    assert(vm["strings.word"].as<string>() == expected_strings_word);
    assert(vm["strings.phrase"].as<string>() == expected_strings_phrase);
@@ -227,8 +234,9 @@ int main(int ac, char* av[])
 {
    auto file = make_file();
    auto opts = set_options();
-   auto vars = parse_file(file, opts);
-   check_results(vars);   
+   po::variables_map vars;
+   auto unregistered = parse_file(file, opts, vars);
+   check_results(vars, unregistered);   
 
    return 0;
 }
