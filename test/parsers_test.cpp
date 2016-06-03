@@ -211,6 +211,7 @@ void test_config_file(const char* config_file)
 
     const char content1[] =
     " gv1 = 0#asd\n"
+    "; semi comment\n"
     "empty_value = \n"
     "plug3 = 7\n"
     "b = true\n"
