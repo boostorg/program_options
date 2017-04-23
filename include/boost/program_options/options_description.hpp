@@ -28,6 +28,7 @@
 #if defined(BOOST_MSVC)
 #   pragma warning (push)
 #   pragma warning (disable:4251) // class 'boost::shared_ptr<T>' needs to have dll-interface to be used by clients of class 'boost::program_options::option_description'
+#   pragma warning (disable:4512) // 'boost::program_options::options_description' : assignment operator could not be generated
 #endif
 
 
