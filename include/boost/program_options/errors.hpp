@@ -170,7 +170,15 @@ namespace boost { namespace program_options {
         {           set_substitute("option", option_name);}
 
         std::string get_option_name() const
-        {           return get_canonical_option_name();         }
+        {           
+        	try
+        	{
+        	return get_canonical_option_name();
+        	}
+        	catch(...)
+        	{
+        	}
+        }
 
         void set_original_token(const std::string& original_token)
         {           set_substitute("original_token", original_token);}
