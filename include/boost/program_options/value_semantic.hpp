@@ -218,10 +218,7 @@ namespace boost { namespace program_options {
 
         /** Specifies an implicit value, which will be used
             if the option is given, but without an adjacent value.
-            Using this implies that an explicit value is optional, but if
-            given, must be strictly adjacent to the option, i.e.: '-ovalue'
-            or '--option=value'.  Giving '-o' or '--option' will cause the
-            implicit value to be applied.
+            Using this implies that an explicit value is optional,
         */
         typed_value* implicit_value(const T &v)
         {
