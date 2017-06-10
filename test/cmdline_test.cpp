@@ -77,8 +77,7 @@ void apply_syntax(options_description& desc,
             v = value<string>();
             s.resize(s.size()-1);
         } else if (*(s.end()-1) == '?') {
-            //v = value<string>()->implicit();
-            v = value<string>();
+            v = value<string>()->implicit_value("default");
             s.resize(s.size()-1);
         } else if (*(s.end()-1) == '*') {
             v = value<vector<string> >()->multitoken();
@@ -607,6 +606,34 @@ void test_unregistered()
     // It's not clear yet, so I'm leaving the decision till later.
 }
 
+void test_implicit_value()
+{
+    using namespace command_line_style;
+    cmdline::style_t style;
+
+    style = cmdline::style_t(
+        allow_long | long_allow_adjacent
+        );
+
+    test_case test_cases1[] = {
+        // 'bar' does not even look like option, so is consumed
+        {"--foo bar", s_success, "foo:bar"},
+        // '--bar' looks like option, and such option exists, so we don't consume this token
+        {"--foo --bar", s_success, "foo: bar:"},
+        // '--biz' looks like option, but does not match any existing one.
+        // Presently this results in parse error, since
+        // (1) in cmdline.cpp:finish_option, we only consume following tokens if they are
+        // requires
+        // (2) in cmdline.cpp:run, we let options consume following positional options
+        // For --biz, an exception is thrown between 1 and 2.
+        // We might want to fix that in future.
+        {"--foo --biz", s_unknown_option, ""},
+        {0, 0, 0}
+    };
+
+    test_cmdline("foo? bar?", style, test_cases1);
+}
+
 int main(int /*ac*/, char** /*av*/)
 {
     test_long_options();
@@ -619,6 +646,7 @@ int main(int /*ac*/, char** /*av*/)
     test_additional_parser();
     test_style_parser();
     test_unregistered();
+    test_implicit_value();
 
     return 0;
 }
