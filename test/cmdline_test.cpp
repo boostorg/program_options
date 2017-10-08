@@ -63,8 +63,7 @@ struct test_case {
    The "boost::program_options" in parameter type is needed because CW9 
    has std::detail and it causes an ambiguity.
 */
-void apply_syntax(options_description& desc,
-                  positional_options_description & m_positional,
+void apply_syntax(options_description& desc, 
                   const char* syntax)
 {
    
@@ -78,8 +77,7 @@ void apply_syntax(options_description& desc,
             v = value<string>();
             s.resize(s.size()-1);
         } else if (*(s.end()-1) == '?') {
-            v = value<string>()->implicit_value("bar");
-            m_positional.add("positional", -1);
+            v = value<string>()->implicit_value("default");
             s.resize(s.size()-1);
         } else if (*(s.end()-1) == '*') {
             v = value<vector<string> >()->multitoken();
@@ -114,14 +112,12 @@ void test_cmdline(const char* syntax,
             }
         }
         options_description desc;
-        positional_options_description m_positional;
-        apply_syntax(desc, m_positional, syntax);
+        apply_syntax(desc, syntax);
 
         cmdline cmd(xinput);
         cmd.style(style);
         cmd.set_options_description(desc);
-        if(m_positional.max_total_count())
-            cmd.set_positional_options(m_positional);
+
 
         string result;
         int status = 0;
@@ -133,9 +129,7 @@ void test_cmdline(const char* syntax,
             {
                 option opt = options[j];
 
-                if (opt.position_key != -1
-                    && (m_positional.max_total_count() == 0 || (size_t)opt.position_key >= m_positional.max_total_count()
-                     || m_positional.name_for_position(opt.position_key) != "positional")) {
+                if (opt.position_key != -1) {
                     if (!result.empty())
                         result += " ";
                     result += opt.value[0];
@@ -233,7 +227,7 @@ void test_long_options()
         {"--giz", s_success, "Giz:"},
         {0, 0, 0}
     };
-    test_cmdline("foo bar= Giz", style, test_cases4);
+    test_cmdline("foo bar= baz? Giz", style, test_cases4);
 }
 
 void test_short_options()
@@ -353,7 +347,7 @@ void test_disguised_long()
         {"-bee=x -by", s_success, "bee:x bee:y"},
         {0, 0, 0}
     };
-    test_cmdline("foo,f goo,g= bee,b=", style, test_cases1);
+    test_cmdline("foo,f goo,g= bee,b?", style, test_cases1);
 
     style = cmdline::style_t(style | allow_slash_for_short);
     test_case test_cases2[] = {
@@ -361,7 +355,7 @@ void test_disguised_long()
         {"/goo=x", s_success, "goo:x"},
         {0, 0, 0}
     };
-    test_cmdline("foo,f goo,g=", style, test_cases2);
+    test_cmdline("foo,f goo,g= bee,b?", style, test_cases2);
 }
 
 void test_guessing()
@@ -622,23 +616,22 @@ void test_implicit_value()
         );
 
     test_case test_cases1[] = {
-        {"--foo bar", s_success, "foo: positional:bar"},
-        {"--foo=bar foobar", s_success, "foo:bar positional:foobar"},
+        // 'bar' does not even look like option, so is consumed
+        {"--foo bar", s_success, "foo:bar"},
+        // '--bar' looks like option, and such option exists, so we don't consume this token
+        {"--foo --bar", s_success, "foo: bar:"},
+        // '--biz' looks like option, but does not match any existing one.
+        // Presently this results in parse error, since
+        // (1) in cmdline.cpp:finish_option, we only consume following tokens if they are
+        // requires
+        // (2) in cmdline.cpp:run, we let options consume following positional options
+        // For --biz, an exception is thrown between 1 and 2.
+        // We might want to fix that in future.
+        {"--foo --biz", s_unknown_option, ""},
         {0, 0, 0}
     };
 
-    test_cmdline("positional= foo?", style, test_cases1);
-
-    style = cmdline::style_t(
-        allow_short | allow_dash_for_short 
-        | short_allow_adjacent);
-
-    test_case test_cases2[] = {
-        {"-f bar", s_success, "-f: positional:bar"},
-        {"-fbar foobar", s_success, "-f:bar positional:foobar"},
-        {0, 0, 0}
-    };
-    test_cmdline("positional= ,f?", style, test_cases2);
+    test_cmdline("foo? bar?", style, test_cases1);
 }
 
 int main(int /*ac*/, char** /*av*/)
