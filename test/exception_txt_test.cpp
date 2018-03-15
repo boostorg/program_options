@@ -624,7 +624,7 @@ void test_empty_value_inner(options_description &opts, variables_map& vm) {
     positional_options_description popts;
     opts.add_options()("foo", value<uint32_t>()->value_name("<time>")->required());
     popts.add("foo", 1);
-    vector<string> tokens{""};
+    vector<string> tokens(1, "");
     parsed_options parsed = command_line_parser(tokens)
         .style(command_line_style::default_style & ~command_line_style::allow_guessing)
         .options(opts)
