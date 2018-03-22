@@ -12,3 +12,7 @@ exe custom_syntax : custom_syntax.cpp ;
 
 exe real : real.cpp ;
 exe regex : regex.cpp /boost/regex//boost_regex ;
+
+exe config_file_types : config_file_types.cpp ;
+exe env_options : env_options.cpp ;
+exe options_heirarchy : options_heirarchy.cpp ;
