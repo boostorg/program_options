@@ -585,12 +585,12 @@ desc.add_options()
     accept floating point numbers such as "51.1", "-52.1", "53.1234567890" (as
     a double), "54", "55.", ".56", "57.1e5", "58.1E5", ".591e5", "60.1e-5", 
     "-61.1e5", "-62.1e-5", etc. Unfortunately, hex, octal, and binary
-    representations that are available in C++ literals are not supported by 
-    lexical_cast, and thus will not work with program_options.<para>
+    representations that are available in C++ literals are not supported by
+    lexical_cast, and thus will not work with program_options.</para>
 
     <para>Booleans a special in that there are multiple ways to come at them. 
     Similar to another value type, it can be specified as <code>("my-option",
-    value<bool>())</code>, and then set as:</para>
+    value&lt;bool&gt;())</code>, and then set as:</para>
     <screen>
 example --my-option=true
     </screen>
