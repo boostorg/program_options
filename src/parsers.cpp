@@ -140,11 +140,7 @@ namespace boost { namespace program_options {
                       bool allow_unregistered);
 #endif
 
-#ifdef BOOST_NO_CXX11_FUNCTION_TEMPLATE_DEFAULT_ARGS
     template<class charT>
-#else
-    template<class charT = char>
-#endif
     basic_parsed_options<charT>
     parse_config_file(const char* filename, 
                       const options_description& desc,
