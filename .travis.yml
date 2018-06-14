@@ -115,21 +115,6 @@ jobs:
         - libs/$SELF/ci/cppcheck.sh
 
     - os: linux
-      env:
-        - COMMENT=UBSAN
-        - B2_VARIANT=variant=debug
-        - TOOLSET=gcc-7
-        - CXXFLAGS="cxxflags=-fno-omit-frame-pointer cxxflags=-fsanitize=undefined cxxflags=-fno-sanitize-recover=undefined"
-        - LINKFLAGS="linkflags=-fsanitize=undefined linkflags=-fno-sanitize-recover=undefined"
-        - UBSAN_OPTIONS=print_stacktrace=1
-      addons:
-        apt:
-          packages:
-            - g++-7
-          sources:
-            - ubuntu-toolchain-r-test
-
-    - os: linux
       env: 
         - COMMENT=CodeCov
         - TOOLSET=gcc-7
