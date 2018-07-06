@@ -189,10 +189,10 @@ void test_multiple_occurrences_with_different_names()
    }
    catch (multiple_occurrences& e)
    {
-      BOOST_CHECK( (e.get_option_name() == "--cfgfile") || (e.get_option_name() == "--configfile"));
+      BOOST_CHECK( (e.get_option_name() == "--cfgfile") || (e.get_option_name() == "--config-file"));
       BOOST_CHECK(
          (string(e.what()) == "option '--cfgfile' cannot be specified more than once") ||
-         (string(e.what()) == "option '--configfile' cannot be specified more than once")
+         (string(e.what()) == "option '--config-file' cannot be specified more than once")
       );
    }
 }
