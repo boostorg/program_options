@@ -181,8 +181,9 @@ namespace boost { namespace program_options {
     const std::pair<const std::string*, std::size_t>
     option_description::long_names() const
     {
+        // reinterpret_cast is to please msvc 10.
         return (m_long_names.empty())
-            ? std::pair<const std::string*, size_t>( NULL, 0 )
+            ? std::pair<const std::string*, size_t>(reinterpret_cast<const std::string*>(0), 0 )
             : std::pair<const std::string*, size_t>( &(*m_long_names.begin()), m_long_names.size());
     }
 
