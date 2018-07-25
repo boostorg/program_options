@@ -155,6 +155,24 @@ void test_not_crashing_with_empty_string_values() {
                     const_cast<char**>(cmdline4), desc2), vm);
 }
 
+void test_not_crashing_with_empty_range() {
+    // Check that we don't crash when an empty range is provided.
+    options_description desc;
+    desc.add_options()("arg", po::value<string>());
+    {
+        const char* cmdline[] = {};
+        variables_map vm;
+        po::store(
+                po::parse_command_line(sizeof(cmdline) / sizeof(const char*),
+                        cmdline, desc), vm);
+    }
+    {
+        variables_map vm;
+        const char* const* cmdline = NULL;
+        po::store(po::parse_command_line(0, cmdline, desc), vm);
+    }
+}
+
 void test_multitoken() {
     const char* cmdline5[] = { "", "-p7", "-o", "1", "2", "3", "-x8" };
     options_description desc3;
@@ -246,6 +264,7 @@ void test_command_line()
     command_line::test_many_different_options();
     // Check that we don't crash on empty values of type 'string'
     command_line::test_not_crashing_with_empty_string_values();
+    command_line::test_not_crashing_with_empty_range();
     command_line::test_multitoken();
     command_line::test_multitoken_vector_option();
     command_line::test_multitoken_and_multiname();
