@@ -160,11 +160,9 @@ void test_not_crashing_with_empty_range() {
     options_description desc;
     desc.add_options()("arg", po::value<string>());
     {
-        const char* cmdline[] = {};
+        const char* cmdline[] = { "ignored" };
         variables_map vm;
-        po::store(
-                po::parse_command_line(sizeof(cmdline) / sizeof(const char*),
-                        cmdline, desc), vm);
+        po::store(po::parse_command_line(0, cmdline, desc), vm);
     }
     {
         variables_map vm;
