@@ -68,6 +68,11 @@ namespace boost { namespace program_options {
 
     option_description::~option_description()
     {
+        // Reset shared_ptr that was constructed within the library from within
+        // so that a mismatch with the header implementation of shared_ptr does
+        // not result in code for the wrong implementation being executed in the
+        // shared_ptr destructor.
+        m_value_semantic.reset();
     }
 
     option_description::match_result
@@ -315,7 +320,16 @@ namespace boost { namespace program_options {
         // we require a space between the option and description parts, so add 1.
         assert(m_min_description_length < m_line_length - 1);
     }
-    
+
+    options_description::~options_description()
+    {
+        // Reset all the shared_ptr that were constructed within the library
+        // from within so that a mismatch with the header implementation of
+        // shared_ptr does not result in code for the wrong implementation
+        // being executed in the shared_ptr destructor.
+        m_options.clear();
+    }
+
     void
     options_description::add(shared_ptr<option_description> desc)
     {

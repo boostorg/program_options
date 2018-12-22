@@ -205,6 +205,9 @@ namespace program_options {
         options_description(const std::string& caption,
                             unsigned line_length = m_default_line_length,
                             unsigned min_description_length = m_default_line_length / 2);
+
+        virtual ~options_description();
+
         /** Adds new variable description. Throws duplicate_variable_error if
             either short or long name matches that of already present one. 
         */
