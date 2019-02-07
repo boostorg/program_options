@@ -113,6 +113,7 @@ namespace boost { namespace program_options {
 
         if (result != full_match)
         {
+            std::string local_option(short_ignore_case ? tolower_(option) : option);
             std::string local_short_name(short_ignore_case ? tolower_(m_short_name) : m_short_name);
 
             if (local_short_name == local_option)
