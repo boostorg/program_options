@@ -28,10 +28,7 @@ void test_long_name_case_default()
     const char* av[] = { appname , option1, option2, option3 };
 
     variables_map vm;
-    auto parsed = command_line_parser(ac, av)
-	.options(desc)
-	.run();
-    store(parsed, vm);
+    store(command_line_parser(ac, av).options(desc).run(), vm);
     notify(vm);
 
     BOOST_CHECK(adamSelected);
@@ -53,8 +50,7 @@ void test_long_name_case_default_bad_input()
     char option1[] = "--adam";
     const char* av[] = { appname , option1 };
 
-    auto parser = command_line_parser(ac, av).options(desc);
-    BOOST_CHECK_THROW(parser.run(), std::exception);
+    BOOST_CHECK_THROW(command_line_parser(ac, av).options(desc).run(), std::exception);
 }
 
 void test_short_name_case_default()
@@ -75,10 +71,9 @@ void test_short_name_case_default()
     const char* av[] = { appname , option1, option2 };
 
     variables_map vm;
-    auto parsed = command_line_parser(ac, av)
+    store(command_line_parser(ac, av)
 	.options(desc)
-	.run();
-    store(parsed, vm);
+	.run(), vm);
     notify(vm);
 
     BOOST_CHECK(adamSelected);
@@ -99,8 +94,7 @@ void test_short_name_case_default_bad_input()
     char option1[] = "-a";
     const char* av[] = { appname , option1 };
 
-    auto parser = command_line_parser(ac, av).options(desc);
-    BOOST_CHECK_THROW(parser.run(), std::exception);
+    BOOST_CHECK_THROW(command_line_parser(ac, av).options(desc).run(), std::exception);
 }
 
 void test_only_long_name_case_insensitive()
@@ -121,13 +115,12 @@ void test_only_long_name_case_insensitive()
     const char* av[] = { appname , option1, option2 };
 
     variables_map vm;
-    auto parsed = command_line_parser(ac, av)
+    store(command_line_parser(ac, av)
 	.options(desc)
 	.style(
             command_line_style::unix_style | 
             command_line_style::long_case_insensitive)
-	.run();
-    store(parsed, vm);
+	.run(), vm);
     notify(vm);
 
     BOOST_CHECK(adamSelected);
@@ -148,13 +141,12 @@ void test_short_names_when_only_long_name_case_insensitive_bad_input()
     char option1[] = "-B";
     const char* av[] = { appname , option1 };
 
-    auto parser = command_line_parser(ac, av)
+    BOOST_CHECK_THROW(command_line_parser(ac, av)
 	.options(desc)
 	.style(
             command_line_style::unix_style |
             command_line_style::long_case_insensitive
-	);
-    BOOST_CHECK_THROW(parser.run(), std::exception);
+	).run(), std::exception);
 }
 
 
@@ -176,13 +168,12 @@ void test_only_short_name_case_insensitive()
     const char* av[] = { appname , option1, option2 };
 
     variables_map vm;
-    auto parsed = command_line_parser(ac, av)
+    store(command_line_parser(ac, av)
 	.options(desc)
 	.style(
             command_line_style::unix_style |
             command_line_style::short_case_insensitive)
-	.run();
-    store(parsed, vm);
+	.run(), vm);
     notify(vm);
 
     BOOST_CHECK(adamSelected);
@@ -213,13 +204,12 @@ void test_full_case_insensitive()
     const char* av[] = { appname , option1, option2, option3, option4 };
 
     variables_map vm;
-    auto parsed = command_line_parser(ac, av)
+    store(command_line_parser(ac, av)
 	.options(desc)
 	.style(
             command_line_style::unix_style |
             command_line_style::case_insensitive)
-	.run();
-    store(parsed, vm);
+	.run(), vm);
     notify(vm);
 
     BOOST_CHECK(adamSelected);
