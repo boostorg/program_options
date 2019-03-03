@@ -477,7 +477,7 @@ po::variables_map vm;
 po::store(po::parse_command_line(ac, av, desc), vm);
 po::notify(vm);
 
-if (compression)) {
+if (compression) {
     cout << "Compression level was set to " << *compression << ".\n";
 } else {
     cout << "Compression level was not set.\n";
