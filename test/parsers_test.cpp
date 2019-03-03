@@ -379,7 +379,7 @@ void test_fail_directory(const char* some_dir)
 {
     options_description desc;
     TEST_CHECK_THROW(
-            parse_config_file(some_dir, desc),
+            parse_config_file<char>(some_dir, desc),
             reading_file,
             "providing directory as config file must cause exception")
 }
