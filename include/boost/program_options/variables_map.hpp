@@ -11,6 +11,7 @@
 
 #include <boost/any.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/optional.hpp>
 
 #include <string>
 #include <map>
@@ -72,6 +73,16 @@ namespace boost { namespace program_options {
        template<class T>
        T& as() {
            return boost::any_cast<T&>(v);
+       }
+
+       /** If stored value is of type T, returns optional<T> having that value.
+           If variable is empty, returns optional<T> having the none.
+           Otherwise, throws boost::bad_any_cast exception. */
+       template<class T>
+       optional<T> as_optional() const {
+           if (empty()) return none;
+
+           return as<T>();
        }
 
         /// Returns true if no value is stored.
