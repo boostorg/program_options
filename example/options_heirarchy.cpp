@@ -3,9 +3,9 @@
 // (See accompanying file LICENSE_1_0.txt
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-// 
+//
 // This is an example of a program that uses multiple facets of the boost
-// program_options library. It will go through different types of config 
+// program_options library. It will go through different types of config
 // options in a heirarchal manner:
 // 1. Default options are set.
 // 2. Command line options are set (they override defaults).
@@ -16,7 +16,7 @@
 //    other steps).
 // 5. Default config file (default.cfg) is read, if present (it overrides
 //    defaults but not options from the other steps).
-// 
+//
 // See the bottom of this file for full usage examples
 //
 
@@ -217,7 +217,7 @@ private:
       std::cout << "Program Options Example " << version << std::endl;
       throw OptionsExitsProgram();
    }
-   void ParseEnvironment() 
+   void ParseEnvironment()
    {
       store(po::parse_environment(common_options,
          // The next two lines are the crazy syntax to use EnvironmentMapper as
@@ -333,16 +333,16 @@ int main(int ac, char* av[])
    return 0;
 }
 
-/* 
+/*
 Full Usage Examples
 ===================
 
-These were run on windows, so some results may show that environment, but 
+These were run on windows, so some results may show that environment, but
 results should be similar on POSIX platforms.
 
 Help
 ----
-To see the help screen, with the available options just pass the --help (or -h) 
+To see the help screen, with the available options just pass the --help (or -h)
 parameter. The program will then exit.
 
     > example.exe --help
@@ -367,10 +367,10 @@ Version is similar to help (--version or -v).
 
 Basics
 ------
-Running without any options will get the default values (path is set from the 
+Running without any options will get the default values (path is set from the
 environment):
 
-    > example.exe 
+    > example.exe
     First 75 chars of the system path:
     C:\Program Files (x86)\MSBuild\14.0\bin;C:\Perl\site\bin;C:\Perl\bin;C:\Pro
     Verbosity: INFO
@@ -436,8 +436,8 @@ Or you can put the option immediately after it:
     Network Address: 127.0.0.1
     Network Port: 12345
 
-The include path (--include-path or -I) option allows for multiple paths to be 
-specified (both on the command line and in config files) and combined into a 
+The include path (--include-path or -I) option allows for multiple paths to be
+specified (both on the command line and in config files) and combined into a
 vector for use by the program.
 
     > example.exe --include-path=a/b/c --include-path d/e/f -I g/h/i -Ij/k/l
@@ -455,7 +455,7 @@ vector for use by the program.
     Network Address: 127.0.0.1
     Network Port: 12345
 
-There are also the option of flags that do not take parameters and just set a 
+There are also the option of flags that do not take parameters and just set a
 boolean value to true. In this case, running the gui also causes default values
 for the gui to be output to the screen.
 
@@ -491,7 +491,7 @@ one specifies the "master" file the others are additional files.
 
 Environment Variables
 ---------------------
-In addition to the PATH environment variable, it also knows how to read the 
+In addition to the PATH environment variable, it also knows how to read the
 EXAMPLE_VERBOSE environmental variable and use that to set the verbosity
 option/
 
@@ -509,7 +509,7 @@ option/
 
 However, if the --verboseity flag is also set, it will override the env
 variable. This illustrates an important example, the way program_options works,
-is that a parser will not override a value that has previously been set by 
+is that a parser will not override a value that has previously been set by
 another parser. Thus the env parser doesn't override the command line parser.
 (We will see this again in config files.) Default values are seperate from this
 heirarcy, they only apply if no parser has set the value and it is being read.
@@ -527,7 +527,7 @@ heirarcy, they only apply if no parser has set the value and it is being read.
     Network Port: 12345
 
 (You can unset an environmental variable with an empty set command)
-   
+
     > set EXAMPLE_VERBOSE=
     > example.exe
     First 75 chars of the system path:
@@ -544,7 +544,7 @@ heirarcy, they only apply if no parser has set the value and it is being read.
 Config Files
 ------------
 Config files generally follow the [INI file format]
-(https://en.wikipedia.org/wiki/INI_file) with a few exceptions. 
+(https://en.wikipedia.org/wiki/INI_file) with a few exceptions.
 
 Values can be simply added tp options with an equal sign. Here are two include
 paths added via the default config file (default.cfg), you can have optional
@@ -661,7 +661,7 @@ Results in a combination of all three config files:
     Network Address: 5.6.7.8
     Network Port: 3000
 
-Incidently the boolean run-gui option could have been set a number of ways 
+Incidently the boolean run-gui option could have been set a number of ways
 that all result in the C++ boolean value of true:
 
     run-gui=true
@@ -672,10 +672,10 @@ that all result in the C++ boolean value of true:
 
 Since run-gui is an option that was set with the bool_switch type, which
 forces its use on the command line without a parameter (i.e. --run-gui instead
-of --run-gui=true) it can't be given a "false" option, bool_switch values can 
+of --run-gui=true) it can't be given a "false" option, bool_switch values can
 only be turned true. If instead we had a value ("my-switch", po::value<bool>())
-that could be set at the command line --my-switch=true or --my-switch=false, or 
-any of the other types of boolean keywords true: true, on, 1, yes; 
+that could be set at the command line --my-switch=true or --my-switch=false, or
+any of the other types of boolean keywords true: true, on, 1, yes;
 false: false, off, 0, no. In a config file this could look like:
 
     my-switch=true

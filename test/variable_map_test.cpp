@@ -131,7 +131,7 @@ void test_semantic_values()
     ("int", po::value< vector<int> >()->notifier(&notifier))
     ;
 
-       
+
     parsed_options parsed(&desc);
     vector<option>& options = parsed.options;
     vector<string> v;
@@ -166,7 +166,7 @@ void test_semantic_values()
     BOOST_CHECK_EQUAL(stored_value, 13);
 
     vector<option> saved_options = options;
-    
+
     options.push_back(option("bar", vector<string>(1, "2")));
     variables_map vm3;
     BOOST_CHECK_THROW(store(parsed, vm3), multiple_occurrences);
@@ -195,13 +195,13 @@ void test_priority()
     ;
 
     const char* cmdline1_[] = { "--first=1", "--aux=10", "--first=3", "--include=1" };
-    vector<string> cmdline1 = sv(cmdline1_, 
+    vector<string> cmdline1 = sv(cmdline1_,
                                  sizeof(cmdline1_)/sizeof(const char*));
 
     parsed_options p1 = command_line_parser(cmdline1).options(desc).run();
 
     const char* cmdline2_[] = { "--first=12", "--second=7", "--include=7" };
-    vector<string> cmdline2 = sv(cmdline2_, 
+    vector<string> cmdline2 = sv(cmdline2_,
                                  sizeof(cmdline2_)/sizeof(const char*));
 
     parsed_options p2 = command_line_parser(cmdline2).options(desc).run();
@@ -209,25 +209,25 @@ void test_priority()
     variables_map vm;
     store(p1, vm);
 
-    BOOST_REQUIRE(vm.count("first") == 1);    
+    BOOST_REQUIRE(vm.count("first") == 1);
     BOOST_REQUIRE(vm["first"].as< vector<int> >().size() == 2);
     BOOST_CHECK_EQUAL(vm["first"].as< vector<int> >()[0], 1);
     BOOST_CHECK_EQUAL(vm["first"].as< vector<int> >()[1], 3);
 
-    BOOST_REQUIRE(vm.count("second") == 1);    
+    BOOST_REQUIRE(vm.count("second") == 1);
     BOOST_REQUIRE(vm["second"].as< vector<int> >().size() == 1);
     BOOST_CHECK_EQUAL(vm["second"].as< vector<int> >()[0], 1);
 
     store(p2, vm);
 
     // Value should not change.
-    BOOST_REQUIRE(vm.count("first") == 1);    
+    BOOST_REQUIRE(vm.count("first") == 1);
     BOOST_REQUIRE(vm["first"].as< vector<int> >().size() == 2);
     BOOST_CHECK_EQUAL(vm["first"].as< vector<int> >()[0], 1);
     BOOST_CHECK_EQUAL(vm["first"].as< vector<int> >()[1], 3);
 
     // Value should change to 7
-    BOOST_REQUIRE(vm.count("second") == 1);    
+    BOOST_REQUIRE(vm.count("second") == 1);
     BOOST_REQUIRE(vm["second"].as< vector<int> >().size() == 1);
     BOOST_CHECK_EQUAL(vm["second"].as< vector<int> >()[0], 7);
 
@@ -243,7 +243,7 @@ void test_multiple_assignments_with_different_option_description()
     // and some of the options stored the first time are not present
     // in the options descrription provided the second time, we don't crash.
 
-    options_description desc1("");    
+    options_description desc1("");
     desc1.add_options()
         ("help,h", "")
         ("includes", po::value< vector<string> >()->composing(), "");
@@ -277,7 +277,7 @@ void test_multiple_assignments_with_different_option_description()
     BOOST_CHECK_EQUAL(vm["includes"].as< vector<string> >()[0], "a");
     BOOST_CHECK_EQUAL(vm["includes"].as< vector<string> >()[1], "b");
 
-} 
+}
 
 int main(int, char* [])
 {

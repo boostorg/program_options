@@ -34,7 +34,7 @@ void test_unicode_to_unicode()
     args.push_back(L"--foo=\x044F");
 
     variables_map vm;
-    basic_parsed_options<wchar_t> parsed = 
+    basic_parsed_options<wchar_t> parsed =
         wcommand_line_parser(args).options(desc).run();
     store(parsed, vm);
 
@@ -48,7 +48,7 @@ void test_unicode_to_unicode()
 // be utf8.
 void test_unicode_to_native()
 {
-    std::codecvt<wchar_t, char, mbstate_t>* facet = 
+    std::codecvt<wchar_t, char, mbstate_t>* facet =
         new boost::program_options::detail::utf8_codecvt_facet;
     locale::global(locale(locale(), facet));
 
@@ -64,12 +64,12 @@ void test_unicode_to_native()
     variables_map vm;
     store(wcommand_line_parser(args).options(desc).run(), vm);
 
-    BOOST_CHECK(vm["foo"].as<string>() == "\xD1\x8F");    
+    BOOST_CHECK(vm["foo"].as<string>() == "\xD1\x8F");
 }
 
 void test_native_to_unicode()
 {
-    std::codecvt<wchar_t, char, mbstate_t>* facet = 
+    std::codecvt<wchar_t, char, mbstate_t>* facet =
         new boost::program_options::detail::utf8_codecvt_facet;
     locale::global(locale(locale(), facet));
 
@@ -85,7 +85,7 @@ void test_native_to_unicode()
     variables_map vm;
     store(command_line_parser(args).options(desc).run(), vm);
 
-    BOOST_CHECK(vm["foo"].as<wstring>() == L"\x044F");    
+    BOOST_CHECK(vm["foo"].as<wstring>() == L"\x044F");
 }
 
 vector<wstring> sv(const wchar_t* array[], unsigned size)
@@ -118,7 +118,7 @@ void test_command_line()
                              L"-b4", L"--plug3=10"};
     vector<wstring> cmdline4 = sv(cmdline4_,
                                   sizeof(cmdline4_)/sizeof(cmdline4_[0]));
-    vector<woption> a4 = 
+    vector<woption> a4 =
         wcommand_line_parser(cmdline4).options(desc).run().options;
 
     BOOST_REQUIRE(a4.size() == 5);
@@ -134,7 +134,7 @@ void test_command_line()
 // when reading wistream, it generates proper UTF8 data.
 void test_config_file()
 {
-    std::codecvt<wchar_t, char, mbstate_t>* facet = 
+    std::codecvt<wchar_t, char, mbstate_t>* facet =
         new boost::program_options::detail::utf8_codecvt_facet;
     locale::global(locale(locale(), facet));
 
@@ -149,7 +149,7 @@ void test_config_file()
     variables_map vm;
     store(parse_config_file(stream, desc), vm);
 
-    BOOST_CHECK(vm["foo"].as<string>() == "\xD1\x8F");    
+    BOOST_CHECK(vm["foo"].as<string>() == "\xD1\x8F");
 }
 
 int main(int, char* [])
