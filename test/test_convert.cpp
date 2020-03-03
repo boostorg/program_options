@@ -13,8 +13,6 @@
 #include <sstream>
 #include <iostream>
 #include <boost/progress.hpp>
-#include <boost/bind.hpp>
-#include <boost/ref.hpp>
 
 #include <boost/program_options/detail/convert.hpp>
 #include <boost/program_options/detail/utf8_codecvt_facet.hpp>

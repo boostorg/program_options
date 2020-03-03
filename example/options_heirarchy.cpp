@@ -21,12 +21,14 @@
 //
 
 #include <boost/program_options.hpp>
-namespace po = boost::program_options;
 #include <string>
 #include <iostream>
 #include <map>
 #include <stdexcept>
 #include <fstream>
+#include <boost/bind/bind.hpp>
+
+namespace po = boost::program_options;
 
 const std::string version("1.0");
 
@@ -221,7 +223,7 @@ private:
          // The next two lines are the crazy syntax to use EnvironmentMapper as
          // the lookup function for env->config name conversions
          boost::function1<std::string, std::string>(
-         std::bind1st(std::mem_fun(&OptionsHeirarchy::EnvironmentMapper), this))),
+         boost::bind(&OptionsHeirarchy::EnvironmentMapper, this))),
          results);
       notify(results);
    }
