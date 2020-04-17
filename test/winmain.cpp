@@ -10,24 +10,22 @@
 #include <iostream>
 #include <stdlib.h>
 
-using namespace std;
-
 #include <boost/program_options/parsers.hpp>
 using namespace boost::program_options;
 
-void check_equal(const std::vector<string>& actual, char **expected, int n)
+void check_equal(const std::vector<std::string>& actual, char **expected, int n)
 {
     if (actual.size() != n)
     {
         std::cerr << "Size mismatch between expected and actual data\n";
-        abort();
+        std::abort();
     }
     for (int i = 0; i < n; ++i)
     {
         if (actual[i] != expected[i])
         {
             std::cerr << "Unexpected content\n";
-            abort();
+            std::abort();
         }
     }
 }
@@ -40,7 +38,7 @@ void test_winmain()
 #define C ,
 #define TEST(input, expected) \
     char* BOOST_PP_CAT(e, __LINE__)[] = expected;\
-    vector<string> BOOST_PP_CAT(v, __LINE__) = split_winmain(input);\
+    std::vector<std::string> BOOST_PP_CAT(v, __LINE__) = split_winmain(input);\
     check_equal(BOOST_PP_CAT(v, __LINE__), BOOST_PP_CAT(e, __LINE__),\
                 sizeof(BOOST_PP_CAT(e, __LINE__))/sizeof(char*));    
 
