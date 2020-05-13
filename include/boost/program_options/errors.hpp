@@ -9,10 +9,10 @@
 
 #include <boost/program_options/config.hpp>
 
-#include <string>
-#include <stdexcept>
-#include <vector>
 #include <map>
+#include <stdexcept>
+#include <string>
+#include <vector>
 
 
 #if defined(BOOST_MSVC)
@@ -121,7 +121,7 @@ namespace boost { namespace program_options {
         /** gcc says that throw specification on dtor is loosened 
          *  without this line                                     
          *  */ 
-        ~error_with_option_name() throw() {}
+        ~error_with_option_name() throw() BOOST_OVERRIDE {}
 
 
         //void dump() const
@@ -183,7 +183,7 @@ namespace boost { namespace program_options {
 
         /** Creates the error_message on the fly
          *      Currently a thin wrapper for substitute_placeholders() */
-        virtual const char* what() const throw();
+        const char* what() const throw() BOOST_OVERRIDE;
 
     protected:
         /** Used to hold the error text returned by what() */
@@ -209,7 +209,7 @@ namespace boost { namespace program_options {
         multiple_values() 
          : error_with_option_name("option '%canonical_option%' only takes a single argument"){}
 
-        ~multiple_values() throw() {}
+        ~multiple_values() throw() BOOST_OVERRIDE {}
     };
 
     /** Class thrown when there are several occurrences of an
@@ -220,8 +220,7 @@ namespace boost { namespace program_options {
         multiple_occurrences() 
          : error_with_option_name("option '%canonical_option%' cannot be specified more than once"){}
 
-        ~multiple_occurrences() throw() {}
-
+        ~multiple_occurrences() throw() BOOST_OVERRIDE {}
     };
 
     /** Class thrown when a required/mandatory option is missing */
@@ -233,7 +232,7 @@ namespace boost { namespace program_options {
        {
        }
 
-       ~required_option() throw() {}
+       ~required_option() throw() BOOST_OVERRIDE {}
     };
 
     /** Base class of unparsable options,
@@ -243,7 +242,7 @@ namespace boost { namespace program_options {
      *  It makes no sense to have an option name, when we can't match an option to the
      *      parameter
      *  
-     *  Having this a part of the error_with_option_name hierachy makes error handling
+     *  Having this a part of the error_with_option_name hierarchy makes error handling
      *      a lot easier, even if the name indicates some sort of conceptual dissonance!
      *  
      *   */
@@ -256,9 +255,9 @@ namespace boost { namespace program_options {
         }
 
         /** Does NOT set option name, because no option name makes sense */
-        virtual void set_option_name(const std::string&) {}
+        void set_option_name(const std::string&) BOOST_OVERRIDE {}
 
-        ~error_with_no_option_name() throw() {}
+        ~error_with_no_option_name() throw() BOOST_OVERRIDE {}
     };
 
 
@@ -270,12 +269,12 @@ namespace boost { namespace program_options {
         {
         }
 
-        ~unknown_option() throw() {}
+        ~unknown_option() throw() BOOST_OVERRIDE {}
     };
 
 
 
-    /** Class thrown when there's ambiguity amoung several possible options. */
+    /** Class thrown when there's ambiguity among several possible options. */
     class BOOST_PROGRAM_OPTIONS_DECL ambiguous_option : public error_with_no_option_name {
     public:
         ambiguous_option(const std::vector<std::string>& xalternatives)
@@ -283,13 +282,13 @@ namespace boost { namespace program_options {
             m_alternatives(xalternatives)
         {}
 
-        ~ambiguous_option() throw() {}
+        ~ambiguous_option() throw() BOOST_OVERRIDE {}
 
         const std::vector<std::string>& alternatives() const throw() {return m_alternatives;}
 
     protected:
         /** Makes all substitutions using the template */
-        virtual void substitute_placeholders(const std::string& error_template) const;
+        void substitute_placeholders(const std::string& error_template) const BOOST_OVERRIDE;
     private:
         // TODO: copy ctor might throw
         std::vector<std::string> m_alternatives;
@@ -320,7 +319,7 @@ namespace boost { namespace program_options {
         {
         }
 
-        ~invalid_syntax() throw() {}
+        ~invalid_syntax() throw() BOOST_OVERRIDE {}
 
         kind_t kind() const {return m_kind;}
 
@@ -340,10 +339,10 @@ namespace boost { namespace program_options {
             m_substitutions["invalid_line"] = invalid_line;
         }
 
-        ~invalid_config_file_syntax() throw() {}
+        ~invalid_config_file_syntax() throw() BOOST_OVERRIDE {}
 
         /** Convenience functions for backwards compatibility */
-        virtual std::string tokens() const {return m_substitutions.find("invalid_line")->second;    }
+        std::string tokens() const BOOST_OVERRIDE { return m_substitutions.find("invalid_line")->second; }
     };
 
 
@@ -355,7 +354,8 @@ namespace boost { namespace program_options {
                        const std::string& original_token = "",
                        int option_style              = 0):
             invalid_syntax(kind, option_name, original_token, option_style) {}
-        ~invalid_command_line_syntax() throw() {}
+
+        ~invalid_command_line_syntax() throw() BOOST_OVERRIDE {}
     };
 
 
@@ -380,7 +380,7 @@ namespace boost { namespace program_options {
         {
         }
 
-        ~validation_error() throw() {}
+        ~validation_error() throw() BOOST_OVERRIDE {}
 
         kind_t kind() const { return m_kind; }
 

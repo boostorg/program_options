@@ -12,9 +12,9 @@
 #include <boost/any.hpp>
 #include <boost/shared_ptr.hpp>
 
-#include <string>
 #include <map>
 #include <set>
+#include <string>
 
 #if defined(BOOST_MSVC)
 #   pragma warning (push)
@@ -162,7 +162,7 @@ namespace boost { namespace program_options {
     private:
         /** Implementation of abstract_variables_map::get
             which does 'find' in *this. */
-        const variable_value& get(const std::string& name) const;
+        const variable_value& get(const std::string& name) const BOOST_OVERRIDE;
 
         /** Names of option with 'final' values \-- which should not
             be changed by subsequence assignments. */

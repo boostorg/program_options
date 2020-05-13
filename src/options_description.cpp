@@ -20,10 +20,11 @@
 
 #include <cassert>
 #include <climits>
-#include <cstring>
 #include <cstdarg>
-#include <sstream>
+#include <cstring>
 #include <iterator>
+#include <sstream>
+#include <string>
 using namespace std;
 
 namespace boost { namespace program_options {
@@ -127,7 +128,7 @@ namespace boost { namespace program_options {
     const std::string& 
     option_description::key(const std::string& option) const
     {
-        // We make the arbitrary choise of using the first long
+        // We make the arbitrary choice of using the first long
         // name as the key, regardless of anything else
         if (!m_long_names.empty()) {
             const std::string& first_long_name = *m_long_names.begin();
@@ -174,7 +175,7 @@ namespace boost { namespace program_options {
     const std::string&
     option_description::long_name() const
     {
-        static std::string empty_string("");
+        static std::string empty_string;
         return m_long_names.empty() ? empty_string : *m_long_names.begin();
     }
 
@@ -443,7 +444,7 @@ namespace boost { namespace program_options {
             line_length -= indent;
 
             // index of tab (if present) is used as additional indent relative
-            // to first_column_width if paragrapth is spanned over multiple
+            // to first_column_width if paragraph is spanned over multiple
             // lines if tab is not on first line it is ignored
             string::size_type par_indent = par.find('\t');
 
@@ -492,7 +493,7 @@ namespace boost { namespace program_options {
                         // If line starts with space, but second character
                         // is not space, remove the leading space.
                         // We don't remove double spaces because those
-                        // might be intentianal.
+                        // might be intentional.
                         if ((*line_begin == ' ') &&
                             ((line_begin + 1 < par_end) &&
                              (*(line_begin + 1) != ' ')))
