@@ -18,14 +18,14 @@ void check_equal(const std::vector<std::string>& actual, char **expected, int n)
     if (actual.size() != n)
     {
         std::cerr << "Size mismatch between expected and actual data\n";
-        std::abort();
+        abort();
     }
     for (int i = 0; i < n; ++i)
     {
         if (actual[i] != expected[i])
         {
             std::cerr << "Unexpected content\n";
-            std::abort();
+            abort();
         }
     }
 }
