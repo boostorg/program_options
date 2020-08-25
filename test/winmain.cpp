@@ -9,10 +9,9 @@
 #include <cctype>
 #include <iostream>
 #include <stdlib.h>
+#include <boost/program_options/parsers.hpp>
 
 using namespace std;
-
-#include <boost/program_options/parsers.hpp>
 using namespace boost::program_options;
 
 void check_equal(const std::vector<string>& actual, char **expected, int n)

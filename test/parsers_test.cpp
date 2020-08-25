@@ -308,7 +308,7 @@ void test_environment()
         ("bar", new untyped_value, "")
         ;
 
-#if (defined(_WIN32) && ! defined(__BORLANDC__)) || (defined(__CYGWIN__))
+#if (defined(_WIN32) && ! defined(BOOST_BORLANDC) && ! defined(BOOST_EMBTC)) || (defined(__CYGWIN__))
     _putenv("PO_TEST_FOO=1");
 #else
     putenv(const_cast<char*>("PO_TEST_FOO=1"));
