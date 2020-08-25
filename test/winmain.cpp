@@ -9,11 +9,12 @@
 #include <cctype>
 #include <iostream>
 #include <stdlib.h>
-
 #include <boost/program_options/parsers.hpp>
+
+using namespace std;
 using namespace boost::program_options;
 
-void check_equal(const std::vector<std::string>& actual, char **expected, int n)
+void check_equal(const std::vector<string>& actual, char **expected, int n)
 {
     if (actual.size() != n)
     {
@@ -38,7 +39,7 @@ void test_winmain()
 #define C ,
 #define TEST(input, expected) \
     char* BOOST_PP_CAT(e, __LINE__)[] = expected;\
-    std::vector<std::string> BOOST_PP_CAT(v, __LINE__) = split_winmain(input);\
+    vector<string> BOOST_PP_CAT(v, __LINE__) = split_winmain(input);\
     check_equal(BOOST_PP_CAT(v, __LINE__), BOOST_PP_CAT(e, __LINE__),\
                 sizeof(BOOST_PP_CAT(e, __LINE__))/sizeof(char*));    
 
