@@ -8,8 +8,8 @@
 #define BOOST_CONFIG_FILE_VP_2003_01_02
 
 #include <iosfwd>
-#include <string>
 #include <set>
+#include <string>
 
 #include <boost/noncopyable.hpp>
 #include <boost/program_options/config.hpp>
@@ -131,7 +131,7 @@ namespace boost { namespace program_options { namespace detail {
 
     private: // base overrides
 
-        bool getline(std::string&);
+        bool getline(std::string&) BOOST_OVERRIDE;
 
     private: // internal data
         shared_ptr<std::basic_istream<charT> > is;

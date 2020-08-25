@@ -3,13 +3,12 @@
 // (See accompanying file LICENSE_1_0.txt
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include <clocale>
 #include <fstream>
-#include <locale.h>
 #include <locale>
 #include <iostream>
-#include <string>
-#include <locale>
 #include <stdexcept>
+#include <string>
 
 #include <boost/config.hpp>
 

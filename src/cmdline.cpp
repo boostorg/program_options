@@ -17,17 +17,15 @@
 
 #include <boost/bind/bind.hpp>
 
+#include <cassert>
+#include <cctype>
+#include <climits>
+#include <cstdio>
+#include <cstring>
+#include <iostream>
 #include <string>
 #include <utility>
 #include <vector>
-#include <cassert>
-#include <cstring>
-#include <cctype>
-#include <climits>
-
-#include <cstdio>
-
-#include <iostream>
 
 using namespace boost::placeholders;
 
@@ -210,7 +208,7 @@ namespace boost { namespace program_options { namespace detail {
         // of unparsed tokens and can consume some of them (by
         // removing elements on front) and return a vector of options.
         //
-        // We try each style parser in turn, untill some input
+        // We try each style parser in turn, until some input
         // is consumed. The returned vector of option may contain the
         // result of just syntactic parsing of token, say --foo will
         // be parsed as option with name 'foo', and the style parser
@@ -407,7 +405,7 @@ namespace boost { namespace program_options { namespace detail {
         // Be defensive:
         // will have no original token if option created by handle_additional_parser()
         std::string original_token_for_exceptions = opt.string_key;
-        if (opt.original_tokens.size())
+        if (!opt.original_tokens.empty())
             original_token_for_exceptions = opt.original_tokens[0];
 
         try

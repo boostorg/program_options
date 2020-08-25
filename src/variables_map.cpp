@@ -12,6 +12,9 @@
 #include <boost/program_options/variables_map.hpp>
 
 #include <cassert>
+#include <map>
+#include <set>
+#include <string>
 
 namespace boost { namespace program_options {
 
@@ -67,8 +70,8 @@ namespace boost { namespace program_options {
                 if (xm.m_final.count(option_name))
                     continue;
 
-                original_token = options.options[i].original_tokens.size() ?
-                                        options.options[i].original_tokens[0]     : "";
+                original_token = options.options[i].original_tokens.empty() ?
+                                        "" : options.options[i].original_tokens[0];
                 const option_description& d = desc.find(option_name, false,
                                                         false, false);
 
