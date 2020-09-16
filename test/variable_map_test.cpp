@@ -51,6 +51,8 @@ void test_variable_map()
     BOOST_CHECK(vm.count("biz") == 1);
     BOOST_CHECK(vm["biz"].as<string>() == "3");
     BOOST_CHECK(vm["output"].as<string>() == "foo");
+    BOOST_CHECK(vm["bar"].as_optional<string>() == optional<string>("11"));
+    BOOST_CHECK(vm["buz"].as_optional<string>() == none);
 
     int i;
     desc.add_options()
@@ -71,6 +73,8 @@ void test_variable_map()
     BOOST_CHECK(vm2["zak"].as<int>() == 13);
     BOOST_CHECK(vm2["opt"].as<bool>() == false);
     BOOST_CHECK(i == 13);
+    BOOST_CHECK(vm2["zak"].as_optional<int>() == optional<int>(13));
+    BOOST_CHECK(vm2["zoo"].as_optional<int>() == none);
 
     options_description desc2;
     desc2.add_options()
