@@ -101,7 +101,8 @@ namespace boost { namespace program_options {
     basic_parsed_options<charT>
     parse_config_file(std::basic_istream<charT>& is, 
                       const options_description& desc,
-                      bool allow_unregistered)
+                      bool allow_unregistered,
+                      bool limited_comments)
     {    
         set<string> allowed_options;
 
@@ -120,7 +121,7 @@ namespace boost { namespace program_options {
         // Parser return char strings
         parsed_options result(&desc);        
         copy(detail::basic_config_file_iterator<charT>(
-                 is, allowed_options, allow_unregistered), 
+                 is, allowed_options, allow_unregistered, limited_comments), 
              detail::basic_config_file_iterator<charT>(), 
              back_inserter(result.options));
         // Convert char strings into desired type.
@@ -131,21 +132,24 @@ namespace boost { namespace program_options {
     BOOST_PROGRAM_OPTIONS_DECL basic_parsed_options<char>
     parse_config_file(std::basic_istream<char>& is, 
                       const options_description& desc,
-                      bool allow_unregistered);
+                      bool allow_unregistered,
+                      bool limited_comments);
 
 #ifndef BOOST_NO_STD_WSTRING
     template
     BOOST_PROGRAM_OPTIONS_DECL basic_parsed_options<wchar_t>
     parse_config_file(std::basic_istream<wchar_t>& is, 
                       const options_description& desc,
-                      bool allow_unregistered);
+                      bool allow_unregistered,
+                      bool limited_comments);
 #endif
 
     template<class charT>
     basic_parsed_options<charT>
     parse_config_file(const char* filename, 
                       const options_description& desc,
-                      bool allow_unregistered)
+                      bool allow_unregistered,
+                      bool limited_comments)
     { 
         // Parser return char strings
         std::basic_ifstream< charT > strm(filename);
@@ -153,21 +157,26 @@ namespace boost { namespace program_options {
         {
             boost::throw_exception(reading_file(filename));
         }
-        return parse_config_file(strm, desc, allow_unregistered);
+        return parse_config_file(strm,
+                                 desc,
+                                 allow_unregistered,
+                                 limited_comments);
     }
 
     template
     BOOST_PROGRAM_OPTIONS_DECL basic_parsed_options<char>
     parse_config_file(const char* filename, 
                       const options_description& desc,
-                      bool allow_unregistered);
+                      bool allow_unregistered,
+                      bool limited_comments);
 
 #ifndef BOOST_NO_STD_WSTRING
     template
     BOOST_PROGRAM_OPTIONS_DECL basic_parsed_options<wchar_t>
     parse_config_file(const char* filename, 
                       const options_description& desc,
-                      bool allow_unregistered);
+                      bool allow_unregistered,
+                      bool limited_comments);
 #endif
 
     

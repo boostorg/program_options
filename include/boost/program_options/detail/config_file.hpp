@@ -74,7 +74,8 @@ namespace boost { namespace program_options { namespace detail {
         common_config_file_iterator() { found_eof(); }
         common_config_file_iterator(
             const std::set<std::string>& allowed_options,
-            bool allow_unregistered = false);
+            bool allow_unregistered = false,
+            bool limited_comments = false);
 
         virtual ~common_config_file_iterator() {}
 
@@ -113,6 +114,7 @@ namespace boost { namespace program_options { namespace detail {
         std::set<std::string> allowed_prefixes;
         std::string m_prefix;
         bool m_allow_unregistered;
+        bool m_limited_comments;
     };
 
     template<class charT>
@@ -127,7 +129,8 @@ namespace boost { namespace program_options { namespace detail {
         */
         basic_config_file_iterator(std::basic_istream<charT>& is, 
                                    const std::set<std::string>& allowed_options,
-                                   bool allow_unregistered = false); 
+                                   bool allow_unregistered = false,
+                                   bool limited_comments = false); 
 
     private: // base overrides
 
@@ -151,8 +154,11 @@ namespace boost { namespace program_options { namespace detail {
     basic_config_file_iterator<charT>::
     basic_config_file_iterator(std::basic_istream<charT>& is, 
                                const std::set<std::string>& allowed_options,
-                               bool allow_unregistered)
-    : common_config_file_iterator(allowed_options, allow_unregistered)
+                               bool allow_unregistered,
+                               bool limited_comments)
+    : common_config_file_iterator(allowed_options,
+                                  allow_unregistered,
+                                  limited_comments)
     {
         this->is.reset(&is, null_deleter());                 
         get();

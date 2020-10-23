@@ -498,7 +498,9 @@ notify(vm);
         <para>introduces a new section in the configuration file.</para>
         </listitem>
         <listitem><para>The <literal>#</literal> character introduces a
-        comment that spans until the end of the line.</para>
+        comment that spans until the end of the line.  A flag may be
+        passed to limit comments to only <literal>#</literal> characters
+        which start the line.</para>
         </listitem>
       </itemizedlist>
 
