@@ -22,9 +22,11 @@ namespace boost { namespace program_options { namespace detail {
 
     common_config_file_iterator::common_config_file_iterator(
         const std::set<std::string>& allowed_options,
-        bool allow_unregistered)
+        bool allow_unregistered,
+        bool limited_comments)
     : allowed_options(allowed_options),
-      m_allow_unregistered(allow_unregistered)
+      m_allow_unregistered(allow_unregistered),
+      m_limited_comments(limited_comments)
     {
         for(std::set<std::string>::const_iterator i = allowed_options.begin();
             i != allowed_options.end(); 
@@ -88,9 +90,13 @@ namespace boost { namespace program_options { namespace detail {
         while(this->getline(s)) {
 
             // strip '#' comments and whitespace
-            if ((n = s.find('#')) != string::npos)
-                s = s.substr(0, n);
             s = trim_ws(s);
+            if ((n = s.find('#')) != string::npos) {
+                if (!m_limited_comments || n == 0) {
+                    s = s.substr(0, n);
+                    s = trim_ws(s);
+                }
+            }
 
             if (!s.empty()) {
                 // Handle section name

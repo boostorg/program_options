@@ -266,9 +266,10 @@ void test_config_file(const char* config_file)
     ;
 
     const char content1[] =
-    " gv1 = 0#asd\n"
+    " gv1 = 0 #asd\n"
     "empty_value = \n"
     "plug3 = 7\n"
+    " # line comment\n"
     "b = true\n"
     "[m1]\n"
     "v1 = 1\n"
@@ -297,6 +298,19 @@ void test_config_file(const char* config_file)
     check_value(a2[3], "b", "true");
     check_value(a2[4], "m1.v1", "1");
     check_value(a2[5], "m1.v2", "2");
+    check_value(a2[6], "m1.v3", "3");
+    
+    // same test, with # signs in values
+    ss.clear();
+    ss.seekg(0, ios::beg);
+    vector<option> a3 = parse_config_file(ss, desc, false, true).options;
+    BOOST_REQUIRE(a3.size() == 7);
+    check_value(a3[0], "gv1", "0 #asd");
+    check_value(a3[1], "empty_value", "");
+    check_value(a3[2], "plug3", "7");
+    check_value(a3[3], "b", "true");
+    check_value(a3[4], "m1.v1", "1");
+    check_value(a3[5], "m1.v2", "2");
     check_value(a2[6], "m1.v3", "3");
 }
 
