@@ -266,7 +266,7 @@ void test_config_file(const char* config_file)
     ;
 
     const char content1[] =
-    " gv1 = 0#asd\n"
+    " gv1 = 0 #asd\n"
     "empty_value = \n"
     "plug3 = 7\n"
     " # line comment\n"
@@ -305,7 +305,7 @@ void test_config_file(const char* config_file)
     ss.seekg(0, ios::beg);
     vector<option> a3 = parse_config_file(ss, desc, false, true).options;
     BOOST_REQUIRE(a3.size() == 7);
-    check_value(a3[0], "gv1", "0#asd");
+    check_value(a3[0], "gv1", "0 #asd");
     check_value(a3[1], "empty_value", "");
     check_value(a3[2], "plug3", "7");
     check_value(a3[3], "b", "true");
