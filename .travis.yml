@@ -1,146 +1,147 @@
-# Copyright 2016 Peter Dimov
-# Copyright 2017, 2018 James E. King III
+# Copyright 2016-2019 Peter Dimov
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file LICENSE_1_0.txt or copy at http://boost.org/LICENSE_1_0.txt)
 
-#
-# Generic Travis CI build script for boostorg repositories
-#
-# Instructions for customizing this script for your library:
-# 
-# 1. Copy the ci/ directory from the same source into your project:
-#    ci/build.sh runs the build
-#    ci/codecov.sh is used to run a profiling build and upload results to codecov.io
-#    ci/coverity.sh is used to run a coverity build and upload results coverity scan
-# 2. Customize the compilers and language levels you want.  Default is C++03.
-# 3. Update the global B2 environment settings to your liking.
-# 4. If you have more than include/, src/, and test/ directories then
-#    add them to the depinst.py line as "--include tools" for tools/ (you
-#    can put multiple --include on the command line).
-# 5. If you want to enable Coverity Scan, you need to provide the environment
-#    variables COVERITY_SCAN_TOKEN and COVERITY_SCAN_NOTIFICATION_EMAIL in
-#    your github settings.
-# 6. Enable pull request builds in your boostorg/<library> account.
-# 7. Change the default C++ version in ci/*.sh (search for CXXSTD)
-#
-# That's it - the scripts will do everything else for you.
-
-sudo: false
-dist: trusty
 language: cpp
 
+dist: xenial
+
+branches:
+  only:
+    - master
+    - develop
+    - /feature\/.*/
+
 env:
-  global:
-  # see: http://www.boost.org/build/doc/html/bbv2/overview/invocation.html#bbv2.overview.invocation.properties
-  # to use the default for a given environment, comment it out; recommend you build debug and release however..
-  # - B2_ADDRESS_MODEL=address-model=64,32
-  # - B2_LINK=link=shared,static
-  # - B2_THREADING=threading=multi,single
-    - B2_VARIANT=variant=release,debug
+  matrix:
+    - BOGUS_JOB=true
+
+matrix:
+
+  exclude:
+    - env: BOGUS_JOB=true
+
+  include:
+    - os: linux
+      compiler: g++-4.4
+      env: TOOLSET=gcc COMPILER=g++-4.4 CXXSTD=98,0x
+      addons:
+        apt:
+          packages:
+            - g++-4.4
+          sources:
+            - ubuntu-toolchain-r-test
+
+    - os: linux
+      compiler: g++-4.6
+      env: TOOLSET=gcc COMPILER=g++-4.6 CXXSTD=03,0x
+      addons:
+        apt:
+          packages:
+            - g++-4.6
+          sources:
+            - ubuntu-toolchain-r-test
+
+    - os: linux
+      dist: bionic
+      compiler: g++-10
+      env: UBSAN=1 TOOLSET=gcc COMPILER=g++-10 CXXSTD=03,11,14,17,20 UBSAN_OPTIONS=print_stacktrace=1 LINKFLAGS=-fuse-ld=gold
+      addons:
+        apt:
+          packages:
+            - g++-10
+          sources:
+            - sourceline: "ppa:ubuntu-toolchain-r/test"
+
+    - os: linux
+      dist: trusty
+      compiler: /usr/bin/clang++
+      env: TOOLSET=clang COMPILER=/usr/bin/clang++ CXXSTD=03,11
+      addons:
+        apt:
+          packages:
+            - clang-3.3
+
+    - os: linux
+      dist: trusty
+      compiler: /usr/bin/clang++
+      env: TOOLSET=clang COMPILER=/usr/bin/clang++ CXXSTD=03,11
+      addons:
+        apt:
+          packages:
+            - clang-3.4
+
+    - os: linux
+      compiler: clang++-11
+      env: UBSAN=1 TOOLSET=clang COMPILER=clang++-11 CXXSTD=03,11,14,17,20 UBSAN_OPTIONS=print_stacktrace=1
+      addons:
+        apt:
+          packages:
+            - clang-11
+          sources:
+            - ubuntu-toolchain-r-test
+            - sourceline: 'deb https://apt.llvm.org/xenial/ llvm-toolchain-xenial-11 main'
+              key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
+
+    - os: linux
+      dist: bionic
+      compiler: clang++-libc++
+      env: UBSAN=1 TOOLSET=clang COMPILER=clang++-libc++ CXXSTD=03,11,14,17,2a UBSAN_OPTIONS=print_stacktrace=1
+      addons:
+        apt:
+          packages:
+            - libc++-dev
+
+    - os: freebsd
+      compiler: clang++
+      env: TOOLSET=clang COMPILER=clang++ CXXSTD=03,11,14,17,2a
+
+    - os: osx
+      compiler: clang++
+      env: TOOLSET=clang COMPILER=clang++ CXXSTD=03,11,14,1z ADDRMD=32,64
+      osx_image: xcode7.3
+
+    - os: osx
+      compiler: clang++
+      env: TOOLSET=clang COMPILER=clang++ CXXSTD=03,11,14,1z ADDRMD=32,64
+      osx_image: xcode8.3
+
+    - os: osx
+      compiler: clang++
+      env: TOOLSET=clang COMPILER=clang++ CXXSTD=03,11,14,1z ADDRMD=32,64
+      osx_image: xcode9.4
+
+    - os: osx
+      compiler: clang++
+      env: TOOLSET=clang COMPILER=clang++ CXXSTD=03,11,14,1z
+      osx_image: xcode10.1
+
+    - os: osx
+      osx_image: xcode11.3
+      compiler: clang++
+      env: TOOLSET=clang COMPILER=clang++ CXXSTD=03,11,14,1z
+
+    - os: osx
+      osx_image: xcode12.2
+      compiler: clang++
+      env: UBSAN=1 TOOLSET=clang COMPILER=clang++ CXXSTD=03,11,14,1z UBSAN_OPTIONS=print_stacktrace=1
 
 install:
-  - export SELF=`basename $TRAVIS_BUILD_DIR`
+  - BOOST_BRANCH=develop && [ "$TRAVIS_BRANCH" == "master" ] && BOOST_BRANCH=master || true
   - cd ..
-  - git clone -b $TRAVIS_BRANCH --depth 1 https://github.com/boostorg/boost.git boost-root
+  - git clone -b $BOOST_BRANCH --depth 1 https://github.com/boostorg/boost.git boost-root
   - cd boost-root
-  - git submodule update -q --init tools/boostdep
-  - git submodule update -q --init tools/build
-  - git submodule update -q --init tools/inspect
-  - cp -r $TRAVIS_BUILD_DIR/* libs/$SELF
-  - export BOOST_ROOT="`pwd`"
-  - export PATH="`pwd`":$PATH 
-  - python tools/boostdep/depinst/depinst.py $SELF --include example
+  - git submodule update --init tools/boostdep
+  - cp -r $TRAVIS_BUILD_DIR/* libs/program_options
+  - python tools/boostdep/depinst/depinst.py program_options
   - ./bootstrap.sh
   - ./b2 headers
 
-addons:
-  apt:
-    packages:
-      - binutils-gold
-      - gdb
-      - libc6-dbg
-        
-branches:
-  only:
-    - develop
-    - master
-    
 script:
-  - cd libs/$SELF
-  - ci/build.sh
-
-jobs:
-  include:
-    - os: linux
-      env: 
-        - COMMENT="C++03"
-        - TOOLSET=gcc,gcc-7
-      addons:
-        apt:
-          packages:
-            - g++-7
-          sources:
-            - ubuntu-toolchain-r-test
-    - os: linux
-      env: 
-        - COMMENT="C++11"
-        - TOOLSET=clang
-        - CXXSTD=11
-      addons:
-        apt:
-          packages:
-            - g++-7
-          sources:
-            - ubuntu-toolchain-r-test
-    - os: linux
-      env: 
-        - COMMENT=valgrind
-        - TOOLSET=clang 
-        - B2_VARIANT=variant=debug
-        - TESTFLAGS=testing.launcher=valgrind
-      addons:
-        apt:
-          packages:
-            - clang-5.0
-            - libstdc++-7-dev
-            - valgrind
-          sources:
-            - llvm-toolchain-trusty-5.0
-            - ubuntu-toolchain-r-test
-
-    - os: linux
-      env:
-        - COMMENT=cppcheck
-      script:
-        - libs/$SELF/ci/cppcheck.sh
-
-    - os: linux
-      env: 
-        - COMMENT=CodeCov
-        - TOOLSET=gcc-7
-      addons:
-        apt:
-          packages:
-            - gcc-7
-            - g++-7
-          sources:
-            - ubuntu-toolchain-r-test
-      script:
-        - pushd /tmp && git clone https://github.com/linux-test-project/lcov.git && cd lcov && sudo make install && which lcov && lcov --version && popd
-        - cd libs/$SELF
-        - ci/codecov.sh
-
-    #################### Jobs to run on every pull request ####################
-  # osx was disabled because it is very slow to start (can delay builds by 30 minutes)
-  # - os: osx
-  #   osx_image: xcode9
-  #   env:
-  #     - TOOLSET=clang
-  #     - CXXSTD=03,11
-
-    #################### Jobs to run on pushes to master, develop ###################
+  - |-
+    echo "using $TOOLSET : : $COMPILER ;" > ~/user-config.jam
+  - ./b2 -j3 libs/program_options/test toolset=$TOOLSET cxxstd=$CXXSTD variant=debug,release ${ADDRMD:+address-model=$ADDRMD} ${UBSAN:+cxxflags=-fsanitize=undefined cxxflags=-fno-sanitize-recover=undefined linkflags=-fsanitize=undefined define=UBSAN=1 debug-symbols=on} ${LINKFLAGS:+linkflags=$LINKFLAGS}
 
 notifications:
   email:
-    false
-
+    on_success: always
