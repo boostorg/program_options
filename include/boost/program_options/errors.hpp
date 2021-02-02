@@ -35,7 +35,7 @@ namespace boost { namespace program_options {
     }
 
     /** Base class for all errors in the library. */
-    class BOOST_SYMBOL_VISIBLE error : public std::logic_error {
+    class BOOST_PROGRAM_OPTIONS_DECL BOOST_SYMBOL_VISIBLE error : public std::logic_error {
     public:
         error(const std::string& xwhat) : std::logic_error(xwhat) {}
     };
@@ -44,7 +44,7 @@ namespace boost { namespace program_options {
     /** Class thrown when there are too many positional options. 
         This is a programming error.
     */
-    class BOOST_SYMBOL_VISIBLE too_many_positional_options_error : public error {
+    class BOOST_PROGRAM_OPTIONS_DECL BOOST_SYMBOL_VISIBLE too_many_positional_options_error : public error {
     public:
         too_many_positional_options_error() 
          : error("too many positional options have been specified on the command line") 
@@ -52,7 +52,7 @@ namespace boost { namespace program_options {
     };
 
     /** Class thrown when there are programming error related to style */
-    class BOOST_SYMBOL_VISIBLE invalid_command_line_style : public error {
+    class BOOST_PROGRAM_OPTIONS_DECL BOOST_SYMBOL_VISIBLE invalid_command_line_style : public error {
     public:
         invalid_command_line_style(const std::string& msg)
         : error(msg)
@@ -60,7 +60,7 @@ namespace boost { namespace program_options {
     };
 
     /** Class thrown if config file can not be read */
-    class BOOST_SYMBOL_VISIBLE reading_file : public error {
+    class BOOST_PROGRAM_OPTIONS_DECL BOOST_SYMBOL_VISIBLE reading_file : public error {
     public:
         reading_file(const char* filename)
          : error(std::string("can not read options configuration file '").append(filename).append("'"))
