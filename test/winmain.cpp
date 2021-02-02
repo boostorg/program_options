@@ -14,7 +14,7 @@
 using namespace std;
 using namespace boost::program_options;
 
-void check_equal(const std::vector<string>& actual, char **expected, int n)
+void check_equal(const std::vector<string>& actual, const char **expected, int n)
 {
     if (actual.size() != n)
     {
@@ -38,7 +38,7 @@ void test_winmain()
 
 #define C ,
 #define TEST(input, expected) \
-    char* BOOST_PP_CAT(e, __LINE__)[] = expected;\
+    const char* BOOST_PP_CAT(e, __LINE__)[] = expected;\
     vector<string> BOOST_PP_CAT(v, __LINE__) = split_winmain(input);\
     check_equal(BOOST_PP_CAT(v, __LINE__), BOOST_PP_CAT(e, __LINE__),\
                 sizeof(BOOST_PP_CAT(e, __LINE__))/sizeof(char*));    
