@@ -152,7 +152,7 @@ void test_invalid_option_value_exception_msg()
 {
     options_description desc;
     desc.add_options()
-        ("int-option,d", value< int >(),	"An option taking an integer")
+        ("int-option,d", value< int >(),        "An option taking an integer")
     ;
 
     vector<vector<const char*> > argv;
@@ -308,7 +308,7 @@ void test_invalid_bool_value_exception_msg()
 {
     options_description desc; 
     desc.add_options()
-        ("bool_option,b",	value< bool>(),	"bool_option")
+        ("bool_option,b",       value< bool>(), "bool_option")
         ;
 
 
