@@ -152,7 +152,7 @@ void test_invalid_option_value_exception_msg()
 {
     options_description desc;
     desc.add_options()
-        ("int-option,d", value< int >(),	"An option taking an integer")
+        ("int-option,d", value< int >(),        "An option taking an integer")
     ;
 
     vector<vector<const char*> > argv;
@@ -308,7 +308,7 @@ void test_invalid_bool_value_exception_msg()
 {
     options_description desc; 
     desc.add_options()
-        ("bool_option,b",	value< bool>(),	"bool_option")
+        ("bool_option,b",       value< bool>(), "bool_option")
         ;
 
 
@@ -624,7 +624,7 @@ void test_empty_value_inner(options_description &opts, variables_map& vm) {
     positional_options_description popts;
     opts.add_options()("foo", value<uint32_t>()->value_name("<time>")->required());
     popts.add("foo", 1);
-    vector<string> tokens{""};
+    vector<string> tokens(1, "");
     parsed_options parsed = command_line_parser(tokens)
         .style(command_line_style::default_style & ~command_line_style::allow_guessing)
         .options(opts)

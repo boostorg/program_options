@@ -463,11 +463,13 @@ void test_additional_parser()
     desc.add_options()
         ("response-file", value<string>(), "response file")
         ("foo", value<int>(), "foo")
+        ("bar,baz", value<int>(), "bar")
         ;
 
     vector<string> input;
     input.push_back("@config");
     input.push_back("--foo=1");
+    input.push_back("--baz=11");
 
     cmdline cmd(input);
     cmd.set_options_description(desc);
@@ -475,11 +477,13 @@ void test_additional_parser()
 
     vector<option> result = cmd.run();
 
-    BOOST_REQUIRE(result.size() == 2);
+    BOOST_REQUIRE(result.size() == 3);
     BOOST_CHECK_EQUAL(result[0].string_key, "response-file");
     BOOST_CHECK_EQUAL(result[0].value[0], "config");
     BOOST_CHECK_EQUAL(result[1].string_key, "foo");
     BOOST_CHECK_EQUAL(result[1].value[0], "1");    
+    BOOST_CHECK_EQUAL(result[2].string_key, "bar");
+    BOOST_CHECK_EQUAL(result[2].value[0], "11");
 
     // Test that invalid options returned by additional style
     // parser are detected.

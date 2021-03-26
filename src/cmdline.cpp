@@ -15,7 +15,7 @@
 #include <boost/program_options/positional_options.hpp>
 #include <boost/throw_exception.hpp>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 #include <string>
 #include <utility>
@@ -28,6 +28,8 @@
 #include <cstdio>
 
 #include <iostream>
+
+using namespace boost::placeholders;
 
 namespace boost { namespace program_options {
 
@@ -103,7 +105,7 @@ namespace boost { namespace program_options { namespace detail {
     void
     cmdline::init(const vector<string>& args)
     {
-        this->args = args;        
+        this->m_args = args;        
         m_style = command_line_style::default_style;
         m_desc = 0;
         m_positional = 0;
@@ -244,6 +246,7 @@ namespace boost { namespace program_options { namespace detail {
         style_parsers.push_back(boost::bind(&cmdline::parse_terminator, this, _1));
 
         vector<option> result;
+        vector<string>& args = m_args;
         while(!args.empty())
         {
             bool ok = false;
