@@ -91,7 +91,7 @@ namespace boost { namespace program_options { namespace detail {
             if ((n = s.find('#')) != string::npos)
                 s = s.substr(0, n);
             // if the first character is a ';' line is a comment
-            if (!s.empty() && ';' == s.begin())) {
+            if (!s.empty() && ';' == *s.begin())) {
                 s = "";
             }
             else {
