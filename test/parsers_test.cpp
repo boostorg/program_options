@@ -385,4 +385,5 @@ int main(int, char* av[])
     test_command_line();
     test_config_file(av[1]);
     test_environment();
-    test_unregister
+    test_unregistered();
+}
