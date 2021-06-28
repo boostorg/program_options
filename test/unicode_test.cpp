@@ -107,11 +107,11 @@ void test_command_line()
 {
     options_description desc;
     desc.add_options()
-        ("foo,f", new untyped_value(), "")
+        ("foo,f", boost::make_shared<untyped_value>(), "")
         // Explicit qualification is a workaround for vc6
         ("bar,b", po::value<std::string>(), "")
-        ("baz", new untyped_value())
-        ("qux,plug*", new untyped_value())
+        ("baz", boost::make_shared<untyped_value>())
+        ("qux,plug*", boost::make_shared<untyped_value>())
         ;
 
     const wchar_t* cmdline4_[] = { L"--foo=1\u0FF52", L"-f4", L"--bar=11",

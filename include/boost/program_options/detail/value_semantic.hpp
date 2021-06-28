@@ -6,6 +6,7 @@
 // This file defines template functions that are declared in
 // ../value_semantic.hpp.
 
+#include <boost/smart_ptr/make_shared.hpp>
 #include <boost/throw_exception.hpp>
 
 // forward declaration
@@ -185,7 +186,7 @@ namespace boost { namespace program_options {
     }
 
     template<class T>
-    typed_value<T>*
+    shared_ptr<typed_value<T>>
     value()
     {
         // Explicit qualification is vc6 workaround.
@@ -193,26 +194,26 @@ namespace boost { namespace program_options {
     }
 
     template<class T>
-    typed_value<T>*
+    shared_ptr<typed_value<T>>
     value(T* v)
     {
-        typed_value<T>* r = new typed_value<T>(v);
+        shared_ptr<typed_value<T>> r = boost::make_shared<typed_value<T>>(v);
 
         return r;        
     }
 
     template<class T>
-    typed_value<T, wchar_t>*
+    shared_ptr<typed_value<T, wchar_t>>
     wvalue()
     {
         return wvalue<T>(0);
     }
 
     template<class T>
-    typed_value<T, wchar_t>*
+    shared_ptr<typed_value<T, wchar_t>>
     wvalue(T* v)
     {
-        typed_value<T, wchar_t>* r = new typed_value<T, wchar_t>(v);
+        shared_ptr<typed_value<T, wchar_t>> r = boost::make_shared<typed_value<T, wchar_t>>(v);
 
         return r;        
     }
