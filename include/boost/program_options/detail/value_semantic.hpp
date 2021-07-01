@@ -186,7 +186,7 @@ namespace boost { namespace program_options {
     }
 
     template<class T>
-    shared_ptr<typed_value<T>>
+    shared_ptr<typed_value<T> >
     value()
     {
         // Explicit qualification is vc6 workaround.
@@ -194,26 +194,26 @@ namespace boost { namespace program_options {
     }
 
     template<class T>
-    shared_ptr<typed_value<T>>
+    shared_ptr<typed_value<T> >
     value(T* v)
     {
-        shared_ptr<typed_value<T>> r = boost::make_shared<typed_value<T>>(v);
+        shared_ptr<typed_value<T> > r = boost::make_shared<typed_value<T> >(v);
 
         return r;        
     }
 
     template<class T>
-    shared_ptr<typed_value<T, wchar_t>>
+    shared_ptr<typed_value<T, wchar_t> >
     wvalue()
     {
         return wvalue<T>(0);
     }
 
     template<class T>
-    shared_ptr<typed_value<T, wchar_t>>
+    shared_ptr<typed_value<T, wchar_t> >
     wvalue(T* v)
     {
-        shared_ptr<typed_value<T, wchar_t>> r = boost::make_shared<typed_value<T, wchar_t>>(v);
+        shared_ptr<typed_value<T, wchar_t> > r = boost::make_shared<typed_value<T, wchar_t> >(v);
 
         return r;        
     }

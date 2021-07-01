@@ -179,7 +179,7 @@ namespace boost { namespace program_options {
 
     /** Class which handles value of a specific type. */
     template<class T, class charT = char>
-    class typed_value : public enable_shared_from_this<typed_value<T, charT>>,
+    class typed_value : public enable_shared_from_this<typed_value<T, charT> >,
                         public value_semantic_codecvt_helper<charT>
 #ifndef BOOST_NO_RTTI
                       , public typed_value_base
@@ -383,13 +383,13 @@ namespace boost { namespace program_options {
         value of option into program variable.
     */
     template<class T>
-    shared_ptr<typed_value<T>>
+    shared_ptr<typed_value<T> >
     value();
 
     /** @overload 
     */
     template<class T>
-    shared_ptr<typed_value<T>>
+    shared_ptr<typed_value<T> >
     value(T* v);
 
     /** Creates a typed_value<T> instance. This function is the primary
@@ -397,25 +397,25 @@ namespace boost { namespace program_options {
         can later be passed to 'option_description' constructor.
     */
     template<class T>
-    shared_ptr<typed_value<T, wchar_t>>
+    shared_ptr<typed_value<T, wchar_t> >
     wvalue();
 
     /** @overload   
     */
     template<class T>
-    shared_ptr<typed_value<T, wchar_t>>
+    shared_ptr<typed_value<T, wchar_t> >
     wvalue(T* v);
 
     /** Works the same way as the 'value<bool>' function, but the created
         value_semantic won't accept any explicit value. So, if the option 
         is present on the command line, the value will be 'true'.
     */
-    BOOST_PROGRAM_OPTIONS_DECL shared_ptr<typed_value<bool>>
+    BOOST_PROGRAM_OPTIONS_DECL shared_ptr<typed_value<bool> >
     bool_switch();
 
     /** @overload
     */
-    BOOST_PROGRAM_OPTIONS_DECL shared_ptr<typed_value<bool>>    
+    BOOST_PROGRAM_OPTIONS_DECL shared_ptr<typed_value<bool> >    
     bool_switch(bool* v);
 
 }}

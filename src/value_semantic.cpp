@@ -122,16 +122,16 @@ namespace boost { namespace program_options {
         value_store = new_tokens.empty() ? std::string("") : new_tokens.front();
     }
 
-    BOOST_PROGRAM_OPTIONS_DECL shared_ptr<typed_value<bool>>
+    BOOST_PROGRAM_OPTIONS_DECL shared_ptr<typed_value<bool> >
     bool_switch()
     {
         return bool_switch(0);
     }
 
-    BOOST_PROGRAM_OPTIONS_DECL shared_ptr<typed_value<bool>>
+    BOOST_PROGRAM_OPTIONS_DECL shared_ptr<typed_value<bool> >
     bool_switch(bool* v)
     {
-        shared_ptr<typed_value<bool>> r = boost::make_shared<typed_value<bool>>(v);
+        shared_ptr<typed_value<bool> > r = boost::make_shared<typed_value<bool> >(v);
         r->default_value(0);
         r->zero_tokens();
 
