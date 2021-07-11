@@ -38,7 +38,7 @@ po::notify(vm);
 
 if (vm.count(&quot;help&quot;)) {
     cout &lt;&lt; desc &lt;&lt; &quot;\n&quot;;
-    return 1;
+    return EXIT_SUCCESS;
 }
 
 if (vm.count(&quot;compression&quot;)) {
