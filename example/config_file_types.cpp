@@ -38,7 +38,7 @@ stringstream make_file()
    ss << "word = word\n";
    ss << "phrase = this is a phrase\n";
    ss << "quoted = \"quotes are in result\"\n";
-   
+
    ss << "\n[ints]\n";
    ss << "positive = 41\n";
    ss << "negative = -42\n";
@@ -71,7 +71,7 @@ stringstream make_file()
    ss << "onoff_true = on\n";
    ss << "onoff_false = off\n";
    ss << "present_equal_true = \n";
-   //FAILS: Must be an = 
+   //FAILS: Must be an =
    //ss << "present_no_equal_true\n";
 
    ss.seekp(ios_base::beg);
@@ -236,7 +236,7 @@ int main(int ac, char* av[])
    auto opts = set_options();
    po::variables_map vars;
    auto unregistered = parse_file(file, opts, vars);
-   check_results(vars, unregistered);   
+   check_results(vars, unregistered);
 
    return 0;
 }

@@ -44,10 +44,10 @@ int main(int ac, char* av[])
         options_description desc("Allowed options");
         desc.add_options()
             ("help", "produce a help message")
-            ("include-path,I", value< vector<string> >()->composing(), 
+            ("include-path,I", value< vector<string> >()->composing(),
                  "include path")
             ("magic", value<int>(), "magic value")
-            ("response-file", value<string>(), 
+            ("response-file", value<string>(),
                  "can be specified with '@name', too")
         ;
 
@@ -56,7 +56,7 @@ int main(int ac, char* av[])
               .extra_parser(at_option_parser).run(), vm);
 
         if (vm.count("help")) {
-            cout << desc;            
+            cout << desc;
         }
         if (vm.count("response-file")) {
             // Load the file and tokenize it
@@ -75,7 +75,7 @@ int main(int ac, char* av[])
             vector<string> args;
             copy(tok.begin(), tok.end(), back_inserter(args));
             // Parse the file and store the options
-            store(command_line_parser(args).options(desc).run(), vm);            
+            store(command_line_parser(args).options(desc).run(), vm);
         }
 
         if (vm.count("include-path")) {
@@ -83,7 +83,7 @@ int main(int ac, char* av[])
             cout << "Include paths: ";
             copy(s.begin(), s.end(), ostream_iterator<string>(cout, " "));
             cout << "\n";
-        }        
+        }
         if (vm.count("magic")) {
             cout << "Magic value: " << vm["magic"].as<int>() << "\n";
         }

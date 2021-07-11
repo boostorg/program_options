@@ -14,7 +14,7 @@ namespace boost { namespace program_options {
 
     // Take a command line string and splits in into tokens, according
     // to the rules windows command line processor uses.
-    // 
+    //
     // The rules are pretty funny, see
     //    http://article.gmane.org/gmane.comp.lib.boost.user/3005
     //    http://msdn.microsoft.com/library/en-us/vccelng/htm/progs_12.asp
@@ -27,14 +27,14 @@ namespace boost { namespace program_options {
         for(;i != e; ++i)
             if (!isspace((unsigned char)*i))
                 break;
-       
+
         if (i != e) {
-   
+
             std::string current;
             bool inside_quoted = false;
             bool empty_quote = false;
             int backslash_count = 0;
-            
+
             for(; i != e; ++i) {
                 if (*i == '"') {
                     // '"' preceded by even number (n) of backslashes generates
@@ -46,8 +46,8 @@ namespace boost { namespace program_options {
                         // '"' preceded by odd number (n) of backslashes generates
                         // (n-1)/2 backslashes and is literal quote.
                     } else {
-                        current.append(backslash_count / 2, '\\');                
-                        current += '"';                
+                        current.append(backslash_count / 2, '\\');
+                        current += '"';
                     }
                     backslash_count = 0;
                 } else if (*i == '\\') {
@@ -63,11 +63,11 @@ namespace boost { namespace program_options {
                         // Space outside quoted section terminate the current argument
                         result.push_back(current);
                         current.resize(0);
-                        empty_quote = false; 
+                        empty_quote = false;
                         for(;i != e && isspace((unsigned char)*i); ++i)
                             ;
                         --i;
-                    } else {                  
+                    } else {
                         current += *i;
                     }
                 }
@@ -76,11 +76,11 @@ namespace boost { namespace program_options {
             // If we have trailing backslashes, add them
             if (backslash_count)
                 current.append(backslash_count, '\\');
-        
+
             // If we have non-empty 'current' or we're still in quoted
             // section (even if 'current' is empty), add the last token.
             if (!current.empty() || inside_quoted || empty_quote)
-                result.push_back(current);        
+                result.push_back(current);
         }
         return result;
     }
@@ -93,7 +93,7 @@ namespace boost { namespace program_options {
         std::vector<std::string> aux = split_winmain(to_internal(cmdline));
         for (size_t i = 0, e = aux.size(); i < e; ++i)
             result.push_back(from_utf8(aux[i]));
-        return result;        
+        return result;
     }
 #endif
 

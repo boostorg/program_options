@@ -32,9 +32,9 @@ namespace boost { namespace program_options {
     }
 #endif
 
-    void 
+    void
     value_semantic_codecvt_helper<char>::
-    parse(boost::any& value_store, 
+    parse(boost::any& value_store,
           const std::vector<std::string>& new_tokens,
           bool utf8) const
     {
@@ -54,13 +54,13 @@ namespace boost { namespace program_options {
         } else {
             // Already in local encoding, pass unmodified
             xparse(value_store, new_tokens);
-        }        
+        }
     }
 
 #ifndef BOOST_NO_STD_WSTRING
-    void 
+    void
     value_semantic_codecvt_helper<wchar_t>::
-    parse(boost::any& value_store, 
+    parse(boost::any& value_store,
           const std::vector<std::string>& new_tokens,
           bool utf8) const
     {
@@ -70,15 +70,15 @@ namespace boost { namespace program_options {
             for (unsigned i = 0; i < new_tokens.size(); ++i) {
                 tokens.push_back(from_utf8(new_tokens[i]));
             }
-               
+
         } else {
             // Convert from local encoding
             for (unsigned i = 0; i < new_tokens.size(); ++i) {
                 tokens.push_back(from_local_8_bit(new_tokens[i]));
             }
-        }      
+        }
 
-        xparse(value_store, tokens);  
+        xparse(value_store, tokens);
     }
 #endif
 
@@ -89,8 +89,8 @@ namespace boost { namespace program_options {
     {
         return arg;
     }
-    
-    unsigned 
+
+    unsigned
     untyped_value::min_tokens() const
     {
         if (m_zero_tokens)
@@ -99,7 +99,7 @@ namespace boost { namespace program_options {
             return 1;
     }
 
-    unsigned 
+    unsigned
     untyped_value::max_tokens() const
     {
         if (m_zero_tokens)
@@ -109,11 +109,11 @@ namespace boost { namespace program_options {
     }
 
 
-    void 
+    void
     untyped_value::xparse(boost::any& value_store,
                           const std::vector<std::string>& new_tokens) const
     {
-        if (!value_store.empty()) 
+        if (!value_store.empty())
             boost::throw_exception(
                 multiple_occurrences());
         if (new_tokens.size() > 1)
@@ -162,10 +162,10 @@ namespace boost { namespace program_options {
 
     // This is blatant copy-paste. However, templating this will cause a problem,
     // since wstring can't be constructed/compared with char*. We'd need to
-    // create auxiliary 'widen' routine to convert from char* into 
+    // create auxiliary 'widen' routine to convert from char* into
     // needed string type, and that's more work.
 #if !defined(BOOST_NO_STD_WSTRING)
-    BOOST_PROGRAM_OPTIONS_DECL 
+    BOOST_PROGRAM_OPTIONS_DECL
     void validate(any& v, const vector<wstring>& xs, bool*, int)
     {
         check_first_occurrence(v);
@@ -182,7 +182,7 @@ namespace boost { namespace program_options {
             boost::throw_exception(invalid_bool_value(convert_value(s)));
     }
 #endif
-    BOOST_PROGRAM_OPTIONS_DECL 
+    BOOST_PROGRAM_OPTIONS_DECL
     void validate(any& v, const vector<string>& xs, std::string*, int)
     {
         check_first_occurrence(v);
@@ -190,7 +190,7 @@ namespace boost { namespace program_options {
     }
 
 #if !defined(BOOST_NO_STD_WSTRING)
-    BOOST_PROGRAM_OPTIONS_DECL 
+    BOOST_PROGRAM_OPTIONS_DECL
     void validate(any& v, const vector<wstring>& xs, std::string*, int)
     {
         check_first_occurrence(v);
@@ -200,7 +200,7 @@ namespace boost { namespace program_options {
 
     namespace validators {
 
-        BOOST_PROGRAM_OPTIONS_DECL 
+        BOOST_PROGRAM_OPTIONS_DECL
         void check_first_occurrence(const boost::any& value)
         {
             if (!value.empty())
@@ -243,7 +243,7 @@ namespace boost { namespace program_options {
     error_with_option_name::error_with_option_name( const std::string& template_,
                                                   const std::string& option_name,
                                                   const std::string& original_token,
-                                                  int option_style) : 
+                                                  int option_style) :
                                         error(template_),
                                         m_option_style(option_style),
                                         m_error_template(template_)
@@ -308,7 +308,7 @@ namespace boost { namespace program_options {
         string option_name      = strip_prefixes(m_substitutions.find("option")->second);
 
         //  For long options, use option name
-        if (m_option_style == command_line_style::allow_long        || 
+        if (m_option_style == command_line_style::allow_long        ||
              m_option_style == command_line_style::allow_long_disguise)
             return get_canonical_option_prefix() + option_name;
 
@@ -330,8 +330,8 @@ namespace boost { namespace program_options {
 
 
         //
-        //  replace placeholder with defaults if values are missing 
-        // 
+        //  replace placeholder with defaults if values are missing
+        //
         for (map<string, string_pair>::const_iterator iter = m_substitution_defaults.begin();
               iter != m_substitution_defaults.end(); ++iter)
         {
@@ -345,7 +345,7 @@ namespace boost { namespace program_options {
         //
         //  replace placeholder with values
         //  placeholder are denoted by surrounding '%'
-        // 
+        //
         for (map<string, string>::iterator iter = substitutions.begin();
               iter != substitutions.end(); ++iter)
             replace_token('%' + iter->first + '%', iter->second);
@@ -357,7 +357,7 @@ namespace boost { namespace program_options {
         // For short forms, all alternatives must be identical, by
         //      definition, to the specified option, so we don't need to
         //      display alternatives
-        if (m_option_style == command_line_style::allow_dash_for_short || 
+        if (m_option_style == command_line_style::allow_dash_for_short ||
             m_option_style == command_line_style::allow_slash_for_short)
         {
             error_with_option_name::substitute_placeholders(original_error_template);
@@ -395,7 +395,7 @@ namespace boost { namespace program_options {
 
 
 
-    string 
+    string
     validation_error::get_template(kind_t kind)
     {
         // Initially, store the message in 'const char*' variable,

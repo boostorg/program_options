@@ -33,11 +33,11 @@ namespace boost { namespace program_options {
     unsigned
     positional_options_description::max_total_count() const
     {
-        return m_trailing.empty() ? 
+        return m_trailing.empty() ?
           static_cast<unsigned>(m_names.size()) : (std::numeric_limits<unsigned>::max)();
     }
-    
-    const std::string& 
+
+    const std::string&
     positional_options_description::name_for_position(unsigned position) const
     {
         assert(position < max_total_count());
