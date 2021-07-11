@@ -13,6 +13,7 @@ using namespace boost::program_options;
 namespace po = boost::program_options;
 
 #include <boost/function.hpp>
+#include <boost/smart_ptr/make_shared.hpp>
 using namespace boost;
 
 #include <sstream>
@@ -32,11 +33,11 @@ void test_variable_map()
 {
     options_description desc;
     desc.add_options()
-        ("foo,f", new untyped_value)
+        ("foo,f", boost::make_shared<untyped_value>())
         ("bar,b", po::value<string>())
         ("biz,z", po::value<string>())
-        ("baz", new untyped_value())
-        ("output,o", new untyped_value(), "")
+        ("baz", boost::make_shared<untyped_value>())
+        ("output,o", boost::make_shared<untyped_value>(), "")
         ;
     const char* cmdline3_[] = { "--foo='12'", "--bar=11", "-z3", "-ofoo" };
     vector<string> cmdline3 = sv(cmdline3_,
@@ -124,7 +125,7 @@ void test_semantic_values()
 {
     options_description desc;
     desc.add_options()
-    ("foo", new untyped_value())
+    ("foo", boost::make_shared<untyped_value>())
     ("bar", po::value<int>())
     ("biz", po::value< vector<string> >())
     ("baz", po::value< vector<string> >()->multitoken())
