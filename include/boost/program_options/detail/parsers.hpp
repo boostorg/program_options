@@ -24,7 +24,11 @@ namespace boost { namespace program_options {
     basic_command_line_parser<charT>::
     basic_command_line_parser(int argc, const charT* const argv[])
     : detail::cmdline(
-        to_internal(std::vector<std::basic_string<charT> >(argv+1, argv+argc))),
+        to_internal(std::vector<std::basic_string<charT> >(
+                      // When argc == 0, we must produce a valid empty range,
+                      // even with a nullptr argv.  We can ignore the
+                      // obviously illegal argc < 0.
+                      argc ? argv+1 : argv, argv+argc))),
         m_desc()
     {}
 
