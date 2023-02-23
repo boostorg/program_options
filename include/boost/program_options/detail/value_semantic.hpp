@@ -47,21 +47,21 @@ namespace boost { namespace program_options {
         }
     }
 
-    template<class T, class charT>
-    std::string make_textual(const T& v, typed_value<T, charT>*, long)
+    template<class T>
+    std::string make_textual(const T& v, value_semantic*, long)
     {
         return boost::lexical_cast<std::string>(v);
     }
 
-    template<class T, class charT>
-    std::string make_textual(const std::vector<T>& v, typed_value<std::vector<T>, charT>*, long)
+    template<class T>
+    std::string make_textual(const std::vector<T>& v, value_semantic*, long)
     {
         std::string textual;
         for (unsigned i = 0; i < v.size(); ++i)
         {
             if (i != 0)
                 textual += ' ';
-            textual += make_textual(v[i], (typed_value<T, charT>*)0, 0);
+            textual += make_textual(v[i], (value_semantic*)0, 0);
         }
         return textual;
     }
