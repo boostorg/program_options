@@ -11,7 +11,6 @@
 
 #include <boost/any.hpp>
 #include <boost/function/function1.hpp>
-#include <boost/lexical_cast.hpp>
 
 #include <string>
 #include <vector>
@@ -194,14 +193,10 @@ namespace boost { namespace program_options {
 
         /** Specifies default value, which will be used
             if none is explicitly specified. The type 'T' should
-            provide operator<< for ostream.
+            provide operator<< for ostream, or the 'make_textual'
+            function should be specialized.
         */
-        typed_value* default_value(const T& v)
-        {
-            m_default_value = boost::any(v);
-            m_default_value_as_text = boost::lexical_cast<std::string>(v);
-            return this;
-        }
+        typed_value* default_value(const T& v);
 
         /** Specifies default value, which will be used
             if none is explicitly specified. Unlike the above overload,
@@ -218,15 +213,14 @@ namespace boost { namespace program_options {
 
         /** Specifies an implicit value, which will be used
             if the option is given, but without an adjacent value.
-            Using this implies that an explicit value is optional,
+            Using this implies that an explicit value is optional, but if
+            given, must be strictly adjacent to the option, i.e.: '-ovalue'
+            or '--option=value'.  Giving '-o' or '--option' will cause the
+            implicit value to be applied.
+            The type 'T' should provide operator<< for ostream, or the
+            'make_textual' function should be specialized.
         */
-        typed_value* implicit_value(const T &v)
-        {
-            m_implicit_value = boost::any(v);
-            m_implicit_value_as_text =
-                boost::lexical_cast<std::string>(v);
-            return this;
-        }
+        typed_value* implicit_value(const T &v);
 
         /** Specifies the name used to to the value in help message.  */
         typed_value* value_name(const std::string& name)
