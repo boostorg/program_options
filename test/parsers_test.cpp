@@ -104,13 +104,13 @@ void test_parsing_without_specifying_options() {
 void test_many_different_options() {
     options_description desc;
     desc.add_options()
-        ("foo,f", new untyped_value(), "")
+        ("foo,f", boost::make_shared<untyped_value>(), "")
         ( // Explicit qualification is a workaround for vc6
             "bar,b", po::value<std::string>(), "")
-        ("car,voiture", new untyped_value())
-        ("dog,dawg", new untyped_value())
-        ("baz", new untyped_value())
-        ("plug*", new untyped_value());
+        ("car,voiture", boost::make_shared<untyped_value>())
+        ("dog,dawg", boost::make_shared<untyped_value>())
+        ("baz", boost::make_shared<untyped_value>())
+        ("plug*", boost::make_shared<untyped_value>());
     const char* cmdline3_[] = { "--foo=12", "-f4", "--bar=11", "-b4",
             "--voiture=15", "--dawg=16", "--dog=17", "--plug3=10" };
     vector<string> cmdline3 = sv(cmdline3_,
@@ -255,13 +255,13 @@ void test_config_file(const char* config_file)
 {
     options_description desc;
     desc.add_options()
-        ("gv1", new untyped_value)
-        ("gv2", new untyped_value)
-        ("empty_value", new untyped_value)
-        ("plug*", new untyped_value)
-        ("m1.v1", new untyped_value)
-        ("m1.v2", new untyped_value)
-        ("m1.v3,alias3", new untyped_value)
+        ("gv1", boost::shared_ptr<untyped_value>())
+        ("gv2", boost::shared_ptr<untyped_value>())
+        ("empty_value", boost::shared_ptr<untyped_value>())
+        ("plug*", boost::shared_ptr<untyped_value>())
+        ("m1.v1", boost::shared_ptr<untyped_value>())
+        ("m1.v2", boost::shared_ptr<untyped_value>())
+        ("m1.v3,alias3", boost::shared_ptr<untyped_value>())
         ("b", bool_switch())
     ;
 
@@ -304,8 +304,8 @@ void test_environment()
 {
     options_description desc;
     desc.add_options()
-        ("foo", new untyped_value, "")
-        ("bar", new untyped_value, "")
+        ("foo", boost::shared_ptr<untyped_value>(), "")
+        ("bar", boost::shared_ptr<untyped_value>(), "")
         ;
 
 #if (defined(_WIN32) && ! defined(BOOST_BORLANDC) && ! defined(BOOST_EMBTC)) || (defined(__CYGWIN__))
