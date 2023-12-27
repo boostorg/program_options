@@ -31,15 +31,15 @@ void required_throw_test()
       thrown = false;
       try {
          store(command_line_parser(tokens).options(opts).run(), vm);
-         notify(vm);    
-      } 
+         notify(vm);
+      }
       catch (required_option& e) {
          BOOST_CHECK_EQUAL(e.what(), string("the option '--cfgfile' is required but missing"));
          thrown = true;
-      }      
+      }
       BOOST_CHECK(thrown);
    }
-   
+
    {
       // This test mustn't throw exception
       string cmdline = "prg -c config.txt";
@@ -47,8 +47,8 @@ void required_throw_test()
       thrown = false;
       try {
          store(command_line_parser(tokens).options(opts).run(), vm);
-         notify(vm);    
-      } 
+         notify(vm);
+      }
       catch (required_option& e) {
          thrown = true;
       }
@@ -77,11 +77,11 @@ void simple_required_test(const char* config_file)
          // options coming from different sources
          store(command_line_parser(tokens).options(opts).run(), vm);
          store(parse_config_file<char>(config_file, opts), vm);
-         notify(vm);    
-      } 
+         notify(vm);
+      }
       catch (required_option& e) {
          thrown = true;
-      }      
+      }
       BOOST_CHECK(!thrown);
    }
 }
@@ -115,11 +115,11 @@ void multiname_required_test()
 
 
 int main(int /*argc*/, char* av[])
-{  
+{
    required_throw_test();
    simple_required_test(av[1]);
    multiname_required_test();
-   
+
    return 0;
 }
 

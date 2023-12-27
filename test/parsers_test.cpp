@@ -127,7 +127,7 @@ void test_many_different_options() {
     check_value(a3[6], "dog", "17");
     check_value(a3[7], "plug3", "10");
 
-    // Regression test: check that '0' as style is interpreted as 
+    // Regression test: check that '0' as style is interpreted as
     // 'default_style'
     vector<option> a4 = parse_command_line(
             sizeof(cmdline3_) / sizeof(const char*), cmdline3_, desc, 0,
@@ -273,7 +273,7 @@ void test_config_file(const char* config_file)
     "[m1]\n"
     "v1 = 1\n"
     "\n"
-    "v2 = 2\n"    
+    "v2 = 2\n"
     "v3 = 3\n"
     ;
 
@@ -287,8 +287,8 @@ void test_config_file(const char* config_file)
     check_value(a1[4], "m1.v1", "1");
     check_value(a1[5], "m1.v2", "2");
     check_value(a1[6], "m1.v3", "3");
-    
-    // same test, but now options come from file 
+
+    // same test, but now options come from file
     vector<option> a2 = parse_config_file<char>(config_file, desc).options;
     BOOST_REQUIRE(a2.size() == 7);
     check_value(a2[0], "gv1", "0");
@@ -331,7 +331,7 @@ void test_unregistered()
     const char* cmdline1_[] = { "--foo=12", "--bar", "1"};
     vector<string> cmdline1 = sv(cmdline1_,
                                  sizeof(cmdline1_)/sizeof(const char*));
-    vector<option> a1 = 
+    vector<option> a1 =
         command_line_parser(cmdline1).options(desc).allow_unregistered().run()
         .options;
 
@@ -344,7 +344,7 @@ void test_unregistered()
     BOOST_CHECK(a1[1].unregistered == true);
     BOOST_CHECK(a1[2].string_key == "");
     BOOST_CHECK(a1[2].unregistered == false);
-    
+
 
     vector<string> a2 = collect_unrecognized(a1, include_positional);
     BOOST_CHECK(a2[0] == "--foo=12");
@@ -353,12 +353,12 @@ void test_unregistered()
 
     // Test that storing unregisted options has no effect
     variables_map vm;
-    
+
     store(command_line_parser(cmdline1).options(desc).
           allow_unregistered().run(),
           vm);
 
-    BOOST_CHECK_EQUAL(vm.size(), 0u);   
+    BOOST_CHECK_EQUAL(vm.size(), 0u);
 
 
     const char content1[] =

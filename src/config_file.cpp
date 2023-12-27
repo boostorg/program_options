@@ -28,7 +28,7 @@ namespace boost { namespace program_options { namespace detail {
       m_allow_unregistered(allow_unregistered)
     {
         for(std::set<std::string>::const_iterator i = allowed_options.begin();
-            i != allowed_options.end(); 
+            i != allowed_options.end();
             ++i)
         {
             add_option(i->c_str());
@@ -50,7 +50,7 @@ namespace boost { namespace program_options { namespace detail {
             set<string>::iterator i = allowed_prefixes.lower_bound(s);
             if (i != allowed_prefixes.end()) {
                 if (i->find(s) == 0)
-                    bad_prefixes = true;                    
+                    bad_prefixes = true;
             }
             if (i != allowed_prefixes.begin()) {
                 --i;
@@ -129,14 +129,14 @@ namespace boost { namespace program_options { namespace detail {
     }
 
 
-    bool 
+    bool
     common_config_file_iterator::allowed_option(const std::string& s) const
     {
         set<string>::const_iterator i = allowed_options.find(s);
         if (i != allowed_options.end())
-            return true;        
+            return true;
         // If s is "pa" where "p" is allowed prefix then
-        // lower_bound should find the element after "p". 
+        // lower_bound should find the element after "p".
         // This depends on 'allowed_prefixes' invariant.
         i = allowed_prefixes.lower_bound(s);
         if (i != allowed_prefixes.begin() && s.find(*--i) == 0)
@@ -160,9 +160,9 @@ namespace boost { namespace program_options { namespace detail {
             return true;
         } else {
             return false;
-        }            
+        }
     }
-#endif    
+#endif
 
 }}}
 

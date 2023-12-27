@@ -24,7 +24,7 @@ void test_type()
         ("foo", value<int>(), "")
         ("bar", value<string>(), "")
         ;
-    
+
 #ifndef BOOST_NO_RTTI
     const typed_value_base* b = dynamic_cast<const typed_value_base*>
         (desc.find("foo", false).semantic().get());
@@ -63,7 +63,7 @@ void test_approximation()
         ;
 
     BOOST_CHECK_EQUAL(desc2.find("config", true).long_name(), "config");
-    BOOST_CHECK_EQUAL(desc2.find("config-value", true).long_name(), 
+    BOOST_CHECK_EQUAL(desc2.find("config-value", true).long_name(),
                       "config-value");
 
 
@@ -143,7 +143,7 @@ void test_formatting()
          "a list:\n      \t"
              "item1, item2, item3, item4, item5, item6, item7, item8, item9, "
              "item10, item11, item12, item13, item14, item15, item16, item17, item18")
-      ("well_formated", new untyped_value(), 
+      ("well_formated", new untyped_value(),
                         "As you can see this is a very well formatted option description.\n"
                         "You can do this for example:\n\n"
                         "Values:\n"
@@ -270,7 +270,7 @@ void test_word_wrapping()
       ("opt3",    "this_is_a sufficiently_long_text_to_require_word-wrapping_but_will_not_be_wrapped")
       ;
     stringstream ss;
-    ss << desc;    
+    ss << desc;
     BOOST_CHECK_EQUAL(ss.str(),
 "Supported options:\n"
 "  --help                               this is a sufficiently long text to \n"
@@ -293,11 +293,11 @@ void test_default_values()
       ("maxlength", value<double>()->default_value(.1, "0.1"), "Maximum edge length to keep.")
       ;
    stringstream ss;
-   ss << desc;    
+   ss << desc;
    BOOST_CHECK_EQUAL(ss.str(),
 "Supported options:\n"
 "  --maxlength arg (=0.1) Maximum edge length to keep.\n"
-   );   
+   );
 }
 
 void test_value_name()
