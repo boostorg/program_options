@@ -91,7 +91,13 @@ namespace boost { namespace program_options { namespace detail {
             // strip '#' comments and whitespace
             if ((n = s.find('#')) != string::npos)
                 s = s.substr(0, n);
-            s = trim_ws(s);
+            // if the first character is a ';' line is a comment
+            if (!s.empty() && ';' == *s.begin()) {
+                s = "";
+            }
+            else {
+                s = trim_ws(s);
+            }
 
             if (!s.empty()) {
                 // Handle section name
