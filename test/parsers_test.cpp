@@ -375,6 +375,15 @@ void test_unregistered()
     check_value(a3[1], "m1.v1", "1");
 }
 
+void test_fail_directory(const char* some_dir)
+{
+    options_description desc;
+    TEST_CHECK_THROW(
+            parse_config_file<char>(some_dir, desc),
+            reading_file,
+            "providing directory as config file must cause exception")
+}
+
 
 
 int main(int, char* av[])
@@ -383,6 +392,7 @@ int main(int, char* av[])
     test_config_file(av[1]);
     test_environment();
     test_unregistered();
+    test_fail_directory(".");
     return 0;
 }
 
