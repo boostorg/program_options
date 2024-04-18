@@ -144,7 +144,7 @@ namespace boost { namespace program_options {
         so you can use all map operators to examine its content.
     */
     class BOOST_PROGRAM_OPTIONS_DECL variables_map : public abstract_variables_map,
-                               public std::map<std::string, variable_value>
+                               public std::map<std::string, variable_value, BOOST_PROGRAM_OPTIONS_COMPARATOR>
     {
     public:
         variables_map();
