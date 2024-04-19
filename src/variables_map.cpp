@@ -32,7 +32,7 @@ namespace boost { namespace program_options {
 
         // We need to access map's operator[], not the overriden version
         // variables_map. Ehmm.. messy.
-        std::map<std::string, variable_value, BOOST_PROGRAM_OPTIONS_COMPARATOR>& m = xm;
+        std::map<std::string, variable_value, details::comparator_t>& m = xm;
 
         std::set<std::string> new_final;
 
@@ -194,7 +194,7 @@ namespace boost { namespace program_options {
 
     void variables_map::clear()
     {
-        std::map<std::string, variable_value, BOOST_PROGRAM_OPTIONS_COMPARATOR>::clear();
+        std::map<std::string, variable_value, details::comparator_t>::clear();
         m_final.clear();
         m_required.clear();
     }

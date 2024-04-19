@@ -138,13 +138,24 @@ namespace boost { namespace program_options {
         const abstract_variables_map* m_next;
     };
 
+    namespace details
+    {
+        typedef
+        #if !defined(BOOST_PROGRAM_OPTIONS_NO_TRANSPARENT_COMPARATOR) && BOOST_CXX_VERSION >= 201402L
+            std::less<>
+        #else
+            std::less<std::string>
+        #endif
+        comparator_t;
+    }
+
     /** Concrete variables map which store variables in real map.
 
         This class is derived from std::map<std::string, variable_value>,
         so you can use all map operators to examine its content.
     */
     class BOOST_PROGRAM_OPTIONS_DECL variables_map : public abstract_variables_map,
-                               public std::map<std::string, variable_value, BOOST_PROGRAM_OPTIONS_COMPARATOR>
+                               public std::map<std::string, variable_value, details::comparator_t>
     {
     public:
         variables_map();
