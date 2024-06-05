@@ -30,7 +30,7 @@ namespace boost { namespace program_options {
 
     /** Results of parsing an input source.
         The primary use of this class is passing information from parsers
-        component to value storage component. This class does not makes
+        component to value storage component. This class does not make
         much sense itself.
     */
     template<class charT>
@@ -48,7 +48,7 @@ namespace boost { namespace program_options {
         const options_description* description;
 
         /** Mainly used for the diagnostic messages in exceptions.
-         *  The canonical option prefix  for the parser which generated these results,
+         *  The canonical option prefix for the parser which generated these results,
          *  depending on the settings for basic_command_line_parser::style() or
          *  cmdline::style(). In order of precedence of command_line_style enums:
          *      allow_long
@@ -77,7 +77,7 @@ namespace boost { namespace program_options {
         basic_parsed_options<char> utf8_encoded_options;
 
         /** Mainly used for the diagnostic messages in exceptions.
-         *  The canonical option prefix  for the parser which generated these results,
+         *  The canonical option prefix for the parser which generated these results,
          *  depending on the settings for basic_command_line_parser::style() or
          *  cmdline::style(). In order of precedence of command_line_style enums:
          *      allow_long
