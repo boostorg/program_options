@@ -71,7 +71,10 @@ namespace boost { namespace program_options { namespace detail {
         : public eof_iterator<common_config_file_iterator, option>
     {
     public:
-        common_config_file_iterator() { found_eof(); }
+        common_config_file_iterator() {
+            allow_unregistered = false
+            found_eof();
+        }
         common_config_file_iterator(
             const std::set<std::string>& allowed_options,
             bool allow_unregistered = false);
