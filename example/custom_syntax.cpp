@@ -5,8 +5,8 @@
 
 /** This example shows how to support custom options syntax.
 
-    It's possible to install 'custom_parser'. It will be invoked on all command 
-    line tokens and can return name/value pair, or nothing. If it returns 
+    It's possible to install 'custom_parser'. It will be invoked on all command
+    line tokens and can return name/value pair, or nothing. If it returns
     nothing, usual processing will be done.
 */
 
@@ -20,7 +20,7 @@ using namespace boost::program_options;
 #include <iostream>
 using namespace std;
 
-/*  This custom option parse function recognize gcc-style 
+/*  This custom option parse function recognize gcc-style
     option "-fbar" / "-fno-bar".
 */
 pair<string, string> reg_foo(const string& s)
@@ -32,7 +32,7 @@ pair<string, string> reg_foo(const string& s)
             return make_pair(s.substr(2), string("true"));
     } else {
         return make_pair(string(), string());
-    }    
+    }
 }
 
 int main(int ac, char* av[])
@@ -53,7 +53,7 @@ int main(int ac, char* av[])
             cout << "\nIn addition -ffoo and -fno-foo syntax are recognized.\n";
         }
         if (vm.count("foo")) {
-            cout << "foo value with the value of " 
+            cout << "foo value with the value of "
                  << vm["foo"].as<string>() << "\n";
         }
     }

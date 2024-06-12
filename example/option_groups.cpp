@@ -53,7 +53,7 @@ int main(int ac, char* av[])
         backend.add_options()
             ("num-threads", value<int>(), "the initial number of threads")
             ;
-            
+
         // Declare an options description instance which will include
         // all the options
         options_description all("Allowed options");
@@ -63,12 +63,12 @@ int main(int ac, char* av[])
         // to the user
         options_description visible("Allowed options");
         visible.add(general).add(gui);
-           
+
 
         variables_map vm;
         store(parse_command_line(ac, av, all), vm);
 
-        if (vm.count("help")) 
+        if (vm.count("help"))
         {
             cout << visible;
             return 0;
@@ -80,7 +80,7 @@ int main(int ac, char* av[])
             } else if (s == "backend") {
                 cout << backend;
             } else {
-                cout << "Unknown module '" 
+                cout << "Unknown module '"
                      << s << "' in the --help-module option\n";
                 return 1;
             }
@@ -88,8 +88,8 @@ int main(int ac, char* av[])
         }
         if (vm.count("num-threads")) {
             cout << "The 'num-threads' options was set to "
-                 << vm["num-threads"].as<int>() << "\n";            
-        }                           
+                 << vm["num-threads"].as<int>() << "\n";
+        }
     }
     catch(std::exception& e) {
         cout << e.what() << "\n";

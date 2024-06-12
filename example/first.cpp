@@ -23,9 +23,9 @@ int main(int ac, char* av[])
             ("compression", po::value<double>(), "set compression level")
         ;
 
-        po::variables_map vm;        
+        po::variables_map vm;
         po::store(po::parse_command_line(ac, av, desc), vm);
-        po::notify(vm);    
+        po::notify(vm);
 
         if (vm.count("help")) {
             cout << desc << "\n";
@@ -33,7 +33,7 @@ int main(int ac, char* av[])
         }
 
         if (vm.count("compression")) {
-            cout << "Compression level was set to " 
+            cout << "Compression level was set to "
                  << vm["compression"].as<double>() << ".\n";
         } else {
             cout << "Compression level was not set.\n";

@@ -19,12 +19,12 @@ using namespace std;
 #include "minitest.hpp"
 
 
-void test_ambiguous() 
+void test_ambiguous()
 {
-    options_description desc; 
+    options_description desc;
     desc.add_options()
-        ("cfgfile,c", value<string>()->multitoken(), "the config file") 
-        ("output,c", value<string>(), "the output file") 
+        ("cfgfile,c", value<string>()->multitoken(), "the config file")
+        ("output,c", value<string>(), "the output file")
         ("output,o", value<string>(), "the output file")
     ;
 
@@ -32,13 +32,13 @@ void test_ambiguous()
 
     variables_map vm;
     try {
-       store(parse_command_line(sizeof(cmdline)/sizeof(const char*), 
+       store(parse_command_line(sizeof(cmdline)/sizeof(const char*),
                                     const_cast<char**>(cmdline), desc), vm);
     }
     catch (ambiguous_option& e)
     {
         BOOST_CHECK_EQUAL(e.alternatives().size(), 2);
-        BOOST_CHECK_EQUAL(e.get_option_name(), "-c");      
+        BOOST_CHECK_EQUAL(e.get_option_name(), "-c");
         BOOST_CHECK_EQUAL(e.alternatives()[0], "cfgfile");
         BOOST_CHECK_EQUAL(e.alternatives()[1], "output");
     }
@@ -96,7 +96,7 @@ void test_ambiguous_multiple_long_names()
 
 
 
-void test_unknown_option() 
+void test_unknown_option()
 {
    options_description desc;
    desc.add_options()
@@ -104,22 +104,22 @@ void test_unknown_option()
       ;
 
    const char* cmdline[] = {"program", "-c", "file", "-f", "anotherfile"};
-   
+
    variables_map vm;
    try {
-      store(parse_command_line(sizeof(cmdline)/sizeof(const char*), 
+      store(parse_command_line(sizeof(cmdline)/sizeof(const char*),
                                     const_cast<char**>(cmdline), desc), vm);
    }
    catch (unknown_option& e)
    {
-      BOOST_CHECK_EQUAL(e.get_option_name(), "-f");      
+      BOOST_CHECK_EQUAL(e.get_option_name(), "-f");
       BOOST_CHECK_EQUAL(string(e.what()), "unrecognised option '-f'");
    }
 }
 
 
 
-void test_multiple_values() 
+void test_multiple_values()
 {
    options_description desc;
    desc.add_options()
@@ -128,23 +128,23 @@ void test_multiple_values()
       ;
 
    const char* cmdline[] = { "program", "-o", "fritz", "hugo", "--cfgfile", "file", "c", "-o", "text.out" };
-   
+
    variables_map vm;
    try {
-      store(parse_command_line(sizeof(cmdline)/sizeof(const char*), 
+      store(parse_command_line(sizeof(cmdline)/sizeof(const char*),
                                     const_cast<char**>(cmdline), desc), vm);
       notify(vm);
    }
    catch (validation_error& e)
    {
       // TODO: this is currently validation_error, shouldn't it be multiple_values ???
-      // 
+      //
       //   multiple_values is thrown only at one place untyped_value::xparse(),
       //    but I think this can never be reached
       //   because: untyped_value always has one value and this is filtered before reach specific
       //   validation and parsing
       //
-      BOOST_CHECK_EQUAL(e.get_option_name(), "--cfgfile");      
+      BOOST_CHECK_EQUAL(e.get_option_name(), "--cfgfile");
       BOOST_CHECK_EQUAL(string(e.what()), "option '--cfgfile' only takes a single argument");
    }
 }
@@ -225,19 +225,19 @@ void test_missing_value()
 {
     options_description desc;
     desc.add_options()
-        ("cfgfile,c", value<string>()->multitoken(), "the config file") 
+        ("cfgfile,c", value<string>()->multitoken(), "the config file")
         ("output,o", value<string>(), "the output file")
     ;
     // missing value for option '-c'
     const char* cmdline[] = { "program", "-c", "-c", "output.txt"};
-    
+
     variables_map vm;
-    
+
     try {
-      store(parse_command_line(sizeof(cmdline)/sizeof(const char*), 
+      store(parse_command_line(sizeof(cmdline)/sizeof(const char*),
                                        const_cast<char**>(cmdline), desc), vm);
       notify(vm);
-   } 
+   }
    catch (invalid_command_line_syntax& e)
    {
       BOOST_CHECK_EQUAL(e.kind(), invalid_syntax::missing_parameter);

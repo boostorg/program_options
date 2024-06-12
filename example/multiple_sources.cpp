@@ -18,7 +18,7 @@ using namespace std;
 template<class T>
 ostream& operator<<(ostream& os, const vector<T>& v)
 {
-    copy(v.begin(), v.end(), ostream_iterator<T>(os, " ")); 
+    copy(v.begin(), v.end(), ostream_iterator<T>(os, " "));
     return os;
 }
 
@@ -28,8 +28,8 @@ int main(int ac, char* av[])
     try {
         int opt;
         string config_file;
-    
-        // Declare a group of options that will be 
+
+        // Declare a group of options that will be
         // allowed only on command line
         po::options_description generic("Generic options");
         generic.add_options()
@@ -38,16 +38,16 @@ int main(int ac, char* av[])
             ("config,c", po::value<string>(&config_file)->default_value("multiple_sources.cfg"),
                   "name of a file of a configuration.")
             ;
-    
-        // Declare a group of options that will be 
+
+        // Declare a group of options that will be
         // allowed both on command line and in
         // config file
         po::options_description config("Configuration");
         config.add_options()
-            ("optimization", po::value<int>(&opt)->default_value(10), 
+            ("optimization", po::value<int>(&opt)->default_value(10),
                   "optimization level")
-            ("include-path,I", 
-                 po::value< vector<string> >()->composing(), 
+            ("include-path,I",
+                 po::value< vector<string> >()->composing(),
                  "include path")
             ;
 
@@ -58,7 +58,7 @@ int main(int ac, char* av[])
             ("input-file", po::value< vector<string> >(), "input file")
             ;
 
-        
+
         po::options_description cmdline_options;
         cmdline_options.add(generic).add(config).add(hidden);
 
@@ -67,15 +67,15 @@ int main(int ac, char* av[])
 
         po::options_description visible("Allowed options");
         visible.add(generic).add(config);
-        
+
         po::positional_options_description p;
         p.add("input-file", -1);
-        
+
         po::variables_map vm;
         store(po::command_line_parser(ac, av).
               options(cmdline_options).positional(p).run(), vm);
         notify(vm);
-        
+
         ifstream ifs(config_file.c_str());
         if (!ifs)
         {
@@ -87,7 +87,7 @@ int main(int ac, char* av[])
             store(parse_config_file(ifs, config_file_options), vm);
             notify(vm);
         }
-    
+
         if (vm.count("help")) {
             cout << visible << "\n";
             return 0;
@@ -100,22 +100,22 @@ int main(int ac, char* av[])
 
         if (vm.count("include-path"))
         {
-            cout << "Include paths are: " 
+            cout << "Include paths are: "
                  << vm["include-path"].as< vector<string> >() << "\n";
         }
 
         if (vm.count("input-file"))
         {
-            cout << "Input files are: " 
+            cout << "Input files are: "
                  << vm["input-file"].as< vector<string> >() << "\n";
         }
 
-        cout << "Optimization level is " << opt << "\n";                
+        cout << "Optimization level is " << opt << "\n";
     }
     catch(exception& e)
     {
         cout << e.what() << "\n";
         return 1;
-    }    
+    }
     return 0;
 }

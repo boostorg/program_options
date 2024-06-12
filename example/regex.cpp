@@ -9,10 +9,10 @@
 // A new class 'magic_number' is defined and the 'validate' method is overloaded
 // to validate the values of that class using Boost.Regex.
 // To test, run
-//   
+//
 //    regex -m 123-456
 //    regex -m 123-4567
-// 
+//
 // The first invocation should output:
 //
 //   The magic is "456"
@@ -36,12 +36,12 @@ public:
 };
 
 /* Overload the 'validate' function for the user-defined class.
-   It makes sure that value is of form XXX-XXX 
+   It makes sure that value is of form XXX-XXX
    where X are digits and converts the second group to an integer.
    This has no practical meaning, meant only to show how
    regex can be used to validate values.
 */
-void validate(boost::any& v, 
+void validate(boost::any& v,
               const std::vector<std::string>& values,
               magic_number*, int)
 {
@@ -55,14 +55,14 @@ void validate(boost::any& v,
     // one string, it's an error, and exception will be thrown.
     const string& s = validators::get_single_string(values);
 
-    // Do regex match and convert the interesting part to 
+    // Do regex match and convert the interesting part to
     // int.
     smatch match;
     if (regex_match(s, match, r)) {
         v = any(magic_number(lexical_cast<int>(match[1])));
     } else {
         throw validation_error(validation_error::invalid_option_value);
-    }        
+    }
 }
 
 
@@ -73,13 +73,13 @@ int main(int ac, char* av[])
         desc.add_options()
             ("help", "produce a help screen")
             ("version,v", "print the version number")
-            ("magic,m", value<magic_number>(), 
+            ("magic,m", value<magic_number>(),
                  "magic value (in NNN-NNN format)")
             ;
-        
+
         variables_map vm;
         store(parse_command_line(ac, av, desc), vm);
-   
+
         if (vm.count("help")) {
             cout << "Usage: regex [options]\n";
             cout << desc;
@@ -90,12 +90,12 @@ int main(int ac, char* av[])
             return 0;
         }
         if (vm.count("magic")) {
-            cout << "The magic is \"" 
+            cout << "The magic is \""
                  << vm["magic"].as<magic_number>().n << "\"\n";
         }
     }
     catch(std::exception& e)
     {
         cout << e.what() << "\n";
-    }    
+    }
 }

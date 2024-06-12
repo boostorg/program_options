@@ -14,12 +14,12 @@ using namespace std;
 
 /* Function used to check that 'opt1' and 'opt2' are not specified
    at the same time. */
-void conflicting_options(const variables_map& vm, 
+void conflicting_options(const variables_map& vm,
                          const char* opt1, const char* opt2)
 {
-    if (vm.count(opt1) && !vm[opt1].defaulted() 
+    if (vm.count(opt1) && !vm[opt1].defaulted()
         && vm.count(opt2) && !vm[opt2].defaulted())
-        throw logic_error(string("Conflicting options '") 
+        throw logic_error(string("Conflicting options '")
                           + opt1 + "' and '" + opt2 + "'.");
 }
 
@@ -30,7 +30,7 @@ void option_dependency(const variables_map& vm,
 {
     if (vm.count(for_what) && !vm[for_what].defaulted())
         if (vm.count(required_option) == 0 || vm[required_option].defaulted())
-            throw logic_error(string("Option '") + for_what 
+            throw logic_error(string("Option '") + for_what
                               + "' requires option '" + required_option + "'.");
 }
 
@@ -56,20 +56,20 @@ int main(int argc, char* argv[])
         ("macrofile,m", value(&macrofile), "full pathname of macro.h")
         ("two,t", bool_switch(&t_given), "preprocess both header and body")
         ("body,b", bool_switch(&b_given), "preprocess body in the header context")
-        ("libmakfile,l", value(&libmakfile), 
+        ("libmakfile,l", value(&libmakfile),
              "write include makefile for library")
-        ("mainpackage,p", value(&mainpackage), 
+        ("mainpackage,p", value(&mainpackage),
              "output dependency information")
-        ("depends,d", value(&depends), 
+        ("depends,d", value(&depends),
          "write dependencies to <pathname>")
         ("sources,s", value(&sources), "write source package list to <pathname>")
         ("root,r", value(&root), "treat <dirname> as project root directory")
         ;
-    
+
         variables_map vm;
         store(parse_command_line(argc, argv, desc), vm);
 
-        if (vm.count("help")) {  
+        if (vm.count("help")) {
             cout << desc << "\n";
             return 0;
         }
