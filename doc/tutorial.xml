@@ -34,7 +34,7 @@ desc.add_options()
 
 po::variables_map vm;
 po::store(po::parse_command_line(ac, av, desc), vm);
-po::notify(vm);    
+po::notify(vm);
 
 if (vm.count(&quot;help&quot;)) {
     cout &lt;&lt; desc &lt;&lt; &quot;\n&quot;;
