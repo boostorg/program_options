@@ -12,6 +12,7 @@
 #include <boost/any.hpp>
 #include <boost/function/function1.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/smart_ptr/enable_shared_from_this.hpp>
 
 #include <string>
 #include <vector>
@@ -178,7 +179,8 @@ namespace boost { namespace program_options {
 
     /** Class which handles value of a specific type. */
     template<class T, class charT = char>
-    class typed_value : public value_semantic_codecvt_helper<charT>
+    class typed_value : public enable_shared_from_this<typed_value<T, charT> >,
+                        public value_semantic_codecvt_helper<charT>
 #ifndef BOOST_NO_RTTI
                       , public typed_value_base
 #endif
@@ -196,11 +198,11 @@ namespace boost { namespace program_options {
             if none is explicitly specified. The type 'T' should
             provide operator<< for ostream.
         */
-        typed_value* default_value(const T& v)
+        shared_ptr<typed_value> default_value(const T& v)
         {
             m_default_value = boost::any(v);
             m_default_value_as_text = boost::lexical_cast<std::string>(v);
-            return this;
+            return this->shared_from_this();
         }
 
         /** Specifies default value, which will be used
@@ -209,30 +211,30 @@ namespace boost { namespace program_options {
             but textual representation of default value must be provided
             by the user.
         */
-        typed_value* default_value(const T& v, const std::string& textual)
+        shared_ptr<typed_value> default_value(const T& v, const std::string& textual)
         {
             m_default_value = boost::any(v);
             m_default_value_as_text = textual;
-            return this;
+            return this->shared_from_this();
         }
 
         /** Specifies an implicit value, which will be used
             if the option is given, but without an adjacent value.
             Using this implies that an explicit value is optional,
         */
-        typed_value* implicit_value(const T &v)
+        shared_ptr<typed_value> implicit_value(const T &v)
         {
             m_implicit_value = boost::any(v);
             m_implicit_value_as_text =
                 boost::lexical_cast<std::string>(v);
-            return this;
+            return this->shared_from_this();
         }
 
         /** Specifies the name used to to the value in help message.  */
-        typed_value* value_name(const std::string& name)
+        shared_ptr<typed_value> value_name(const std::string& name)
         {
             m_value_name = name;
-            return this;
+            return this->shared_from_this();
         }
 
         /** Specifies an implicit value, which will be used
@@ -245,36 +247,36 @@ namespace boost { namespace program_options {
             operator<< for ostream, but textual representation of default
             value must be provided by the user.
         */
-        typed_value* implicit_value(const T &v, const std::string& textual)
+        shared_ptr<typed_value> implicit_value(const T &v, const std::string& textual)
         {
             m_implicit_value = boost::any(v);
             m_implicit_value_as_text = textual;
-            return this;
+            return this->shared_from_this();
         }
 
         /** Specifies a function to be called when the final value
             is determined. */
-        typed_value* notifier(function1<void, const T&> f)
+        shared_ptr<typed_value> notifier(function1<void, const T&> f)
         {
             m_notifier = f;
-            return this;
+            return this->shared_from_this();
         }
 
         /** Specifies that the value is composing. See the 'is_composing' 
             method for explanation. 
         */
-        typed_value* composing()
+        shared_ptr<typed_value> composing()
         {
             m_composing = true;
-            return this;
+            return this->shared_from_this();
         }
 
         /** Specifies that the value can span multiple tokens. 
         */
-        typed_value* multitoken()
+        shared_ptr<typed_value> multitoken()
         {
             m_multitoken = true;
-            return this;
+            return this->shared_from_this();
         }
 
         /** Specifies that no tokens may be provided as the value of
@@ -284,17 +286,17 @@ namespace boost { namespace program_options {
             'implicit_value' method should be also used. In most
             cases, you can use the 'bool_switch' function instead of
             using this method. */
-        typed_value* zero_tokens() 
+        shared_ptr<typed_value> zero_tokens() 
         {
             m_zero_tokens = true;
-            return this;
+            return this->shared_from_this();
         }
             
         /** Specifies that the value must occur. */
-        typed_value* required()
+        shared_ptr<typed_value> required()
         {
             m_required = true;
-            return this;
+            return this->shared_from_this();
         }
 
     public: // value semantic overrides
@@ -381,13 +383,13 @@ namespace boost { namespace program_options {
         value of option into program variable.
     */
     template<class T>
-    typed_value<T>*
+    shared_ptr<typed_value<T> >
     value();
 
     /** @overload 
     */
     template<class T>
-    typed_value<T>*
+    shared_ptr<typed_value<T> >
     value(T* v);
 
     /** Creates a typed_value<T> instance. This function is the primary
@@ -395,25 +397,25 @@ namespace boost { namespace program_options {
         can later be passed to 'option_description' constructor.
     */
     template<class T>
-    typed_value<T, wchar_t>*
+    shared_ptr<typed_value<T, wchar_t> >
     wvalue();
 
     /** @overload   
     */
     template<class T>
-    typed_value<T, wchar_t>*
+    shared_ptr<typed_value<T, wchar_t> >
     wvalue(T* v);
 
     /** Works the same way as the 'value<bool>' function, but the created
         value_semantic won't accept any explicit value. So, if the option 
         is present on the command line, the value will be 'true'.
     */
-    BOOST_PROGRAM_OPTIONS_DECL typed_value<bool>*
+    BOOST_PROGRAM_OPTIONS_DECL shared_ptr<typed_value<bool> >
     bool_switch();
 
     /** @overload
     */
-    BOOST_PROGRAM_OPTIONS_DECL typed_value<bool>*    
+    BOOST_PROGRAM_OPTIONS_DECL shared_ptr<typed_value<bool> >    
     bool_switch(bool* v);
 
 }}

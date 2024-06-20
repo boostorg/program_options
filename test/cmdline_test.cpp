@@ -71,7 +71,7 @@ void apply_syntax(options_description& desc,
     stringstream ss;
     ss << syntax;
     while(ss >> s) {
-        value_semantic* v = 0;
+        boost::shared_ptr<value_semantic> v;
         
         if (*(s.end()-1) == '=') {
             v = value<string>();
