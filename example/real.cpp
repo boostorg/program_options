@@ -23,7 +23,7 @@ void conflicting_options(const variables_map& vm,
                           + opt1 + "' and '" + opt2 + "'.");
 }
 
-/* Function used to check that of 'for_what' is specified, then
+/* Function used to check that if 'for_what' is specified, then
    'required_option' is specified too. */
 void option_dependency(const variables_map& vm,
                         const char* for_what, const char* required_option)
