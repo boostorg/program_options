@@ -257,6 +257,7 @@ void test_config_file(const char* config_file)
     desc.add_options()
         ("gv1", new untyped_value)
         ("gv2", new untyped_value)
+        ("semi_value", new untyped_value)
         ("empty_value", new untyped_value)
         ("plug*", new untyped_value)
         ("m1.v1", new untyped_value)
@@ -267,6 +268,8 @@ void test_config_file(const char* config_file)
 
     const char content1[] =
     " gv1 = 0#asd\n"
+    "; semi comment\n"
+    "; semi_value = 9\n"
     "empty_value = \n"
     "plug3 = 7\n"
     "b = true\n"
@@ -387,6 +390,4 @@ int main(int, char* av[])
     test_config_file(av[1]);
     test_environment();
     test_unregistered();
-    return 0;
 }
-
