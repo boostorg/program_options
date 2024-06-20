@@ -149,7 +149,7 @@ namespace boost { namespace program_options {
     }
 
     BOOST_PROGRAM_OPTIONS_DECL
-    void notify(variables_map& vm)
+    void notify(const variables_map& vm)
     {
         vm.notify();
     }
@@ -211,7 +211,7 @@ namespace boost { namespace program_options {
     }
 
     void
-    variables_map::notify()
+    variables_map::notify() const
     {
         // This checks if all required options occur
         for (map<string, string>::const_iterator r = m_required.begin();
@@ -224,12 +224,11 @@ namespace boost { namespace program_options {
             if (iter == end() || iter->second.empty())
             {
                 boost::throw_exception(required_option(display_opt));
-
             }
         }
 
         // Lastly, run notify actions.
-        for (map<string, variable_value>::iterator k = begin();
+        for (map<string, variable_value>::const_iterator k = begin();
              k != end();
              ++k)
         {
