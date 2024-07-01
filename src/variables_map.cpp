@@ -220,7 +220,7 @@ namespace boost { namespace program_options {
         {
             const string& opt = r->first;
             const string& display_opt = r->second;
-            map<string, variable_value>::const_iterator iter = find(opt);
+            map<string, variable_value, details::comparator_t>::const_iterator iter = find(opt);
             if (iter == end() || iter->second.empty())
             {
                 boost::throw_exception(required_option(display_opt));
@@ -229,7 +229,7 @@ namespace boost { namespace program_options {
         }
 
         // Lastly, run notify actions.
-        for (map<string, variable_value>::iterator k = begin();
+        for (map<string, variable_value, details::comparator_t>::iterator k = begin();
              k != end();
              ++k)
         {
