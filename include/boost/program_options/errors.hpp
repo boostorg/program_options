@@ -183,7 +183,7 @@ namespace boost { namespace program_options {
 
         /** Creates the error_message on the fly
          *      Currently a thin wrapper for substitute_placeholders() */
-        virtual const char* what() const BOOST_NOEXCEPT_OR_NOTHROW;
+        virtual const char* what() const BOOST_NOEXCEPT_OR_NOTHROW override;
 
     protected:
         /** Used to hold the error text returned by what() */
@@ -256,7 +256,7 @@ namespace boost { namespace program_options {
         }
 
         /** Does NOT set option name, because no option name makes sense */
-        virtual void set_option_name(const std::string&) {}
+        virtual void set_option_name(const std::string&) override {}
 
         BOOST_DEFAULTED_FUNCTION(~error_with_no_option_name() BOOST_NOEXCEPT_OR_NOTHROW, {})
     };
@@ -289,7 +289,7 @@ namespace boost { namespace program_options {
 
     protected:
         /** Makes all substitutions using the template */
-        virtual void substitute_placeholders(const std::string& error_template) const;
+        virtual void substitute_placeholders(const std::string& error_template) const override;
     private:
         // TODO: copy ctor might throw
         std::vector<std::string> m_alternatives;
@@ -343,7 +343,7 @@ namespace boost { namespace program_options {
         BOOST_DEFAULTED_FUNCTION(~invalid_config_file_syntax() BOOST_NOEXCEPT_OR_NOTHROW, {})
 
         /** Convenience functions for backwards compatibility */
-        virtual std::string tokens() const {return m_substitutions.find("invalid_line")->second;    }
+        virtual std::string tokens() const override {return m_substitutions.find("invalid_line")->second;    }
     };
 
 
