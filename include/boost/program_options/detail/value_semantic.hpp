@@ -150,7 +150,7 @@ namespace boost { namespace program_options {
                 boost::any a;
                 std::vector<std::basic_string<charT> > cv;
                 cv.push_back(s[i]);
-                validate(a, cv, (T*)0, 0);                
+                validate(a, cv, static_cast<T*>(nullptr), 0);                
                 tv->push_back(boost::any_cast<T>(a));
             }
             catch(const bad_lexical_cast& /*e*/) {
@@ -169,7 +169,7 @@ namespace boost { namespace program_options {
         validators::check_first_occurrence(v);
         validators::get_single_string(s);
         boost::any a;
-        validate(a, s, (T*)0, 0);
+        validate(a, s, static_cast<T*>(nullptr), 0);
         v = boost::any(boost::optional<T>(boost::any_cast<T>(a)));
     }
 
@@ -184,7 +184,7 @@ namespace boost { namespace program_options {
         validators::check_first_occurrence(v);
         validators::get_single_string(s);
         boost::any a;
-        validate(a, s, (T*)0, 0);
+        validate(a, s, static_cast<T*>(nullptr), 0);
         v = boost::any(std::optional<T>(boost::any_cast<T>(a)));
     }
 #endif
@@ -201,7 +201,7 @@ namespace boost { namespace program_options {
         if (new_tokens.empty() && !m_implicit_value.empty())
             value_store = m_implicit_value;
         else
-            validate(value_store, new_tokens, (T*)0, 0);
+            validate(value_store, new_tokens, static_cast<T*>(nullptr), 0);
     }
 
     template<class T>
