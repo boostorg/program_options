@@ -6,6 +6,7 @@
 // This file defines template functions that are declared in
 // ../value_semantic.hpp.
 
+#include <boost/lexical_cast.hpp>
 #include <boost/throw_exception.hpp>
 
 #ifndef BOOST_NO_CXX17_HDR_OPTIONAL
@@ -48,6 +49,39 @@ namespace boost { namespace program_options {
         if (m_notifier) {
             m_notifier(*value);
         }
+    }
+
+    template<class T>
+    std::string make_textual(const T& v, value_semantic*, long)
+    {
+        return boost::lexical_cast<std::string>(v);
+    }
+
+    template<class T>
+    std::string make_textual(const std::vector<T>& v, value_semantic*, long)
+    {
+        std::string textual;
+        for (unsigned i = 0; i < v.size(); ++i)
+        {
+            if (i != 0)
+                textual += ' ';
+            textual += make_textual(v[i], (value_semantic*)0, 0);
+        }
+        return textual;
+    }
+
+    template<class T, class charT>
+    typed_value<T, charT>*
+    typed_value<T, charT>::default_value(const T& v)
+    {
+        return default_value(v, make_textual(v, this, 0));
+    }
+
+    template<class T, class charT>
+    typed_value<T, charT>*
+    typed_value<T, charT>::implicit_value(const T &v)
+    {
+        return implicit_value(v, make_textual(v, this, 0));
     }
 
     namespace validators {
