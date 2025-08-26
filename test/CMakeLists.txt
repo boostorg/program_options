@@ -23,5 +23,6 @@ boost_test(TYPE run SOURCES unrecognized_test.cpp)
 boost_test(TYPE run SOURCES required_test.cpp ARGUMENTS ${CMAKE_CURRENT_SOURCE_DIR}/required_test.cfg)
 boost_test(TYPE run SOURCES exception_txt_test.cpp)
 boost_test(TYPE run SOURCES optional_test.cpp)
+boost_test(TYPE run SOURCES transparent_comparator_test.cpp)
 
 boost_test(TYPE run SOURCES quick.cpp ARGUMENTS --path=initial LINK_LIBRARIES Boost::core)
