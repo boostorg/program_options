@@ -51,7 +51,7 @@ namespace boost { namespace program_options {
         
         /** Parses a group of tokens that specify a value of option.
             Stores the result in 'value_store', using whatever representation
-            is desired. May be be called several times if value of the same
+            is desired. May be called several times if value of the same
             option is specified more than once.
         */
         virtual void parse(boost::any& value_store, 
@@ -71,7 +71,7 @@ namespace boost { namespace program_options {
         virtual ~value_semantic() {}
     };
 
-    /** Helper class which perform necessary character conversions in the 
+    /** Helper class which performs necessary character conversions in the 
         'parse' method and forwards the data further.
     */
     template<class charT>
@@ -140,7 +140,7 @@ namespace boost { namespace program_options {
         bool is_required() const { return false; }
         
         /** If 'value_store' is already initialized, or new_tokens
-            has more than one elements, throws. Otherwise, assigns
+            has more than one element, throws. Otherwise, assigns
             the first string from 'new_tokens' to 'value_store', without
             any modifications.
          */
@@ -157,7 +157,7 @@ namespace boost { namespace program_options {
     };
 
 #ifndef BOOST_NO_RTTI
-    /** Base class for all option that have a fixed type, and are
+    /** Base class for all options that have a fixed type, and are
         willing to announce this type to the outside world.
         Any 'value_semantics' for which you want to find out the
         type can be dynamic_cast-ed to typed_value_base. If conversion
@@ -218,7 +218,7 @@ namespace boost { namespace program_options {
 
         /** Specifies an implicit value, which will be used
             if the option is given, but without an adjacent value.
-            Using this implies that an explicit value is optional,
+            Using this implies that an explicit value is optional.
         */
         typed_value* implicit_value(const T &v)
         {
@@ -228,7 +228,7 @@ namespace boost { namespace program_options {
             return this;
         }
 
-        /** Specifies the name used to to the value in help message.  */
+        /** Specifies the name used for the value in the help message.  */
         typed_value* value_name(const std::string& name)
         {
             m_value_name = name;
@@ -278,7 +278,7 @@ namespace boost { namespace program_options {
         }
 
         /** Specifies that no tokens may be provided as the value of
-            this option, which means that only presense of the option
+            this option, which means that only presence of the option
             is significant. For such option to be useful, either the
             'validate' function should be specialized, or the 
             'implicit_value' method should be also used. In most
