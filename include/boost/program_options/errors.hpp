@@ -51,7 +51,7 @@ namespace boost { namespace program_options {
         {}
     };
 
-    /** Class thrown when there are programming error related to style */
+    /** Class thrown when there are programming errors related to style */
     class BOOST_PROGRAM_OPTIONS_DECL BOOST_SYMBOL_VISIBLE invalid_command_line_style : public error {
     public:
         invalid_command_line_style(const std::string& msg)
@@ -83,7 +83,7 @@ namespace boost { namespace program_options {
      *  Options are displayed in "canonical" form
      *      This is the most unambiguous form of the
      *      *parsed* option name and would correspond to
-     *      option_description::format_name()
+     *      option_description::format_name(),
      *      i.e. what is shown by print_usage()
      *  
      *  The "canonical" form depends on whether the option is
@@ -243,7 +243,7 @@ namespace boost { namespace program_options {
      *  It makes no sense to have an option name, when we can't match an option to the
      *      parameter
      *  
-     *  Having this a part of the error_with_option_name hierachy makes error handling
+     *  Having this as part of the error_with_option_name hierarchy makes error handling
      *      a lot easier, even if the name indicates some sort of conceptual dissonance!
      *  
      *   */
@@ -275,7 +275,7 @@ namespace boost { namespace program_options {
 
 
 
-    /** Class thrown when there's ambiguity amoung several possible options. */
+    /** Class thrown when there's ambiguity among several possible options. */
     class BOOST_PROGRAM_OPTIONS_DECL BOOST_SYMBOL_VISIBLE ambiguous_option : public error_with_no_option_name {
     public:
         ambiguous_option(const std::vector<std::string>& xalternatives)
