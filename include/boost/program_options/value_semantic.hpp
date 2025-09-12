@@ -92,7 +92,7 @@ namespace boost { namespace program_options {
     private: // base overrides
         void parse(boost::any& value_store, 
                    const std::vector<std::string>& new_tokens,
-                   bool utf8) const;
+                   bool utf8) const override;
     protected: // interface for derived classes.
         virtual void xparse(boost::any& value_store, 
                             const std::vector<std::string>& new_tokens) 
@@ -112,7 +112,7 @@ namespace boost { namespace program_options {
     private: // base overrides
         void parse(boost::any& value_store, 
                    const std::vector<std::string>& new_tokens,
-                   bool utf8) const;
+                   bool utf8) const override;
     protected: // interface for derived classes.
 #if !defined(BOOST_NO_STD_WSTRING)
         virtual void xparse(boost::any& value_store, 
@@ -130,14 +130,14 @@ namespace boost { namespace program_options {
         : m_zero_tokens(zero_tokens)
         {}
 
-        std::string name() const;
+        std::string name() const override;
 
-        unsigned min_tokens() const;
-        unsigned max_tokens() const;
+        unsigned min_tokens() const override;
+        unsigned max_tokens() const override;
 
-        bool is_composing() const { return false; }
+        bool is_composing() const override { return false; }
 
-        bool is_required() const { return false; }
+        bool is_required() const override { return false; }
         
         /** If 'value_store' is already initialized, or new_tokens
             has more than one element, throws. Otherwise, assigns
@@ -145,13 +145,13 @@ namespace boost { namespace program_options {
             any modifications.
          */
         void xparse(boost::any& value_store,
-                    const std::vector<std::string>& new_tokens) const;
+                    const std::vector<std::string>& new_tokens) const override;
 
         /** Does nothing. */
-        bool apply_default(boost::any&) const { return false; }
+        bool apply_default(boost::any&) const override { return false; }
 
         /** Does nothing. */
-        void notify(const boost::any&) const {}        
+        void notify(const boost::any&) const override {}
     private:
         bool m_zero_tokens;
     };
@@ -299,11 +299,11 @@ namespace boost { namespace program_options {
 
     public: // value semantic overrides
 
-        std::string name() const;
+        std::string name() const override;
 
-        bool is_composing() const { return m_composing; }
+        bool is_composing() const override { return m_composing; }
 
-        unsigned min_tokens() const
+        unsigned min_tokens() const override
         {
             if (m_zero_tokens || !m_implicit_value.empty()) {
                 return 0;
@@ -312,7 +312,7 @@ namespace boost { namespace program_options {
             }
         }
 
-        unsigned max_tokens() const {
+        unsigned max_tokens() const override {
             if (m_multitoken) {
                 return std::numeric_limits<unsigned>::max BOOST_PREVENT_MACRO_SUBSTITUTION();
             } else if (m_zero_tokens) {
@@ -322,19 +322,19 @@ namespace boost { namespace program_options {
             }
         }
 
-        bool is_required() const { return m_required; }
+        bool is_required() const override { return m_required; }
 
         /** Creates an instance of the 'validator' class and calls
             its operator() to perform the actual conversion. */
         void xparse(boost::any& value_store, 
                     const std::vector< std::basic_string<charT> >& new_tokens) 
-            const;
+            const override;
 
         /** If default value was specified via previous call to 
             'default_value', stores that value into 'value_store'.
             Returns true if default value was stored.
         */
-        virtual bool apply_default(boost::any& value_store) const
+        virtual bool apply_default(boost::any& value_store) const override
         {
             if (m_default_value.empty()) {
                 return false;
@@ -347,12 +347,12 @@ namespace boost { namespace program_options {
         /** If an address of variable to store value was specified
             when creating *this, stores the value there. Otherwise,
             does nothing. */
-        void notify(const boost::any& value_store) const;
+        void notify(const boost::any& value_store) const override;
 
     public: // typed_value_base overrides
         
 #ifndef BOOST_NO_RTTI
-        const std::type_info& value_type() const
+        const std::type_info& value_type() const override
         {
             return typeid(T);
         }
