@@ -187,7 +187,7 @@ desc.add_options()
       </programlisting>
       For the first parameter, we specify only the name and the
       description. No value can be specified in the parsed source.
-      For the first option, the user must specify a value, using a single
+      For the second option, the user must specify a value, using a single
       token. For the third option, the user may either provide a single token
       for the value, or no token at all. For the last option, the value can
       span several tokens. For example, the following command line is OK:
