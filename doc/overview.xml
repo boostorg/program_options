@@ -185,7 +185,7 @@ desc.add_options()
     ("email", value&lt;string&gt;()->multitoken(), "email to send to")
     ;
       </programlisting>
-      For the first parameter, we specify only the name and the
+      For the first option, we specify only the name and the
       description. No value can be specified in the parsed source.
       For the second option, the user must specify a value, using a single
       token. For the third option, the user may either provide a single token
