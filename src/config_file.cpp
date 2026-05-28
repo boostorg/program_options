@@ -97,6 +97,8 @@ namespace boost { namespace program_options { namespace detail {
                 // Handle section name
                 if (*s.begin() == '[' && *s.rbegin() == ']') {
                     m_prefix = s.substr(1, s.size()-2);
+                    if (m_prefix.empty())
+                        boost::throw_exception(invalid_config_file_syntax(s, invalid_syntax::unrecognized_line));
                     if (*m_prefix.rbegin() != '.')
                         m_prefix += '.';
                 }

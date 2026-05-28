@@ -298,6 +298,11 @@ void test_config_file(const char* config_file)
     check_value(a2[4], "m1.v1", "1");
     check_value(a2[5], "m1.v2", "2");
     check_value(a2[6], "m1.v3", "3");
+
+    // Test that an empty section header [] is rejected as invalid syntax (issue #156)
+    const char content_empty_section[] = "gv1 = 0\n[]\nv1 = 1\n";
+    stringstream ss_empty(content_empty_section);
+    BOOST_CHECK_THROW(parse_config_file(ss_empty, desc), invalid_config_file_syntax);
 }
 
 #if defined(__CYGWIN__)
