@@ -500,6 +500,9 @@ notify(vm);
         <listitem><para>The <literal>#</literal> character introduces a
         comment that spans until the end of the line.</para>
         </listitem>
+        <listitem><para>The <literal>;</literal> character at the beginning of
+        a line makes the entire line a comment.</para>
+        </listitem>
       </itemizedlist>
 
       <para>The option names are relative to the section names, so
