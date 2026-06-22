@@ -20,7 +20,7 @@ using namespace std;
 
 
 
-// 
+//
 //  like BOOST_CHECK_EQUAL but with more descriptive error message
 //
 #define CHECK_EQUAL(description, a, b) if (a != b) {std::cerr << "\n\nError:\n<<" << \
@@ -28,22 +28,22 @@ using namespace std;
 
 
 // Uncomment for Debugging, removes asserts so we can see more failures!
-//#define BOOST_ERROR(description) std::cerr << description; std::cerr << "\n"; 
+//#define BOOST_ERROR(description) std::cerr << description; std::cerr << "\n";
 
 
 //8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
-// 
+//
 //  Uncomment to print out the complete set of diagnostic messages for the different test cases
 /*
 #define CHECK_EQUAL(description, a, b) if (a != b) {std::cerr << "\n\nError:  " << \
     description << "\n  Expecting\n" << b << "\n  Found\n" << a << "\n\n"; } \
     else {std::cout << description<< "\t" << b << "\n";}
-*/ 
+*/
 
 //8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 
 
-// 
+//
 //  test exception for each specified command line style, e.g. short dash or config file
 //
 template<typename EXCEPTION>
@@ -60,8 +60,8 @@ void test_each_exception_message(const string& test_description, const vector<co
             store(parse_config_file(is, desc), vm);
         else
             store(parse_command_line(argv.size(), &argv[0], desc, style), vm);
-        notify(vm);    
-    } 
+        notify(vm);
+    }
     catch (EXCEPTION& e)
     {
        //cerr << "Correct:\n\t" << e.what() << "\n";
@@ -77,8 +77,8 @@ void test_each_exception_message(const string& test_description, const vector<co
         if (argc)
             argv_txt += argv[argc - 1];
 
-       BOOST_ERROR("\n<<" + test_description + 
-                    string(">>\n  Unexpected exception type!\n  Actual text  =\"") + e.what() + 
+       BOOST_ERROR("\n<<" + test_description +
+                    string(">>\n  Unexpected exception type!\n  Actual text  =\"") + e.what() +
                     "\"\n  argv         =\"" + argv_txt +
                     "\"\n  Expected text=\"" + exception_msg + "\"\n");
        return;
@@ -89,7 +89,7 @@ void test_each_exception_message(const string& test_description, const vector<co
 
 
 
-// 
+//
 //  test exception messages for all command line styles (unix/long/short/slash/config file)
 //
 //      try each command line style in turn
@@ -103,30 +103,30 @@ const int long_dash = command_line_style::allow_long | command_line_style::long_
 template<typename EXCEPTION>
 void test_exception_message(const vector<vector<const char*> >& argv,
                             options_description& desc,
-                            const string& error_description, 
+                            const string& error_description,
                             const char* expected_message_template[5])
 {
     string expected_message;
 
     // unix
     expected_message = expected_message_template[0];
-    test_each_exception_message<EXCEPTION>(error_description + " -- unix", 
+    test_each_exception_message<EXCEPTION>(error_description + " -- unix",
                                   argv[0], desc, unix_style, expected_message);
 
     // long dash only
     expected_message = expected_message_template[1];
-    test_each_exception_message<EXCEPTION>(error_description + " -- long_dash", 
+    test_each_exception_message<EXCEPTION>(error_description + " -- long_dash",
                                   argv[1], desc, long_dash, expected_message);
 
 
     // short dash only
     expected_message = expected_message_template[2];
-    test_each_exception_message<EXCEPTION>(error_description + " -- short_dash", 
+    test_each_exception_message<EXCEPTION>(error_description + " -- short_dash",
                                   argv[2], desc, short_dash, expected_message);
 
     // short slash only
     expected_message = expected_message_template[3];
-    test_each_exception_message<EXCEPTION>(error_description + " -- short_slash", 
+    test_each_exception_message<EXCEPTION>(error_description + " -- short_slash",
                                   argv[3], desc, short_slash, expected_message);
 
     // config file only
@@ -134,7 +134,7 @@ void test_exception_message(const vector<vector<const char*> >& argv,
     if (expected_message.length())
     {
         istringstream istrm(argv[4][0]);
-        test_each_exception_message<EXCEPTION>(error_description + " -- config_file", 
+        test_each_exception_message<EXCEPTION>(error_description + " -- config_file",
                                           argv[4], desc, -1, expected_message, istrm);
     }
 
@@ -144,7 +144,7 @@ void test_exception_message(const vector<vector<const char*> >& argv,
     vec.push_back(vector<const char*>(c_array, c_array + sizeof(c_array) / sizeof(char*)));
 
 //________________________________________________________________________________________
-// 
+//
 //  invalid_option_value
 //
 //________________________________________________________________________________________
@@ -157,16 +157,16 @@ void test_invalid_option_value_exception_msg()
 
     vector<vector<const char*> > argv;
     const char* argv0[] = { "program", "-d", "A_STRING"}   ;  VEC_STR_PUSH_BACK(argv, argv0);
-    const char* argv1[] = { "program", "--int", "A_STRING"};  VEC_STR_PUSH_BACK(argv, argv1); 
+    const char* argv1[] = { "program", "--int", "A_STRING"};  VEC_STR_PUSH_BACK(argv, argv1);
     const char* argv2[] = { "program", "-d", "A_STRING"}   ;  VEC_STR_PUSH_BACK(argv, argv2);
-    const char* argv3[] = { "program", "/d", "A_STRING"}   ;  VEC_STR_PUSH_BACK(argv, argv3); 
-    const char* argv4[] = { "int-option=A_STRING"}         ;  VEC_STR_PUSH_BACK(argv, argv4); 
+    const char* argv3[] = { "program", "/d", "A_STRING"}   ;  VEC_STR_PUSH_BACK(argv, argv3);
+    const char* argv4[] = { "int-option=A_STRING"}         ;  VEC_STR_PUSH_BACK(argv, argv4);
 
     const char* expected_msg[5] = {
-                                "the argument ('A_STRING') for option '--int-option' is invalid", 
-                                "the argument ('A_STRING') for option '--int-option' is invalid", 
-                                "the argument ('A_STRING') for option '-d' is invalid", 
-                                "the argument ('A_STRING') for option '/d' is invalid", 
+                                "the argument ('A_STRING') for option '--int-option' is invalid",
+                                "the argument ('A_STRING') for option '--int-option' is invalid",
+                                "the argument ('A_STRING') for option '-d' is invalid",
+                                "the argument ('A_STRING') for option '/d' is invalid",
                                 "the argument ('A_STRING') for option 'int-option' is invalid",
     };
 
@@ -178,7 +178,7 @@ void test_invalid_option_value_exception_msg()
 }
 
 //________________________________________________________________________________________
-// 
+//
 //  missing_value
 //
 //________________________________________________________________________________________
@@ -186,15 +186,15 @@ void test_missing_value_exception_msg()
 {
     options_description desc;
     desc.add_options()
-        ("cfgfile,e", value<string>(), "the config file") 
+        ("cfgfile,e", value<string>(), "the config file")
         ("output,o", value<string>(), "the output file")
     ;
     vector<vector<const char*> > argv;
     const char* argv0[] = { "program", "-e", "-e", "output.txt"} ; VEC_STR_PUSH_BACK(argv, argv0);
-    const char* argv1[] = { "program", "--cfgfile"}              ; VEC_STR_PUSH_BACK(argv, argv1); 
+    const char* argv1[] = { "program", "--cfgfile"}              ; VEC_STR_PUSH_BACK(argv, argv1);
     const char* argv2[] = { "program", "-e", "-e", "output.txt"} ; VEC_STR_PUSH_BACK(argv, argv2);
-    const char* argv3[] = { "program", "/e", "/e", "output.txt"} ; VEC_STR_PUSH_BACK(argv, argv3); 
-    const char* argv4[] = { ""}    ;      VEC_STR_PUSH_BACK(argv, argv4); 
+    const char* argv3[] = { "program", "/e", "/e", "output.txt"} ; VEC_STR_PUSH_BACK(argv, argv3);
+    const char* argv4[] = { ""}    ;      VEC_STR_PUSH_BACK(argv, argv4);
 
     const char* expected_msg[5] = {
                                 "the required argument for option '--cfgfile' is missing",
@@ -204,33 +204,33 @@ void test_missing_value_exception_msg()
                                     //"the required argument for option '/e' is missing",
                                 "",
     };
-    test_exception_message<invalid_command_line_syntax>(argv, desc, 
-                                                        "invalid_syntax::missing_parameter", 
+    test_exception_message<invalid_command_line_syntax>(argv, desc,
+                                                        "invalid_syntax::missing_parameter",
                                                         expected_msg);
 }
 
 //________________________________________________________________________________________
-// 
+//
 //  ambiguous_option
 //
 //________________________________________________________________________________________
 void test_ambiguous_option_exception_msg()
 {
-    options_description desc; 
+    options_description desc;
     desc.add_options()
-        ("cfgfile1,c", value<string>(), "the config file") 
-        ("cfgfile2,o",  value<string>(), "the config file") 
-        ("good,g",                          "good option") 
-        ("output,c",   value<string>(), "the output file") 
-        ("output",     value<string>(), "the output file") 
+        ("cfgfile1,c", value<string>(), "the config file")
+        ("cfgfile2,o",  value<string>(), "the config file")
+        ("good,g",                          "good option")
+        ("output,c",   value<string>(), "the output file")
+        ("output",     value<string>(), "the output file")
     ;
 
     vector<vector<const char*> > argv;
     const char* argv0[] = {"program", "-ggc", "file", "-o", "anotherfile"}             ; VEC_STR_PUSH_BACK(argv, argv0);
-    const char* argv1[] = {"program", "--cfgfile", "file", "--cfgfile", "anotherfile"} ; VEC_STR_PUSH_BACK(argv, argv1); 
+    const char* argv1[] = {"program", "--cfgfile", "file", "--cfgfile", "anotherfile"} ; VEC_STR_PUSH_BACK(argv, argv1);
     const char* argv2[] = {"program", "-ggc", "file", "-o", "anotherfile"}             ; VEC_STR_PUSH_BACK(argv, argv2);
-    const char* argv3[] = {"program", "/c", "file", "/o", "anotherfile"}               ; VEC_STR_PUSH_BACK(argv, argv3); 
-    const char* argv4[] = { "output=output.txt\n"}                                     ; VEC_STR_PUSH_BACK(argv, argv4); 
+    const char* argv3[] = {"program", "/c", "file", "/o", "anotherfile"}               ; VEC_STR_PUSH_BACK(argv, argv3);
+    const char* argv4[] = { "output=output.txt\n"}                                     ; VEC_STR_PUSH_BACK(argv, argv4);
     const char* expected_msg[5] = {
                                 "option '-c' is ambiguous and matches '--cfgfile1', and '--output'",
                                 "option '--cfgfile' is ambiguous and matches '--cfgfile1', and '--cfgfile2'",
@@ -243,23 +243,23 @@ void test_ambiguous_option_exception_msg()
 }
 
 //________________________________________________________________________________________
-// 
+//
 //  multiple_occurrences
 //
 //________________________________________________________________________________________
 void test_multiple_occurrences_exception_msg()
 {
-    options_description desc; 
+    options_description desc;
     desc.add_options()
                 ("cfgfile,c", value<string>(), "the configfile")
     ;
 
     vector<vector<const char*> > argv;
     const char* argv0[] = {"program", "-c", "file", "-c", "anotherfile"}           ; VEC_STR_PUSH_BACK(argv, argv0);
-    const char* argv1[] = {"program", "--cfgfi", "file", "--cfgfi", "anotherfile"} ; VEC_STR_PUSH_BACK(argv, argv1); 
+    const char* argv1[] = {"program", "--cfgfi", "file", "--cfgfi", "anotherfile"} ; VEC_STR_PUSH_BACK(argv, argv1);
     const char* argv2[] = {"program", "-c", "file", "-c", "anotherfile"}           ; VEC_STR_PUSH_BACK(argv, argv2);
-    const char* argv3[] = {"program", "/c", "file", "/c", "anotherfile"}           ; VEC_STR_PUSH_BACK(argv, argv3); 
-    const char* argv4[] = { "cfgfile=output.txt\ncfgfile=output.txt\n"}            ; VEC_STR_PUSH_BACK(argv, argv4); 
+    const char* argv3[] = {"program", "/c", "file", "/c", "anotherfile"}           ; VEC_STR_PUSH_BACK(argv, argv3);
+    const char* argv4[] = { "cfgfile=output.txt\ncfgfile=output.txt\n"}            ; VEC_STR_PUSH_BACK(argv, argv4);
     const char* expected_msg[5] = {
                                 "option '--cfgfile' cannot be specified more than once",
                                 "option '--cfgfile' cannot be specified more than once",
@@ -272,23 +272,23 @@ void test_multiple_occurrences_exception_msg()
 }
 
 //________________________________________________________________________________________
-// 
+//
 //  unknown_option
 //
 //________________________________________________________________________________________
 void test_unknown_option_exception_msg()
 {
-    options_description desc; 
+    options_description desc;
     desc.add_options()
-        ("good,g",                          "good option") 
+        ("good,g",                          "good option")
     ;
 
     vector<vector<const char*> > argv;
     const char* argv0[] = {"program", "-ggc", "file"}      ; VEC_STR_PUSH_BACK(argv, argv0);
-    const char* argv1[] = {"program", "--cfgfile", "file"} ; VEC_STR_PUSH_BACK(argv, argv1); 
+    const char* argv1[] = {"program", "--cfgfile", "file"} ; VEC_STR_PUSH_BACK(argv, argv1);
     const char* argv2[] = {"program", "-ggc", "file"}      ; VEC_STR_PUSH_BACK(argv, argv2);
-    const char* argv3[] = {"program", "/c", "file"}        ; VEC_STR_PUSH_BACK(argv, argv3); 
-    const char* argv4[] = { "cfgfile=output.txt\n"}        ; VEC_STR_PUSH_BACK(argv, argv4); 
+    const char* argv3[] = {"program", "/c", "file"}        ; VEC_STR_PUSH_BACK(argv, argv3);
+    const char* argv4[] = { "cfgfile=output.txt\n"}        ; VEC_STR_PUSH_BACK(argv, argv4);
     const char* expected_msg[5] = {
                                 "unrecognised option '-ggc'",
                                 "unrecognised option '--cfgfile'",
@@ -300,13 +300,13 @@ void test_unknown_option_exception_msg()
 }
 
 //________________________________________________________________________________________
-// 
+//
 //  validation_error::invalid_bool_value
 //
 //________________________________________________________________________________________
 void test_invalid_bool_value_exception_msg()
 {
-    options_description desc; 
+    options_description desc;
     desc.add_options()
         ("bool_option,b",       value< bool>(), "bool_option")
         ;
@@ -314,18 +314,18 @@ void test_invalid_bool_value_exception_msg()
 
     vector<vector<const char*> > argv;
     const char* argv0[] = {"program", "-b", "file"}           ; VEC_STR_PUSH_BACK(argv, argv0);
-    const char* argv1[] = {"program", "--bool_optio", "file"} ; VEC_STR_PUSH_BACK(argv, argv1); 
+    const char* argv1[] = {"program", "--bool_optio", "file"} ; VEC_STR_PUSH_BACK(argv, argv1);
     const char* argv2[] = {"program", "-b", "file"}           ; VEC_STR_PUSH_BACK(argv, argv2);
-    const char* argv3[] = {"program", "/b", "file"}           ; VEC_STR_PUSH_BACK(argv, argv3); 
-    const char* argv4[] = { "bool_option=output.txt\n"}       ; VEC_STR_PUSH_BACK(argv, argv4); 
-    const char* expected_msg[5] = {                               
+    const char* argv3[] = {"program", "/b", "file"}           ; VEC_STR_PUSH_BACK(argv, argv3);
+    const char* argv4[] = { "bool_option=output.txt\n"}       ; VEC_STR_PUSH_BACK(argv, argv4);
+    const char* expected_msg[5] = {
                                 "the argument ('file') for option '--bool_option' is invalid. Valid choices are 'on|off', 'yes|no', '1|0' and 'true|false'",
                                 "the argument ('file') for option '--bool_option' is invalid. Valid choices are 'on|off', 'yes|no', '1|0' and 'true|false'",
                                 "the argument ('file') for option '-b' is invalid. Valid choices are 'on|off', 'yes|no', '1|0' and 'true|false'",
                                 "the argument ('file') for option '/b' is invalid. Valid choices are 'on|off', 'yes|no', '1|0' and 'true|false'",
                                 "the argument ('output.txt') for option 'bool_option' is invalid. Valid choices are 'on|off', 'yes|no', '1|0' and 'true|false'",
     };
-    test_exception_message<validation_error>(argv, 
+    test_exception_message<validation_error>(argv,
                                 desc,
                                 "validation_error::invalid_bool_value",
                                 expected_msg);
@@ -335,18 +335,18 @@ void test_invalid_bool_value_exception_msg()
 
 
 //________________________________________________________________________________________
-// 
+//
 //  validation_error::multiple_values_not_allowed
 //
 //________________________________________________________________________________________
 //
 //  Strange exception: sole purpose seems to be catching multitoken() associated with a scalar
 //  validation_error::multiple_values_not_allowed seems thus to be a programmer error
-//  
+//
 //
 void test_multiple_values_not_allowed_exception_msg()
 {
-    options_description desc; 
+    options_description desc;
     desc.add_options()
          ("cfgfile,c", value<string>()->multitoken(), "the config file")
          ("good,g",                                     "good option")
@@ -355,38 +355,38 @@ void test_multiple_values_not_allowed_exception_msg()
 
     vector<vector<const char*> > argv;
     const char* argv0[] = { "program", "-c", "file", "c", "-o", "fritz", "hugo" }              ;      VEC_STR_PUSH_BACK(argv, argv0);
-    const char* argv1[] = { "program", "--cfgfil", "file", "c", "--outpu", "fritz", "hugo" }   ;      VEC_STR_PUSH_BACK(argv, argv1); 
+    const char* argv1[] = { "program", "--cfgfil", "file", "c", "--outpu", "fritz", "hugo" }   ;      VEC_STR_PUSH_BACK(argv, argv1);
     const char* argv2[] = { "program", "-c", "file", "c", "-o", "fritz", "hugo"}               ;      VEC_STR_PUSH_BACK(argv, argv2);
-    const char* argv3[] = { "program", "/c", "file", "c", "/o", "fritz", "hugo"}               ;      VEC_STR_PUSH_BACK(argv, argv3); 
-    const char* argv4[] = { "" }                                                               ;      VEC_STR_PUSH_BACK(argv, argv4); 
-    const char* expected_msg[5] = {                               
+    const char* argv3[] = { "program", "/c", "file", "c", "/o", "fritz", "hugo"}               ;      VEC_STR_PUSH_BACK(argv, argv3);
+    const char* argv4[] = { "" }                                                               ;      VEC_STR_PUSH_BACK(argv, argv4);
+    const char* expected_msg[5] = {
                                 "option '--cfgfile' only takes a single argument",
                                 "option '--cfgfile' only takes a single argument",
                                 "option '-c' only takes a single argument",
                                 "option '/c' only takes a single argument",
                                 "",
     };
-    test_exception_message<validation_error>(argv, 
+    test_exception_message<validation_error>(argv,
                                 desc,
                                 "validation_error::multiple_values_not_allowed",
                                 expected_msg);
 }
 
 //________________________________________________________________________________________
-// 
+//
 //  validation_error::at_least_one_value_required
 //
 //________________________________________________________________________________________
 //
 //  Strange exception: sole purpose seems to be catching zero_tokens() associated with a scalar
 //  validation_error::multiple_values_not_allowed seems thus to be a programmer error
-//  
+//
 //
 void test_at_least_one_value_required_exception_msg()
 {
 
 
-    options_description desc; 
+    options_description desc;
     desc.add_options()
          ("cfgfile,c", value<int>()->zero_tokens(), "the config file")
          ("other,o", value<string>(), "other")
@@ -394,18 +394,18 @@ void test_at_least_one_value_required_exception_msg()
 
     vector<vector<const char*> > argv;
     const char* argv0[] = { "program", "-c"                       }  ;      VEC_STR_PUSH_BACK(argv, argv0);
-    const char* argv1[] = { "program", "--cfg", "--o", "name"     }  ;      VEC_STR_PUSH_BACK(argv, argv1); 
+    const char* argv1[] = { "program", "--cfg", "--o", "name"     }  ;      VEC_STR_PUSH_BACK(argv, argv1);
     const char* argv2[] = { "program", "-c"   , "-o"   , "name"   }  ;      VEC_STR_PUSH_BACK(argv, argv2);
-    const char* argv3[] = { "program", "/c"                       }  ;      VEC_STR_PUSH_BACK(argv, argv3); 
-    const char* argv4[] = { ""                                    }  ;      VEC_STR_PUSH_BACK(argv, argv4); 
-    const char* expected_msg[5] = {                               
+    const char* argv3[] = { "program", "/c"                       }  ;      VEC_STR_PUSH_BACK(argv, argv3);
+    const char* argv4[] = { ""                                    }  ;      VEC_STR_PUSH_BACK(argv, argv4);
+    const char* expected_msg[5] = {
                                 "option '--cfgfile' requires at least one argument",
                                 "option '--cfgfile' requires at least one argument",
                                 "option '-c' requires at least one argument",
                                 "option '/c' requires at least one argument",
                                 "",
     };
-    test_exception_message<validation_error>(argv, 
+    test_exception_message<validation_error>(argv,
                                 desc,
                                 "validation_error::at_least_one_value_required",
                                 expected_msg);
@@ -413,33 +413,33 @@ void test_at_least_one_value_required_exception_msg()
 
 
 //________________________________________________________________________________________
-// 
+//
 //  required_option
 //
 //________________________________________________________________________________________
 void test_required_option_exception_msg()
 {
-    options_description desc; 
+    options_description desc;
     desc.add_options()
          ("cfgfile,c", value<string>()->required(), "the config file")
          ("good,g",                                 "good option")
          ("output,o", value<string>()->required(),  "the output file")
        ;
 
-    vector<vector<const char*> > argv;            
+    vector<vector<const char*> > argv;
     const char* argv0[] = { "program", "-g" }    ;      VEC_STR_PUSH_BACK(argv, argv0);
-    const char* argv1[] = { "program", "--g" }   ;      VEC_STR_PUSH_BACK(argv, argv1); 
+    const char* argv1[] = { "program", "--g" }   ;      VEC_STR_PUSH_BACK(argv, argv1);
     const char* argv2[] = { "program", "-g"}     ;      VEC_STR_PUSH_BACK(argv, argv2);
-    const char* argv3[] = { "program", "/g"}     ;      VEC_STR_PUSH_BACK(argv, argv3); 
-    const char* argv4[] = { "" }                 ;      VEC_STR_PUSH_BACK(argv, argv4); 
-    const char* expected_msg[5] = {                               
+    const char* argv3[] = { "program", "/g"}     ;      VEC_STR_PUSH_BACK(argv, argv3);
+    const char* argv4[] = { "" }                 ;      VEC_STR_PUSH_BACK(argv, argv4);
+    const char* expected_msg[5] = {
                                 "the option '--cfgfile' is required but missing",
                                 "the option '--cfgfile' is required but missing",
                                 "the option '-c' is required but missing",
                                 "the option '/c' is required but missing",
                                 "the option 'cfgfile' is required but missing",
     };
-    test_exception_message<required_option>(argv, 
+    test_exception_message<required_option>(argv,
                                 desc,
                                 "required_option",
                                 expected_msg);
@@ -460,19 +460,19 @@ void test_required_option_exception_msg()
 
 
 
-/** 
- * Check if this is the expected exception with the right message is being thrown inside 
- * func 
+/**
+ * Check if this is the expected exception with the right message is being thrown inside
+ * func
 */
 template <typename EXCEPTION, typename FUNC>
 void test_exception(const string& test_name, const string& exception_txt, FUNC func)
 {
 
     try {
-        options_description desc; 
+        options_description desc;
         variables_map vm;
         func(desc, vm);
-    } 
+    }
     catch (EXCEPTION& e)
     {
        CHECK_EQUAL(test_name, e.what(), exception_txt);
@@ -480,7 +480,7 @@ void test_exception(const string& test_name, const string& exception_txt, FUNC f
     }
     catch (std::exception& e)
     {
-       BOOST_ERROR(string(test_name + ":\nUnexpected exception. ") + e.what() + 
+       BOOST_ERROR(string(test_name + ":\nUnexpected exception. ") + e.what() +
                    "\nExpected text:\n" + exception_txt + "\n\n");
        return;
     }
@@ -490,7 +490,7 @@ void test_exception(const string& test_name, const string& exception_txt, FUNC f
 
 
 //________________________________________________________________________________________
-// 
+//
 //  check_reading_file
 //
 //________________________________________________________________________________________
@@ -498,7 +498,7 @@ void check_reading_file(options_description& desc, variables_map& vm)
 {
     desc.add_options()
          ("output,o", value<string>(), "the output file");
-    
+
     const char* file_name = "no_such_file";
     store(parse_config_file<char>(file_name, desc, true), vm);
 
@@ -506,7 +506,7 @@ void check_reading_file(options_description& desc, variables_map& vm)
 
 
 //________________________________________________________________________________________
-// 
+//
 //  config_file_wildcard
 //
 //________________________________________________________________________________________
@@ -521,7 +521,7 @@ void config_file_wildcard(options_description& desc, variables_map& vm)
 }
 
 //________________________________________________________________________________________
-// 
+//
 //  invalid_syntax::unrecognized_line
 //
 //________________________________________________________________________________________
@@ -532,7 +532,7 @@ void unrecognized_line(options_description& desc, variables_map& vm)
 }
 
 //________________________________________________________________________________________
-// 
+//
 //  abbreviated_options_in_config_file
 //
 //________________________________________________________________________________________
@@ -545,7 +545,7 @@ void abbreviated_options_in_config_file(options_description& desc, variables_map
 
 
 //________________________________________________________________________________________
-// 
+//
 //  too_many_positional_options
 //
 //________________________________________________________________________________________
@@ -559,7 +559,7 @@ void too_many_positional_options(options_description& desc, variables_map& vm)
 
 
 //________________________________________________________________________________________
-// 
+//
 //  invalid_command_line_style
 //
 //________________________________________________________________________________________
@@ -568,7 +568,7 @@ void test_invalid_command_line_style_exception_msg()
 {
     string test_name = "invalid_command_line_style";
     using namespace command_line_style;
-    options_description desc; 
+    options_description desc;
     desc.add_options()("output,o", value<string>(), "the output file");
 
     vector<int> invalid_styles;
@@ -609,7 +609,7 @@ void test_invalid_command_line_style_exception_msg()
         }
         catch (std::exception& e)
         {
-           BOOST_ERROR(string(test_name + ":\nUnexpected exception. ") + e.what() + 
+           BOOST_ERROR(string(test_name + ":\nUnexpected exception. ") + e.what() +
                             "\nExpected text:\n" + invalid_diagnostics[ii] + "\n");
            exception_thrown = true;
         }

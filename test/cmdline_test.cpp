@@ -41,7 +41,7 @@ int translate_syntax_error_kind(invalid_command_line_syntax::kind_t k)
         invalid_command_line_syntax::empty_adjacent_parameter,
         invalid_command_line_syntax::missing_parameter,
         invalid_command_line_syntax::extra_parameter,
-        invalid_command_line_syntax::unrecognized_line 
+        invalid_command_line_syntax::unrecognized_line
     };
     invalid_command_line_syntax::kind_t *b, *e, *i;
     b = table;
@@ -59,20 +59,20 @@ struct test_case {
 
 
 /* Parses the syntax description in 'syntax' and initialized
-   'cmd' accordingly' 
-   The "boost::program_options" in parameter type is needed because CW9 
+   'cmd' accordingly'
+   The "boost::program_options" in parameter type is needed because CW9
    has std::detail and it causes an ambiguity.
 */
-void apply_syntax(options_description& desc, 
+void apply_syntax(options_description& desc,
                   const char* syntax)
 {
-   
+
     string s;
     stringstream ss;
     ss << syntax;
     while(ss >> s) {
         value_semantic* v = 0;
-        
+
         if (*(s.end()-1) == '=') {
             v = value<string>();
             s.resize(s.size()-1);
@@ -96,7 +96,7 @@ void apply_syntax(options_description& desc,
     }
 }
 
-void test_cmdline(const char* syntax, 
+void test_cmdline(const char* syntax,
                   command_line_style::style_t style,
                   const test_case* cases)
 {
@@ -141,7 +141,7 @@ void test_cmdline(const char* syntax,
                         if (k != 0)
                             result += "-";
                         result += opt.value[k];
-                    }                    
+                    }
                 }
             }
         }
@@ -236,7 +236,7 @@ void test_short_options()
     cmdline::style_t style;
 
     style = cmdline::style_t(
-        allow_short | allow_dash_for_short 
+        allow_short | allow_dash_for_short
         | short_allow_adjacent);
 
     test_case test_cases1[] = {
@@ -316,7 +316,7 @@ void test_dos_options()
     test_cmdline(",d ,f=", style, test_cases1);
 
     style = cmdline::style_t(
-        allow_short 
+        allow_short
         | allow_slash_for_short | short_allow_next
         | short_allow_adjacent | allow_sticky);
 
@@ -365,7 +365,7 @@ void test_guessing()
 
     style = cmdline::style_t(
         allow_short | short_allow_adjacent
-        | allow_dash_for_short        
+        | allow_dash_for_short
         | allow_long | long_allow_adjacent
         | allow_guessing | allow_long_disguise);
 
@@ -378,12 +378,12 @@ void test_guessing()
     };
     test_cmdline("opt123 opt56 foo,f=", style, test_cases1);
 
-    test_case test_cases2[] = { 
+    test_case test_cases2[] = {
         {"--fname file --fname2 file2", s_success, "fname: file fname2: file2"},
         {"--fnam file --fnam file2", s_ambiguous_option, ""},
         {"--fnam file --fname2 file2", s_ambiguous_option, ""},
         {"--fname2 file2 --fnam file", s_ambiguous_option, ""},
-        {0, 0, 0} 
+        {0, 0, 0}
     };
     test_cmdline("fname fname2", style, test_cases2);
 }
@@ -481,7 +481,7 @@ void test_additional_parser()
     BOOST_CHECK_EQUAL(result[0].string_key, "response-file");
     BOOST_CHECK_EQUAL(result[0].value[0], "config");
     BOOST_CHECK_EQUAL(result[1].string_key, "foo");
-    BOOST_CHECK_EQUAL(result[1].value[0], "1");    
+    BOOST_CHECK_EQUAL(result[1].value[0], "1");
     BOOST_CHECK_EQUAL(result[2].string_key, "bar");
     BOOST_CHECK_EQUAL(result[2].value[0], "11");
 
@@ -527,9 +527,9 @@ void test_style_parser()
 
     BOOST_REQUIRE(result.size() == 2);
     BOOST_CHECK_EQUAL(result[0].string_key, "foo");
-    BOOST_CHECK_EQUAL(result[0].value[0], "1");    
+    BOOST_CHECK_EQUAL(result[0].value[0], "1");
     BOOST_CHECK_EQUAL(result[1].string_key, "bar");
-    BOOST_CHECK_EQUAL(result[1].value[0], "1");    
+    BOOST_CHECK_EQUAL(result[1].value[0], "1");
 }
 
 void test_unregistered()
@@ -547,7 +547,7 @@ void test_unregistered()
     cmdline cmd(input);
     cmd.set_options_description(desc);
     cmd.allow_unregistered();
-    
+
     vector<option> result = cmd.run();
     BOOST_REQUIRE(result.size() == 5);
     // --foo=1
@@ -574,7 +574,7 @@ void test_unregistered()
     BOOST_CHECK_EQUAL(result[4].value[0], "iz");
 
     // Check sticky short options together with unregisted options.
-    
+
     desc.add_options()
         ("help,h", "")
         ("magic,m", value<string>(), "")
@@ -588,7 +588,7 @@ void test_unregistered()
     cmdline cmd2(input);
     cmd2.set_options_description(desc);
     cmd2.allow_unregistered();
-    
+
     result = cmd2.run();
 
     BOOST_REQUIRE(result.size() == 3);

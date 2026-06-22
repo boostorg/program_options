@@ -27,11 +27,11 @@ using namespace std;
 
 
 
-void test_unrecognize_cmdline() 
+void test_unrecognize_cmdline()
 {
    options_description desc;
-   
-   string content = "prg --input input.txt --optimization 4 --opt option";   
+
+   string content = "prg --input input.txt --optimization 4 --opt option";
    vector< string > tokens =  split_unix(content);
 
    cmdline cmd(tokens);
@@ -40,7 +40,7 @@ void test_unrecognize_cmdline()
 
    vector< option > opts = cmd.run();
    vector< string > result = collect_unrecognized(opts, include_positional);
-   
+
    BOOST_CHECK_EQUAL(result.size(), 7);
    BOOST_CHECK_EQUAL(result[0], "prg");
    BOOST_CHECK_EQUAL(result[1], "--input");
@@ -53,11 +53,11 @@ void test_unrecognize_cmdline()
 
 
 
-void test_unrecognize_config() 
+void test_unrecognize_config()
 {
 
    options_description desc;
-   
+
    string content  =
     " input = input.txt\n"
     " optimization = 4\n"
@@ -67,7 +67,7 @@ void test_unrecognize_config()
    stringstream ss(content);
    vector< option > opts = parse_config_file(ss, desc, true).options;
    vector< string > result = collect_unrecognized(opts, include_positional);
-   
+
    BOOST_CHECK_EQUAL(result.size(), 6);
    BOOST_CHECK_EQUAL(result[0], "input");
    BOOST_CHECK_EQUAL(result[1], "input.txt");

@@ -64,7 +64,7 @@ void test_parsing()
     args.push_back("file3");
 
     // Check that positional options are handled.
-    parsed_options parsed = 
+    parsed_options parsed =
         command_line_parser(args).options(desc).positional(p).run();
 
     BOOST_REQUIRE(parsed.options.size() == 5);
