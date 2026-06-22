@@ -50,7 +50,7 @@ namespace boost { namespace program_options {
 
 
     /** Runs all 'notify' function for options in 'm'. */
-    BOOST_PROGRAM_OPTIONS_DECL void notify(variables_map& m);
+    BOOST_PROGRAM_OPTIONS_DECL void notify(const variables_map& m);
 
     /** Class holding value of option. Contains details about how the
         value is set and allows to conveniently obtain the value.
@@ -157,7 +157,7 @@ namespace boost { namespace program_options {
         // Override to clear some extra fields.
         void clear();
 
-        void notify();
+        void notify() const;
 
     private:
         /** Implementation of abstract_variables_map::get
