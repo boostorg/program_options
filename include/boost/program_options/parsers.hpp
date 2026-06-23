@@ -179,7 +179,9 @@ namespace boost { namespace program_options {
 
     /** Parse a config file.
 
-        Read from given stream.
+        Read from given stream. Errors while reading the stream are not
+        handled in any special manner. The method `bad()` on the given
+        stream can be used to check if an error has been occurred.
     */
     template<class charT>
 #if ! BOOST_WORKAROUND(__ICL, BOOST_TESTED_AT(700))
@@ -192,7 +194,8 @@ namespace boost { namespace program_options {
     /** Parse a config file.
 
         Read from file with the given name. The character type is
-        passed to the file stream.
+        passed to the file stream. An exception of type `reading_file`
+        is thrown when the file cannot be read.
     */
 #ifdef BOOST_NO_CXX11_FUNCTION_TEMPLATE_DEFAULT_ARGS
     template<class charT>
