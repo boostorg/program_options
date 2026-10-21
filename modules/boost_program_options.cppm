@@ -15,9 +15,16 @@
 //
 // * The classic headers are included in the global module fragment and the
 //   public declarations are re-exported with exported using-declarations.
-//   This is a thin wrapper: no declaration is moved, renamed or otherwise
-//   changed, so the classic header-based interface and the compiled library
-//   are shared verbatim between the two consumption styles.
+//   The using-declaration list is the price of not modifying any header:
+//   declarations from the global module fragment are not exported
+//   automatically, so each public name must be re-exported explicitly.
+//   Libraries that annotate their headers with export macros (e.g.
+//   Boost.Any) instead include them in the module purview and need no
+//   using-declarations, but that style requires changing every public
+//   header and modularizing all dependencies first. Keeping the headers
+//   untouched makes this change strictly additive: the header-based
+//   interface, the compiled library and its ABI are shared verbatim
+//   between the two consumption styles.
 //
 // * Macros (e.g. BOOST_PROGRAM_OPTIONS_VERSION) are not exported by C++20
 //   modules. Code that needs them must keep including the classic headers.

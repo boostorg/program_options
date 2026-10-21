@@ -45,7 +45,8 @@ int main(int argc, char* argv[])
   declarations in namespace <code>boost::program_options</code> that are
   declared by the umbrella header <code>&lt;boost/program_options.hpp&gt;</code>,
   so existing code only needs to replace the
-  <code>#include</code> with an <code>import</code>.</para>
+  <code>#include</code> with an <code>import</code>. A minimal, compilable
+  example is provided in <code>modules/usage_sample.cpp</code>.</para>
 
   <section>
     <title>Building and Using</title>
