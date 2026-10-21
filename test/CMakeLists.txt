@@ -4,6 +4,21 @@
 
 include(BoostTest OPTIONAL RESULT_VARIABLE HAVE_BOOST_TEST)
 
+# C++20 module test. Does not use Boost.Test, and is only built when the
+# module interface target exists.
+
+if(BOOST_PROGRAM_OPTIONS_BUILD_MODULES AND TARGET Boost::program_options_modules)
+
+  add_executable(program_options_module_test module_test.cpp)
+  target_link_libraries(program_options_module_test PRIVATE Boost::program_options_modules)
+  set_target_properties(program_options_module_test PROPERTIES
+    CXX_STANDARD 20
+    CXX_STANDARD_REQUIRED ON
+    CXX_SCAN_FOR_MODULES ON)
+  add_test(NAME program_options_module_test COMMAND program_options_module_test)
+
+endif()
+
 if(NOT HAVE_BOOST_TEST)
   return()
 endif()

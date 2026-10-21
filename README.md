@@ -8,6 +8,38 @@ Distributed under the [Boost Software License, Version 1.0](http://www.boost.org
 
 * C++11
 * Requires Linking
+* Optional C++20 module interface (`import boost.program_options;`)
+
+### C++20 module support
+
+The library ships an optional C++20 module interface, so that instead of
+
+```cpp
+#include <boost/program_options.hpp>
+```
+
+you can write
+
+```cpp
+import boost.program_options;
+```
+
+and keep using the `boost::program_options` namespace unchanged. The change is
+strictly additive: the classic headers are not modified and remain fully
+supported.
+
+The module is not built by default. Enable it by configuring CMake with
+`-DBOOST_PROGRAM_OPTIONS_BUILD_MODULES=ON`, which creates the additional
+`Boost::program_options_modules` target (it links the classic compiled
+library automatically). Building the module requires CMake 3.28+ with the
+Ninja generator (CMake 3.30+ with the Visual Studio generator) and a compiler
+with C++20 modules support. The `test/module_test.cpp` test verifies that the
+exported interface is complete and functional, without including any Boost
+header.
+
+Macros (e.g. `BOOST_PROGRAM_OPTIONS_VERSION`) are not exported by C++20
+modules; include the classic headers where macros are needed. See
+`doc/modules.xml` for details.
 
 ### Development
 

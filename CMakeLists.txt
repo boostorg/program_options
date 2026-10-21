@@ -55,6 +55,45 @@ else()
   target_compile_definitions(boost_program_options PUBLIC BOOST_PROGRAM_OPTIONS_STATIC_LINK)
 endif()
 
+# C++20 module interface for the library ('import boost.program_options;').
+# Entirely optional and off by default: the header-based interface is unchanged.
+
+option(BOOST_PROGRAM_OPTIONS_BUILD_MODULES "Build the C++20 module interface (boost.program_options)" OFF)
+
+if(BOOST_PROGRAM_OPTIONS_BUILD_MODULES)
+
+  if(CMAKE_GENERATOR MATCHES "Visual Studio")
+    if(CMAKE_VERSION VERSION_LESS 3.30)
+      message(FATAL_ERROR "boost_program_options_modules: the ${CMAKE_GENERATOR} generator requires CMake 3.30 or later for C++20 modules.")
+    endif()
+  elseif(CMAKE_VERSION VERSION_LESS 3.28)
+    message(FATAL_ERROR "boost_program_options_modules: building C++20 modules requires CMake 3.28 or later and a Ninja generator.")
+  endif()
+
+  add_library(boost_program_options_modules)
+  add_library(Boost::program_options_modules ALIAS boost_program_options_modules)
+
+  target_sources(boost_program_options_modules
+    PUBLIC FILE_SET CXX_MODULES
+      BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/src/cppm"
+      FILES src/cppm/boost/program_options.cppm
+  )
+
+  # The module interface re-exports the declarations of the classic headers,
+  # whose definitions live in boost_program_options.
+  target_link_libraries(boost_program_options_modules PUBLIC boost_program_options)
+
+  target_compile_features(boost_program_options_modules PUBLIC cxx_std_20)
+
+  if(NOT BOOST_SKIP_INSTALL_RULES AND NOT CMAKE_SKIP_INSTALL_RULES)
+    # Install the module interface source next to the headers, so that it is
+    # available to build systems that do not produce BMIs from installed
+    # packages (e.g. MSBuild projects adding the .cppm/.ixx directly).
+    install(FILES src/cppm/boost/program_options.cppm DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/boost")
+  endif()
+
+endif()
+
 if(BUILD_TESTING AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt")
 
   add_subdirectory(test)
