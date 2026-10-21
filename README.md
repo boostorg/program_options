@@ -61,15 +61,16 @@ changes to re-align with the evolution of Boost C++ Libraries and C++.
  
 ### Directories
 
-| Name      | Purpose                        |
-| --------- | ------------------------------ |
-| `build`   | build script for link library  |
-| `ci`      | continuous integration scripts |
-| `doc`     | documentation                  |
-| `example` | use case examples              |
-| `include` | headers                        |
-| `src`     | source code for link library   |
-| `test`    | unit tests                     |
+| Name      | Purpose                          |
+| --------- | -------------------------------- |
+| `build`   | build script for link library    |
+| `ci`      | continuous integration scripts   |
+| `doc`     | documentation                    |
+| `example` | use case examples                |
+| `include` | headers                          |
+| `modules` | C++20 module interface           |
+| `src`     | source code for link library     |
+| `test`    | unit tests                       |
 
 ### More information
 
