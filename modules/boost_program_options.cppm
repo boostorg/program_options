@@ -87,18 +87,18 @@ export module boost.program_options;
 #   pragma clang diagnostic ignored "-Winclude-angled-in-module-purview"
 #endif
 
-// Some compilers prune global-module-fragment declarations from the BMI.
-// Templates defined by the preloaded headers (e.g. boost::any_cast, used by
-// variable_value::as<T>()) look up operators such as
-// boost::typeindex::operator== by ADL when instantiated in importing
-// translation units. Those operators must therefore be exported by the
-// module, like the library's own declarations.
+// boost::typeindex comparison operators are re-exported on purpose.
+// boost::type_index ships a module of its own, but it is not imported (or
+// built) here: <boost/type_index.hpp> is preloaded textually in the global
+// module fragment via <boost/any.hpp>. Templates from those preloaded
+// headers (e.g. boost::any_cast, used by variable_value::as<T>()) look up
+// these operators by ADL when instantiated in importing translation units,
+// and some compilers do not find global-module declarations there unless
+// the module exports them (MSVC: error C2679). Once the dependencies are
+// modularized and imported instead, this block can be dropped.
 export namespace boost { namespace typeindex {
 using ::boost::typeindex::operator==;
 using ::boost::typeindex::operator!=;
 }}
 
-// The library's headers, in the module purview: declarations below are
-// attached to this module and the public ones are exported through the
-// BOOST_PROGRAM_OPTIONS_BEGIN/END_MODULE_EXPORT blocks.
 #include <boost/program_options.hpp>

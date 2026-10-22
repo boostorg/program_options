@@ -15,9 +15,10 @@
 // forward declaration
 namespace boost { template<class T> class optional; }
 
+namespace boost { namespace program_options {
+
 BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
 
-namespace boost { namespace program_options { 
 
     namespace detail {
         extern BOOST_PROGRAM_OPTIONS_DECL std::string arg;
@@ -245,8 +246,6 @@ BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
         return r;        
     }
 
-
+BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
 
 }}
-
-BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
