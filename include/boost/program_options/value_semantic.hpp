@@ -5,11 +5,6 @@
 
 #ifndef BOOST_VALUE_SEMANTIC_HPP_VP_2004_02_24
 #define BOOST_VALUE_SEMANTIC_HPP_VP_2004_02_24
-#if !defined(BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT)
-// In module implementation units (modules/impl/*.cc) these declarations
-// are provided by the imported primary interface; re-including them here
-// would redeclare the module's own entities.
-
 
 #include <boost/program_options/config.hpp>
 #include <boost/program_options/errors.hpp>
@@ -22,8 +17,6 @@
 #include <vector>
 #include <typeinfo>
 #include <limits>
-
-BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
 
 namespace boost { namespace program_options {
 
@@ -425,10 +418,7 @@ namespace boost { namespace program_options {
 
 }}
 
-BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
-
 #include "boost/program_options/detail/value_semantic.hpp"
 
-#endif // !BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT
 #endif
 

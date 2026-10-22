@@ -24,12 +24,17 @@ you can write
 import boost.program_options;
 ```
 
-and keep using the `boost::program_options` namespace unchanged. The module
-follows the same design as other Boost libraries that ship one (e.g. Boost.Any
-and Boost.PFR): the public declarations in the headers are wrapped in
-`BOOST_PROGRAM_OPTIONS_BEGIN/END_MODULE_EXPORT` blocks, which expand to
-`export { ... }` while the module interface unit is being compiled and to
-nothing in ordinary builds, so the classic header interface is unchanged.
+and keep using the `boost::program_options` namespace unchanged.
+
+The interface (`src/cppm/boost/program_options.cppm`) is a thin wrapper: it
+includes the classic umbrella header in the global module fragment and
+re-exports the public declarations with exported using-declarations. No
+library header is modified, every declaration stays attached to the global
+module, and the definitions in the classic compiled library are reused
+directly. (The export-block style used by header-only libraries such as
+Boost.Any and Boost.PFR is not applicable here yet: for a compiled library
+it requires module implementation units and modularized dependencies; the
+migration can be revisited once the Boost dependencies are modularized.)
 
 The module is not built by default. Enable it by configuring CMake with
 `-DBOOST_PROGRAM_OPTIONS_BUILD_MODULES=ON`, which creates the additional
@@ -71,8 +76,8 @@ changes to re-align with the evolution of Boost C++ Libraries and C++.
 | `doc`     | documentation                    |
 | `example` | use case examples                |
 | `include` | headers                          |
-| `modules` | C++20 module interface           |
-| `src`     | source code for link library     |
+| `src`     | source code for link library and  |
+|           | C++20 module interface           |
 | `test`    | unit tests                       |
 
 ### More information

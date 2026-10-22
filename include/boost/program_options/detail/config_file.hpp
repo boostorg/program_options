@@ -6,11 +6,6 @@
 
 #ifndef BOOST_CONFIG_FILE_VP_2003_01_02
 #define BOOST_CONFIG_FILE_VP_2003_01_02
-#if !defined(BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT)
-// In module implementation units (modules/impl/*.cc) these declarations
-// are provided by the imported primary interface; re-including them here
-// would redeclare the module's own entities.
-
 
 #include <iosfwd>
 #include <string>
@@ -196,5 +191,4 @@ namespace boost { namespace program_options { namespace detail {
 # pragma warning(pop)
 #endif
 
-#endif // !BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT
 #endif

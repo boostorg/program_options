@@ -5,11 +5,6 @@
 
 #ifndef BOOST_EOF_ITERATOR_VP_2004_03_12
 #define BOOST_EOF_ITERATOR_VP_2004_03_12
-#if !defined(BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT)
-// In module implementation units (modules/impl/*.cc) these declarations
-// are provided by the imported primary interface; re-including them here
-// would redeclare the module's own entities.
-
 
 #include <boost/iterator/iterator_facade.hpp>
 
@@ -102,6 +97,5 @@ namespace boost {
     };
 }
 
-#endif // !BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT
 #endif
 

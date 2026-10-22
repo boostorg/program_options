@@ -70,63 +70,20 @@ if(BOOST_PROGRAM_OPTIONS_BUILD_MODULES)
     message(FATAL_ERROR "boost_program_options_modules: building C++20 modules requires CMake 3.28 or later and a Ninja generator.")
   endif()
 
-  # The module interface and implementation units. Declarations in the
-  # module purview attach to the boost.program_options module, and their
-  # definitions must carry the same attachment (some compilers mangle
-  # module-attached functions differently), so the library sources are
-  # compiled as module implementation units (modules/impl/*.cc) instead of
-  # being taken from the classic library.
-  add_library(boost_program_options_modules
-    modules/impl/cmdline.cc
-    modules/impl/config_file.cc
-    modules/impl/convert.cc
-    modules/impl/options_description.cc
-    modules/impl/parsers.cc
-    modules/impl/positional_options.cc
-    modules/impl/split.cc
-    modules/impl/utf8_codecvt_facet.cc
-    modules/impl/value_semantic.cc
-    modules/impl/variables_map.cc
-    modules/impl/winmain.cc
-  )
+  # The module interface re-exports the declarations of the classic headers,
+  # whose definitions live in boost_program_options.
+  add_library(boost_program_options_modules)
   add_library(Boost::program_options_modules ALIAS boost_program_options_modules)
 
   target_sources(boost_program_options_modules
     PUBLIC FILE_SET CXX_MODULES
-      BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/modules"
-      FILES modules/boost_program_options.cppm
+      BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/src/cppm"
+      FILES src/cppm/boost/program_options.cppm
   )
+
+  target_link_libraries(boost_program_options_modules PUBLIC boost_program_options)
 
   target_compile_features(boost_program_options_modules PUBLIC cxx_std_20)
-
-  # Scan all sources of the target: the implementation units in impl/ are
-  # recognized as such and compiled against the interface's BMI.
-  set_target_properties(boost_program_options_modules PROPERTIES CXX_SCAN_FOR_MODULES ON)
-
-  target_include_directories(boost_program_options_modules PRIVATE include)
-
-  target_compile_definitions(boost_program_options_modules
-    PUBLIC BOOST_PROGRAM_OPTIONS_NO_LIB
-    PRIVATE BOOST_PROGRAM_OPTIONS_SOURCE
-  )
-
-  # Same dependencies as the classic library.
-  target_link_libraries(boost_program_options_modules
-    PUBLIC
-      Boost::any
-      Boost::config
-      Boost::core
-      Boost::detail
-      Boost::function
-      Boost::iterator
-      Boost::lexical_cast
-      Boost::smart_ptr
-      Boost::throw_exception
-      Boost::type_traits
-    PRIVATE
-      Boost::bind
-      Boost::tokenizer
-  )
 
   # Consume the standard library through 'import std;' in the module
   # interface when the toolchain provides the std module (CMake 3.30+,
@@ -146,7 +103,7 @@ if(BOOST_PROGRAM_OPTIONS_BUILD_MODULES)
     # Install the module interface source next to the headers, so that it is
     # available to build systems that do not produce BMIs from installed
     # packages (e.g. MSBuild projects adding the .cppm/.ixx directly).
-    install(FILES modules/boost_program_options.cppm DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/boost")
+    install(FILES src/cppm/boost/program_options.cppm DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/boost")
   endif()
 
 endif()

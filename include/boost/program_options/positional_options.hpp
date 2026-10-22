@@ -5,11 +5,6 @@
 
 #ifndef BOOST_PROGRAM_OPTIONS_POSITIONAL_OPTIONS_VP_2004_03_02
 #define BOOST_PROGRAM_OPTIONS_POSITIONAL_OPTIONS_VP_2004_03_02
-#if !defined(BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT)
-// In module implementation units (modules/impl/*.cc) these declarations
-// are provided by the imported primary interface; re-including them here
-// would redeclare the module's own entities.
-
 
 #include <boost/program_options/config.hpp>
 
@@ -20,8 +15,6 @@
 #   pragma warning (push)
 #   pragma warning (disable:4251) // class 'std::vector<_Ty>' needs to have dll-interface to be used by clients of class 'boost::program_options::positional_options_description'
 #endif
-
-BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
 
 namespace boost { namespace program_options {
 
@@ -73,12 +66,9 @@ namespace boost { namespace program_options {
 
 }}
 
-BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
-
 #if defined(BOOST_MSVC)
 #   pragma warning (pop)
 #endif
 
-#endif // !BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT
 #endif
 

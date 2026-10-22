@@ -7,11 +7,6 @@
 
 #ifndef BOOST_OPTION_DESCRIPTION_VP_2003_05_19
 #define BOOST_OPTION_DESCRIPTION_VP_2003_05_19
-#if !defined(BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT)
-// In module implementation units (modules/impl/*.cc) these declarations
-// are provided by the imported primary interface; re-including them here
-// would redeclare the module's own entities.
-
 
 #include <boost/program_options/config.hpp>
 #include <boost/program_options/errors.hpp>
@@ -36,8 +31,6 @@
 #   pragma warning (disable:4251) // class 'boost::shared_ptr<T>' needs to have dll-interface to be used by clients of class 'boost::program_options::option_description'
 #endif
 
-
-BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
 
 /** Boost namespace */
 namespace boost { 
@@ -301,11 +294,8 @@ namespace program_options {
     };
 }}
 
-BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
-
 #if defined(BOOST_MSVC)
 #   pragma warning (pop)
 #endif
 
-#endif // !BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT
 #endif

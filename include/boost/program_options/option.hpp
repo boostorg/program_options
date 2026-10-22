@@ -5,18 +5,11 @@
 
 #ifndef BOOST_OPTION_HPP_VP_2004_02_25
 #define BOOST_OPTION_HPP_VP_2004_02_25
-#if !defined(BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT)
-// In module implementation units (modules/impl/*.cc) these declarations
-// are provided by the imported primary interface; re-including them here
-// would redeclare the module's own entities.
-
 
 #include <boost/program_options/config.hpp>
 
 #include <string>
 #include <vector>
-
-BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
 
 namespace boost { namespace program_options {
 
@@ -75,7 +68,4 @@ namespace boost { namespace program_options {
 
 }}
 
-BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
-
-#endif // !BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT
 #endif

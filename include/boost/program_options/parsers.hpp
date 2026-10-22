@@ -6,11 +6,6 @@
 
 #ifndef BOOST_PARSERS_VP_2003_05_19
 #define BOOST_PARSERS_VP_2003_05_19
-#if !defined(BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT)
-// In module implementation units (modules/impl/*.cc) these declarations
-// are provided by the imported primary interface; re-including them here
-// would redeclare the module's own entities.
-
 
 #include <boost/program_options/config.hpp>
 #include <boost/program_options/option.hpp>
@@ -26,8 +21,6 @@
 #   pragma warning (push)
 #   pragma warning (disable:4251) // class 'std::vector<_Ty>' needs to have dll-interface to be used by clients of class 'boost::program_options::basic_parsed_options<wchar_t>'
 #endif
-
-BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
 
 namespace boost { namespace program_options {
 
@@ -297,8 +290,6 @@ namespace boost { namespace program_options {
 
 }}
 
-BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
-
 #if defined(BOOST_MSVC)
 #   pragma warning (pop)
 #endif
@@ -307,5 +298,4 @@ BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
 
 #include "boost/program_options/detail/parsers.hpp"
 
-#endif // !BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT
 #endif

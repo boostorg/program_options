@@ -3,10 +3,6 @@
 // (See accompanying file LICENSE_1_0.txt
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT)
-// In module implementation units (modules/impl/*.cc) these declarations
-// are provided by the imported primary interface; re-including them here
-// would redeclare the module's own entities.
 // This file defines template functions that are declared in
 // ../value_semantic.hpp.
 
@@ -19,10 +15,7 @@
 // forward declaration
 namespace boost { template<class T> class optional; }
 
-namespace boost { namespace program_options {
-
-BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
-
+namespace boost { namespace program_options { 
 
     namespace detail {
         extern BOOST_PROGRAM_OPTIONS_DECL std::string arg;
@@ -85,11 +78,7 @@ BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
         check_first_occurrence(const boost::any& value);
     }
 
-BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
-
     using namespace validators;
-
-BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
 
     /** Validates 's' and updates 'v'.
         @pre 'v' is either empty or in the state assigned by the previous
@@ -250,7 +239,6 @@ BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
         return r;        
     }
 
-BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
+
 
 }}
-#endif // !BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT
