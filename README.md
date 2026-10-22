@@ -26,15 +26,16 @@ import boost.program_options;
 
 and keep using the `boost::program_options` namespace unchanged.
 
-The interface (`src/cppm/boost/program_options.cppm`) is a thin wrapper: it
-includes the classic umbrella header in the global module fragment and
-re-exports the public declarations with exported using-declarations. No
-library header is modified, every declaration stays attached to the global
-module, and the definitions in the classic compiled library are reused
-directly. (The export-block style used by header-only libraries such as
-Boost.Any and Boost.PFR is not applicable here yet: for a compiled library
-it requires module implementation units and modularized dependencies; the
-migration can be revisited once the Boost dependencies are modularized.)
+The interface (`src/cppm/boost/program_options.cppm`) preloads the library's
+dependencies in the global module fragment and includes the umbrella header
+in the module purview inside an `export { ... }` block, so the public
+declarations are exported without modifying any header. The library's
+sources in `src/*.cpp` carry a `BOOST_PROGRAM_OPTIONS_MODULE_UNIT`
+conditional that compiles them, in the module build, as module
+implementation units providing matching module-attached definitions; in
+classic builds the same files compile unchanged. (The header export-block
+style of Boost.Any/Boost.PFR is not needed for this: no header carries
+module machinery at all.)
 
 The module is not built by default. Enable it by configuring CMake with
 `-DBOOST_PROGRAM_OPTIONS_BUILD_MODULES=ON`, which creates the additional

@@ -70,9 +70,26 @@ if(BOOST_PROGRAM_OPTIONS_BUILD_MODULES)
     message(FATAL_ERROR "boost_program_options_modules: building C++20 modules requires CMake 3.28 or later and a Ninja generator.")
   endif()
 
-  # The module interface re-exports the declarations of the classic headers,
-  # whose definitions live in boost_program_options.
-  add_library(boost_program_options_modules)
+  # The module interface plus the library sources, compiled as module
+  # implementation units (BOOST_PROGRAM_OPTIONS_MODULE_UNIT in src/*.cpp):
+  # declarations in the module purview attach to the module, and their
+  # definitions must carry the same attachment (some compilers mangle
+  # module-attached functions differently), so they cannot be taken from
+  # the classic library. In classic builds the same sources compile
+  # unchanged.
+  add_library(boost_program_options_modules
+    src/cmdline.cpp
+    src/config_file.cpp
+    src/convert.cpp
+    src/options_description.cpp
+    src/parsers.cpp
+    src/positional_options.cpp
+    src/split.cpp
+    src/utf8_codecvt_facet.cpp
+    src/value_semantic.cpp
+    src/variables_map.cpp
+    src/winmain.cpp
+  )
   add_library(Boost::program_options_modules ALIAS boost_program_options_modules)
 
   target_sources(boost_program_options_modules
@@ -81,9 +98,36 @@ if(BOOST_PROGRAM_OPTIONS_BUILD_MODULES)
       FILES src/cppm/boost/program_options.cppm
   )
 
-  target_link_libraries(boost_program_options_modules PUBLIC boost_program_options)
-
   target_compile_features(boost_program_options_modules PUBLIC cxx_std_20)
+
+  # Scan all sources of the target: the src/*.cpp module implementation
+  # units are recognized as such and compiled against the interface's BMI.
+  set_target_properties(boost_program_options_modules PROPERTIES CXX_SCAN_FOR_MODULES ON)
+
+  target_include_directories(boost_program_options_modules PRIVATE include)
+
+  target_compile_definitions(boost_program_options_modules
+    PUBLIC BOOST_PROGRAM_OPTIONS_NO_LIB
+    PRIVATE BOOST_PROGRAM_OPTIONS_SOURCE BOOST_PROGRAM_OPTIONS_MODULE_UNIT
+  )
+
+  # Same dependencies as the classic library.
+  target_link_libraries(boost_program_options_modules
+    PUBLIC
+      Boost::any
+      Boost::config
+      Boost::core
+      Boost::detail
+      Boost::function
+      Boost::iterator
+      Boost::lexical_cast
+      Boost::smart_ptr
+      Boost::throw_exception
+      Boost::type_traits
+    PRIVATE
+      Boost::bind
+      Boost::tokenizer
+  )
 
   # Consume the standard library through 'import std;' in the module
   # interface when the toolchain provides the std module (CMake 3.30+,
