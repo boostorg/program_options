@@ -85,6 +85,12 @@ if(BOOST_PROGRAM_OPTIONS_BUILD_MODULES)
 
   target_compile_features(boost_program_options_modules PUBLIC cxx_std_20)
 
+  # Note: 'import std;' is deliberately not used in the module interface.
+  # The library's headers depend on Boost libraries that are not modularized
+  # yet (Function, LexicalCast, SmartPtr, Any) and those textually include
+  # the standard library, which conflicts with 'import std;'. See
+  # modules/boost_program_options.cppm.
+
   if(NOT BOOST_SKIP_INSTALL_RULES AND NOT CMAKE_SKIP_INSTALL_RULES)
     # Install the module interface source next to the headers, so that it is
     # available to build systems that do not produce BMIs from installed

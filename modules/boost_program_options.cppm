@@ -21,13 +21,17 @@
 //   and to nothing in ordinary header builds (see
 //   <boost/program_options/config.hpp>).
 //
+// * The standard library and the non-modularized dependencies are preloaded
+//   textually in the global module fragment (see the note there on why
+//   'import std;' cannot be used yet).
+//
 // * Unlike Boost.Any or Boost.PFR, this library's public headers include
 //   non-modularized Boost libraries (Boost.Any, Boost.Function,
-//   Boost.SmartPtr, Boost.LexicalCast) and the standard library directly.
-//   All of those headers are preloaded in the global module fragment below,
-//   so that the includes triggered inside the purview are no-ops (include
-//   guards) and no foreign declarations get attached to this module. They
-//   remain attached to the global module, exactly as in header builds.
+//   Boost.SmartPtr, Boost.LexicalCast). All of those headers are preloaded
+//   in the global module fragment below, so that the includes triggered
+//   inside the purview are no-ops (include guards) and no foreign
+//   declarations get attached to this module. They remain attached to the
+//   global module, exactly as in header builds.
 //
 // * Macros (e.g. BOOST_PROGRAM_OPTIONS_VERSION) are not exported by C++20
 //   modules. Code that needs them must keep including the classic headers.
@@ -39,19 +43,15 @@
 
 module;
 
-// Dependencies directly included by the library's public headers.
-#include <boost/config.hpp>
-#include <boost/version.hpp>
-#include <boost/any.hpp>
-#include <boost/function.hpp>
-#include <boost/function/function1.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/throw_exception.hpp>
-#include <boost/type_index.hpp>
-#include <boost/detail/workaround.hpp>
-
 // Standard headers directly included by the library's public headers.
+//
+// Note: unlike Boost.Any or Boost.PFR, this library cannot use
+// 'import std;' here yet. Its public headers depend on Boost libraries
+// that are not modularized (Boost.Function, Boost.LexicalCast,
+// Boost.SmartPtr, Boost.Any), and those headers textually include the
+// standard library, which conflicts with 'import std;'. Once the
+// dependencies are modularized, this block can be replaced with an
+// 'import std;' guarded the same way as in modules/boost_any.cppm.
 #include <cassert>
 #include <cwchar>
 #include <iosfwd>
@@ -66,6 +66,18 @@ module;
 #include <typeinfo>
 #include <utility>
 #include <vector>
+
+// Dependencies directly included by the library's public headers.
+#include <boost/config.hpp>
+#include <boost/version.hpp>
+#include <boost/any.hpp>
+#include <boost/function.hpp>
+#include <boost/function/function1.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/throw_exception.hpp>
+#include <boost/type_index.hpp>
+#include <boost/detail/workaround.hpp>
 
 export module boost.program_options;
 
