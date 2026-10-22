@@ -37,34 +37,23 @@
 
 module;
 
-// Standard headers used by the library's headers and sources.
+// Standard headers used by the library's headers.
 #include <cassert>
-#include <cctype>
-#include <climits>
-#include <clocale>
-#include <cstdarg>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
 #include <cwchar>
-#include <fstream>
 #include <iosfwd>
-#include <istream>
 #include <iterator>
-#include <iostream>
 #include <limits>
 #include <locale>
 #include <map>
 #include <optional>
 #include <set>
-#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <typeinfo>
 #include <utility>
 #include <vector>
 
-// Boost dependencies used by the library's headers and sources.
+// Boost dependencies used by the library's headers.
 #include <boost/config.hpp>
 #include <boost/version.hpp>
 #include <boost/any.hpp>
@@ -75,32 +64,22 @@ module;
 #include <boost/throw_exception.hpp>
 #include <boost/type_index.hpp>
 #include <boost/detail/workaround.hpp>
-#include <boost/bind/bind.hpp>
-#include <boost/tokenizer.hpp>
 #include <boost/iterator/iterator_facade.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/is_same.hpp>
-
-// The shared utf8_codecvt_facet detail header is macro-parameterized; wrap
-// it exactly like <boost/program_options/detail/utf8_codecvt_facet.hpp>
-// and src/utf8_codecvt_facet.cpp do, so that the class stays attached to
-// the global module, as in classic builds.
-#define BOOST_UTF8_BEGIN_NAMESPACE \
-     namespace boost { namespace program_options { namespace detail {
-#define BOOST_UTF8_END_NAMESPACE }}}
-#define BOOST_UTF8_DECL
-#include <boost/detail/utf8_codecvt_facet.hpp>
-#undef BOOST_UTF8_BEGIN_NAMESPACE
-#undef BOOST_UTF8_END_NAMESPACE
-#undef BOOST_UTF8_DECL
 
 // Consume the standard library through 'import std;' as well when the
 // toolchain provides it (BOOST_PROGRAM_OPTIONS_USE_STD_MODULE, set by CMake
 // like in other modularized Boost libraries). The import must come after
 // the textual includes above: on MSVC, a textual standard header parsed
 // after 'import std;' clashes with the declarations already provided by
-// the std module.
+// the std module. The textual includes stay in both modes because the
+// library's (unconverted) headers include standard headers textually; they
+// set the include guards that make those purview includes no-ops, keeping
+// the standard library attached to the global module. Libraries whose
+// headers are converted to compatibility headers (e.g. Boost.Any) can
+// replace them with 'import std;' alone.
 #ifdef BOOST_PROGRAM_OPTIONS_USE_STD_MODULE
 import std;
 #endif
