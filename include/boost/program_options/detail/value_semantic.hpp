@@ -15,6 +15,8 @@
 // forward declaration
 namespace boost { template<class T> class optional; }
 
+BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
+
 namespace boost { namespace program_options { 
 
     namespace detail {
@@ -78,7 +80,11 @@ namespace boost { namespace program_options {
         check_first_occurrence(const boost::any& value);
     }
 
+BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
+
     using namespace validators;
+
+BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
 
     /** Validates 's' and updates 'v'.
         @pre 'v' is either empty or in the state assigned by the previous
@@ -242,3 +248,5 @@ namespace boost { namespace program_options {
 
 
 }}
+
+BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT

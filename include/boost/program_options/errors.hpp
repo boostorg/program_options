@@ -21,6 +21,8 @@
 #   pragma warning (disable:4251) // class 'std::vector<_Ty>' needs to have dll-interface to be used by clients of class 'boost::program_options::ambiguous_option'
 #endif
 
+BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
+
 namespace boost { namespace program_options {
 
     inline std::string strip_prefixes(const std::string& text)
@@ -416,6 +418,8 @@ namespace boost { namespace program_options {
     
 
 }}
+
+BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
 
 #if defined(BOOST_MSVC)
 #   pragma warning (pop)

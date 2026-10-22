@@ -11,6 +11,8 @@
 #include <string>
 #include <vector>
 
+BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
+
 namespace boost { namespace program_options {
 
     /** Option found in input source.
@@ -67,5 +69,7 @@ namespace boost { namespace program_options {
     typedef basic_option<wchar_t> woption;
 
 }}
+
+BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
 
 #endif

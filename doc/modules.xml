@@ -48,6 +48,16 @@ int main(int argc, char* argv[])
   <code>#include</code> with an <code>import</code>. A minimal, compilable
   example is provided in <code>modules/usage_sample.cpp</code>.</para>
 
+  <para>The interface follows the same design as other Boost libraries that
+  ship a module (for example Boost.Any and Boost.PFR): the public
+  declarations of the classic headers are wrapped in
+  <code>BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT</code> /
+  <code>BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT</code> blocks (defined in
+  <code>&lt;boost/program_options/config.hpp&gt;</code>), which expand to
+  <code>export { ... }</code> while the module interface unit is being
+  compiled and to nothing in ordinary builds, leaving the header-based
+  interface unchanged.</para>
+
   <section>
     <title>Building and Using</title>
 
@@ -73,9 +83,12 @@ ctest --output-on-failure
     <para>The <literal>import</literal> statement only makes the library's
     declarations available. As usual with modules, macros such as
     <code>BOOST_PROGRAM_OPTIONS_VERSION</code> are not exported; code that
-    needs them must include the classic headers. Such code may combine the
-    two consumption styles in the same translation unit, since all entities
-    remain attached to the global module.</para>
+    needs those macros must include the classic headers. As with other
+    modularized Boost libraries, mixing
+    <code>#include &lt;boost/program_options.hpp&gt;</code> and
+    <code>import boost.program_options;</code> for the library's own
+    declarations in the same program is not supported; a translation unit
+    should use one style or the other.</para>
 
   </section>
 

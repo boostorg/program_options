@@ -16,6 +16,8 @@
 #   pragma warning (disable:4251) // class 'std::vector<_Ty>' needs to have dll-interface to be used by clients of class 'boost::program_options::positional_options_description'
 #endif
 
+BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
+
 namespace boost { namespace program_options {
 
     /** Describes positional options. 
@@ -65,6 +67,8 @@ namespace boost { namespace program_options {
     };
 
 }}
+
+BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
 
 #if defined(BOOST_MSVC)
 #   pragma warning (pop)

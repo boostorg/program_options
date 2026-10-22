@@ -18,6 +18,8 @@
 #include <typeinfo>
 #include <limits>
 
+BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
+
 namespace boost { namespace program_options {
 
     /** Class which specifies how the option's value is to be parsed
@@ -417,6 +419,8 @@ namespace boost { namespace program_options {
     bool_switch(bool* v);
 
 }}
+
+BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
 
 #include "boost/program_options/detail/value_semantic.hpp"
 

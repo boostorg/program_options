@@ -47,6 +47,32 @@
 #define BOOST_PROGRAM_OPTIONS_DECL
 #endif
 
+///////////////////////////////////////////////////////////////////////////////
+// C++20 modules support (modules/boost_program_options.cppm).
+//
+// When the module interface unit is being compiled, the library's headers
+// are included in the module purview and their public declarations are
+// wrapped into BOOST_PROGRAM_OPTIONS_BEGIN/END_MODULE_EXPORT blocks, which
+// expand to 'export { ... }'. In ordinary (header) builds the macros expand
+// to nothing and the headers are unchanged.
+
+#ifdef BOOST_PROGRAM_OPTIONS_INTERFACE_UNIT
+#   define BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT export {
+#   define BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT }
+#else
+#   define BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
+#   define BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
+#endif
+
+// With BOOST_USE_MODULES, including any Boost.ProgramOptions header is
+// equivalent to 'import boost.program_options;', keeping user code source
+// compatible between the two consumption styles.
+#if defined(BOOST_USE_MODULES) && !defined(BOOST_PROGRAM_OPTIONS_INTERFACE_UNIT)
+#ifndef BOOST_IN_MODULE_PURVIEW
+import boost.program_options;
+#endif
+#endif
+
 
 #endif // BOOST_PROGRAM_OPTIONS_CONFIG_HK_2004_01_11
 

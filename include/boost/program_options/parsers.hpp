@@ -22,6 +22,8 @@
 #   pragma warning (disable:4251) // class 'std::vector<_Ty>' needs to have dll-interface to be used by clients of class 'boost::program_options::basic_parsed_options<wchar_t>'
 #endif
 
+BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
+
 namespace boost { namespace program_options {
 
     class options_description;
@@ -289,6 +291,8 @@ namespace boost { namespace program_options {
 
 
 }}
+
+BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
 
 #if defined(BOOST_MSVC)
 #   pragma warning (pop)

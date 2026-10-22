@@ -27,6 +27,8 @@ namespace std
 }    
 #endif
 
+BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
+
 namespace boost {
 
     /** Converts from local 8 bit encoding into wchar_t string using
@@ -86,9 +88,12 @@ namespace boost {
   
 }
 
+BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
+
 #else
 #include <vector>
 #include <string>
+BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
 namespace boost{
    namespace program_options{
         BOOST_PROGRAM_OPTIONS_DECL std::string to_internal(const std::string&);
@@ -103,5 +108,6 @@ namespace boost{
         }
    }
 }
+BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
 #endif
 #endif

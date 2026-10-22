@@ -10,6 +10,8 @@
 
 #include <iterator>
 
+BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
+
 namespace boost { namespace program_options {
 
     template<class charT>
@@ -131,5 +133,7 @@ namespace boost { namespace program_options {
 
 
 }}
+
+BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
 
 #endif

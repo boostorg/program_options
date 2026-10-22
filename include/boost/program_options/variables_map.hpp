@@ -21,6 +21,8 @@
 #   pragma warning (disable:4251) // 'boost::program_options::variable_value::v' : class 'boost::any' needs to have dll-interface to be used by clients of class 'boost::program_options::variable_value
 #endif
 
+BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
+
 namespace boost { namespace program_options {
 
     template<class charT>
@@ -212,6 +214,8 @@ namespace boost { namespace program_options {
     }
 
 }}
+
+BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
 
 #if defined(BOOST_MSVC)
 #   pragma warning (pop)

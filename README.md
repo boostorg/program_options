@@ -24,9 +24,12 @@ you can write
 import boost.program_options;
 ```
 
-and keep using the `boost::program_options` namespace unchanged. The change is
-strictly additive: the classic headers are not modified and remain fully
-supported.
+and keep using the `boost::program_options` namespace unchanged. The module
+follows the same design as other Boost libraries that ship one (e.g. Boost.Any
+and Boost.PFR): the public declarations in the headers are wrapped in
+`BOOST_PROGRAM_OPTIONS_BEGIN/END_MODULE_EXPORT` blocks, which expand to
+`export { ... }` while the module interface unit is being compiled and to
+nothing in ordinary builds, so the classic header interface is unchanged.
 
 The module is not built by default. Enable it by configuring CMake with
 `-DBOOST_PROGRAM_OPTIONS_BUILD_MODULES=ON`, which creates the additional

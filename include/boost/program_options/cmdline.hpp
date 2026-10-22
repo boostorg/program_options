@@ -6,6 +6,10 @@
 #ifndef BOOST_CMDLINE_HPP_VP_2004_03_13
 #define BOOST_CMDLINE_HPP_VP_2004_03_13
 
+#include <boost/program_options/config.hpp>
+
+BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
+
 namespace boost { namespace program_options { namespace command_line_style {
     /** Various possible styles of options.
         
@@ -83,6 +87,9 @@ namespace boost { namespace program_options { namespace command_line_style {
         /** The default style. */
         default_style = unix_style
     };
+
+BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
+
 }}}
 
 
