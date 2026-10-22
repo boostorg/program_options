@@ -5,6 +5,11 @@
 
 #ifndef BOOST_CONVERT_HPP_VP_2004_04_28
 #define BOOST_CONVERT_HPP_VP_2004_04_28
+#if !defined(BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT)
+// In module implementation units (modules/impl/*.cc) these declarations
+// are provided by the imported primary interface; re-including them here
+// would redeclare the module's own entities.
+
 
 #include <boost/program_options/config.hpp>
 
@@ -110,4 +115,5 @@ namespace boost{
 }
 BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
 #endif
+#endif // !BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT
 #endif

@@ -3,6 +3,10 @@
 // (See accompanying file LICENSE_1_0.txt
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#if !defined(BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT)
+// In module implementation units (modules/impl/*.cc) these declarations
+// are provided by the imported primary interface; re-including them here
+// would redeclare the module's own entities.
 #ifndef BOOST_PARSERS_HPP_VP_2004_05_06
 #define BOOST_PARSERS_HPP_VP_2004_05_06
 
@@ -137,3 +141,4 @@ namespace boost { namespace program_options {
 BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
 
 #endif
+#endif // !BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT

@@ -7,22 +7,31 @@
 // No Boost header is included on purpose: everything must come from
 // 'import boost.program_options;'.
 
+// Standard library: textual includes by default; when the module was built
+// with 'import std' (BOOST_PROGRAM_OPTIONS_USE_STD_MODULE), the standard
+// module comes with the module and the textual includes would clash with it.
+#ifdef BOOST_PROGRAM_OPTIONS_USE_STD_MODULE
+import std;
+#else
+#include <cassert>
 #include <cstdio>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
+#endif
 
 import boost.program_options;
 
 // The test is built in both Debug and Release configurations, so plain
 // assert() would be a no-op in Release. Use an always-active check.
+// (Uses only facilities provided by 'import std', no macros.)
 #define CHECK(cond) \
     do { \
         if (!(cond)) { \
-            std::fprintf(stderr, "CHECK failed: %s (%s:%d)\n", \
-                         #cond, __FILE__, __LINE__); \
+            std::cerr << "CHECK failed: " << #cond << " (" << __FILE__ \
+                      << ":" << __LINE__ << ")\n"; \
             std::abort(); \
         } \
     } while (0)

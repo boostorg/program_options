@@ -6,6 +6,11 @@
 
 #ifndef BOOST_VARIABLES_MAP_VP_2003_05_19
 #define BOOST_VARIABLES_MAP_VP_2003_05_19
+#if !defined(BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT)
+// In module implementation units (modules/impl/*.cc) these declarations
+// are provided by the imported primary interface; re-including them here
+// would redeclare the module's own entities.
+
 
 #include <boost/program_options/config.hpp>
 
@@ -221,4 +226,5 @@ BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
 #   pragma warning (pop)
 #endif
 
+#endif // !BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT
 #endif

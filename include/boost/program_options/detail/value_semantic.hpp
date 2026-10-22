@@ -3,6 +3,10 @@
 // (See accompanying file LICENSE_1_0.txt
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#if !defined(BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT)
+// In module implementation units (modules/impl/*.cc) these declarations
+// are provided by the imported primary interface; re-including them here
+// would redeclare the module's own entities.
 // This file defines template functions that are declared in
 // ../value_semantic.hpp.
 
@@ -249,3 +253,4 @@ BOOST_PROGRAM_OPTIONS_BEGIN_MODULE_EXPORT
 BOOST_PROGRAM_OPTIONS_END_MODULE_EXPORT
 
 }}
+#endif // !BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT

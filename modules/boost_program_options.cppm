@@ -21,17 +21,21 @@
 //   and to nothing in ordinary header builds (see
 //   <boost/program_options/config.hpp>).
 //
-// * The standard library and the non-modularized dependencies are preloaded
-//   textually in the global module fragment (see the note there on why
-//   'import std;' cannot be used yet).
+// * Unlike Boost.Any or Boost.PFR, this library is compiled: entities
+//   declared in a module purview are attached to the module, and MSVC (for
+//   one) mangles their out-of-line definitions with a module qualifier, so
+//   they cannot be provided by the classic, non-modular library. The module
+//   target therefore also compiles the library sources as module
+//   implementation units (impl/*.cc), which redeclare the exported
+//   interface and provide matching, module-attached definitions. The
+//   classic library is unchanged and keeps serving header builds.
 //
-// * Unlike Boost.Any or Boost.PFR, this library's public headers include
-//   non-modularized Boost libraries (Boost.Any, Boost.Function,
-//   Boost.SmartPtr, Boost.LexicalCast). All of those headers are preloaded
-//   in the global module fragment below, so that the includes triggered
-//   inside the purview are no-ops (include guards) and no foreign
-//   declarations get attached to this module. They remain attached to the
-//   global module, exactly as in header builds.
+// * The standard library and the non-modularized dependencies are preloaded
+//   textually in the global module fragment (see gmf_preload.hpp), and
+//   'import std;' is used in addition when the toolchain provides it.
+//   The import must come after the textual preloads: on MSVC, a textual
+//   standard header parsed after 'import std;' clashes with the
+//   declarations already provided by the std module.
 //
 // * Macros (e.g. BOOST_PROGRAM_OPTIONS_VERSION) are not exported by C++20
 //   modules. Code that needs them must keep including the classic headers.
@@ -43,41 +47,11 @@
 
 module;
 
-// Standard headers directly included by the library's public headers.
-//
-// Note: unlike Boost.Any or Boost.PFR, this library cannot use
-// 'import std;' here yet. Its public headers depend on Boost libraries
-// that are not modularized (Boost.Function, Boost.LexicalCast,
-// Boost.SmartPtr, Boost.Any), and those headers textually include the
-// standard library, which conflicts with 'import std;'. Once the
-// dependencies are modularized, this block can be replaced with an
-// 'import std;' guarded the same way as in modules/boost_any.cppm.
-#include <cassert>
-#include <cwchar>
-#include <iosfwd>
-#include <iterator>
-#include <limits>
-#include <locale>
-#include <map>
-#include <optional>
-#include <set>
-#include <stdexcept>
-#include <string>
-#include <typeinfo>
-#include <utility>
-#include <vector>
+#include "gmf_preload.hpp"
 
-// Dependencies directly included by the library's public headers.
-#include <boost/config.hpp>
-#include <boost/version.hpp>
-#include <boost/any.hpp>
-#include <boost/function.hpp>
-#include <boost/function/function1.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/throw_exception.hpp>
-#include <boost/type_index.hpp>
-#include <boost/detail/workaround.hpp>
+#ifdef BOOST_PROGRAM_OPTIONS_USE_STD_MODULE
+import std;
+#endif
 
 export module boost.program_options;
 
@@ -94,11 +68,19 @@ export module boost.program_options;
 // headers (e.g. boost::any_cast, used by variable_value::as<T>()) look up
 // these operators by ADL when instantiated in importing translation units,
 // and some compilers do not find global-module declarations there unless
-// the module exports them (MSVC: error C2679). Once the dependencies are
-// modularized and imported instead, this block can be dropped.
+// the module exports them (MSVC: error C2679).
 export namespace boost { namespace typeindex {
 using ::boost::typeindex::operator==;
 using ::boost::typeindex::operator!=;
 }}
 
+// The library's headers, in the module purview: the declarations below are
+// attached to this module and the public ones are exported through the
+// BOOST_PROGRAM_OPTIONS_BEGIN/END_MODULE_EXPORT blocks.
 #include <boost/program_options.hpp>
+
+// Additional internal headers used by the implementation units: included
+// here once (unexported) so that every unit of the module sees the same
+// declarations instead of re-including them textually.
+#include <boost/program_options/detail/config_file.hpp>
+#include <boost/program_options/environment_iterator.hpp>

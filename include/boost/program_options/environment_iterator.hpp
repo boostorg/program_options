@@ -5,6 +5,11 @@
 
 #ifndef BOOST_ENVIRONMENT_ITERATOR_VP_2004_05_14
 #define BOOST_ENVIRONMENT_ITERATOR_VP_2004_05_14
+#if !defined(BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT)
+// In module implementation units (modules/impl/*.cc) these declarations
+// are provided by the imported primary interface; re-including them here
+// would redeclare the module's own entities.
+
 
 #include "eof_iterator.hpp"
 
@@ -49,4 +54,5 @@ namespace boost {
         char** m_environment;
     };
 }
+#endif // !BOOST_PROGRAM_OPTIONS_MODULE_IMPL_UNIT
 #endif
