@@ -64,11 +64,13 @@ export module boost.program_options;
 // boost::typeindex comparison operators are re-exported on purpose.
 // boost::type_index ships a module of its own, but it is not imported (or
 // built) here: <boost/type_index.hpp> is preloaded textually in the global
-// module fragment via <boost/any.hpp>. Templates from those preloaded
-// headers (e.g. boost::any_cast, used by variable_value::as<T>()) look up
-// these operators by ADL when instantiated in importing translation units,
-// and some compilers do not find global-module declarations there unless
-// the module exports them (MSVC: error C2679).
+// module fragment via <boost/any.hpp>, so the operators are attached to
+// the global module. The preloaded boost::any_cast template is instantiated
+// in importing translation units (e.g. by variable_value::as<T>()) and
+// looks up these operators by ADL, and some compilers do not find
+// global-module declarations there unless the module exports them (MSVC:
+// error C2679). Once the dependencies are modularized and imported instead
+// of preloaded, this block can be dropped.
 export namespace boost { namespace typeindex {
 using ::boost::typeindex::operator==;
 using ::boost::typeindex::operator!=;
