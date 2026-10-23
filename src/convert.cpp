@@ -9,14 +9,7 @@ module;
 // so that nothing foreign is attached to the module. The library's own
 // headers included below are no-ops (guards predefined after the module
 // declaration): their declarations come from the imported interface.
-#include "cppm/std/fstream.hpp"
-#include "cppm/std/iostream.hpp"
-#include "cppm/std/locale.hpp"
-#include "cppm/std/clocale.hpp"
-#include "cppm/std/stdexcept.hpp"
-#include "cppm/std/string.hpp"
 #include <boost/bind/bind.hpp>
-#include "cppm/std/cstddef.hpp"
 #include <boost/throw_exception.hpp>
 #include <boost/program_options/config.hpp>
 
@@ -29,7 +22,29 @@ module;
 #undef BOOST_UTF8_END_NAMESPACE
 #undef BOOST_UTF8_DECL
 
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see src/cppm/boost/program_options.cppm).
+#ifdef BOOST_USE_MODULES
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
+#include <fstream>
+#include <iostream>
+#include <locale>
+#include <locale.h>
+#include <stdexcept>
+#include <string>
+#include <cstddef>
+#endif // standard library compatibility guard
+
 module boost.program_options;
+
+// Purview marker of the boost.program_options module units, per the
+// convention used by <boost/config/std/...> (boostorg/config PR #535).
+#define BOOST_IN_MODULE_PURVIEW
 
 #define BOOST_CONVERT_HPP_VP_2004_04_28
 #define BOOST_PROGRAM_OPTIONS_UTF8_CODECVT_FACET_HPP
@@ -40,6 +55,15 @@ module boost.program_options;
 // (See accompanying file LICENSE_1_0.txt
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see src/cppm/boost/program_options.cppm).
+#ifdef BOOST_USE_MODULES
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
 #include <fstream>
 #include <locale.h>
 #include <locale>
@@ -47,6 +71,7 @@ module boost.program_options;
 #include <string>
 #include <locale>
 #include <stdexcept>
+#endif // standard library compatibility guard
 
 #include <boost/config.hpp>
 
@@ -199,3 +224,4 @@ namespace boost {
 
 
 }
+

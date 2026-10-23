@@ -37,26 +37,6 @@
 
 module;
 
-// Standard headers used by the library's headers, through the local
-// compatibility shims in std/ (counterparts of <boost/config/std/*> from
-// boostorg/config PR #535 "Adds support for C++20 modules").
-// TODO: when that PR is merged, replace the shims with
-// <boost/config/std/...> includes.
-#include "../std/cassert.hpp"
-#include "../std/cwchar.hpp"
-#include "../std/iosfwd.hpp"
-#include "../std/iterator.hpp"
-#include "../std/limits.hpp"
-#include "../std/locale.hpp"
-#include "../std/map.hpp"
-#include "../std/optional.hpp"
-#include "../std/set.hpp"
-#include "../std/stdexcept.hpp"
-#include "../std/string.hpp"
-#include "../std/typeinfo.hpp"
-#include "../std/utility.hpp"
-#include "../std/vector.hpp"
-
 // Boost dependencies used by the library's headers.
 #include <boost/config.hpp>
 #include <boost/version.hpp>
@@ -72,6 +52,31 @@ module;
 #include <boost/noncopyable.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/is_same.hpp>
+
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see src/cppm/boost/program_options.cppm).
+#ifdef BOOST_USE_MODULES
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
+#include <cassert>
+#include <cwchar>
+#include <iosfwd>
+#include <iterator>
+#include <limits>
+#include <locale>
+#include <map>
+#include <optional>
+#include <set>
+#include <stdexcept>
+#include <string>
+#include <typeinfo>
+#include <utility>
+#include <vector>
+#endif // standard library compatibility guard
 
 // Consume the standard library through 'import std;' as well when the
 // toolchain provides it (BOOST_PROGRAM_OPTIONS_USE_STD_MODULE, set by CMake
@@ -89,6 +94,10 @@ import std;
 #endif
 
 export module boost.program_options;
+
+// Purview marker of the boost.program_options module units, per the
+// convention used by <boost/config/std/...> (boostorg/config PR #535).
+#define BOOST_IN_MODULE_PURVIEW
 
 // Some compilers prune global-module-fragment declarations from the BMI.
 // The preloaded boost::any_cast template is instantiated in importing

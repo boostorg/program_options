@@ -12,9 +12,19 @@
 #include <boost/any.hpp>
 #include <boost/shared_ptr.hpp>
 
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see src/cppm/boost/program_options.cppm).
+#ifdef BOOST_USE_MODULES
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
 #include <string>
 #include <map>
 #include <set>
+#endif // standard library compatibility guard
 
 #if defined(BOOST_MSVC)
 #   pragma warning (push)

@@ -9,20 +9,35 @@ module;
 // so that nothing foreign is attached to the module. The library's own
 // headers included below are no-ops (guards predefined after the module
 // declaration): their declarations come from the imported interface.
-#include "cppm/std/cassert.hpp"
-#include "cppm/std/climits.hpp"
-#include "cppm/std/cstdarg.hpp"
-#include "cppm/std/cstring.hpp"
-#include "cppm/std/iterator.hpp"
-#include "cppm/std/sstream.hpp"
 #include <boost/detail/workaround.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/throw_exception.hpp>
 #include <boost/tokenizer.hpp>
-#include "cppm/std/cstddef.hpp"
 #include <boost/program_options/config.hpp>
 
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see src/cppm/boost/program_options.cppm).
+#ifdef BOOST_USE_MODULES
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
+#include <cassert>
+#include <climits>
+#include <cstdarg>
+#include <cstring>
+#include <iterator>
+#include <sstream>
+#include <cstddef>
+#endif // standard library compatibility guard
+
 module boost.program_options;
+
+// Purview marker of the boost.program_options module units, per the
+// convention used by <boost/config/std/...> (boostorg/config PR #535).
+#define BOOST_IN_MODULE_PURVIEW
 
 #define BOOST_OPTION_DESCRIPTION_VP_2003_05_19
 #define BOOST_PARSERS_VP_2003_05_19
@@ -49,12 +64,22 @@ module boost.program_options;
 #include <boost/detail/workaround.hpp>
 #include <boost/throw_exception.hpp>
 
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see src/cppm/boost/program_options.cppm).
+#ifdef BOOST_USE_MODULES
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
 #include <cassert>
 #include <climits>
 #include <cstring>
 #include <cstdarg>
 #include <sstream>
 #include <iterator>
+#endif // standard library compatibility guard
 using namespace std;
 
 namespace boost { namespace program_options {
@@ -728,3 +753,4 @@ namespace boost { namespace program_options {
     }
 
 }}
+

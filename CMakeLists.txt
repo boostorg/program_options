@@ -60,6 +60,20 @@ endif()
 
 option(BOOST_PROGRAM_OPTIONS_BUILD_MODULES "Build the C++20 module interface (boost.program_options)" OFF)
 
+# Modules mode of the boostorg/config PR #535 pattern ("Adds support for
+# C++20 modules"): the standard-library compatibility guards in the headers
+# and sources route their #include <...> directives to 'import std;'.
+# Requires the module build above and a toolchain-provided std module.
+# Note: full activation also needs the PR #535 ecosystem (modularized
+# dependencies): under this flag, already-converted dependencies such as
+# Boost.TypeIndex switch their headers to importing their own modules,
+# which supersedes the textual preloads used here until then.
+option(BOOST_USE_MODULES "Modules mode: consume the standard library through 'import std;' (boostorg/config#535 pattern)" OFF)
+
+if(BOOST_USE_MODULES AND NOT BOOST_PROGRAM_OPTIONS_BUILD_MODULES)
+  set(BOOST_PROGRAM_OPTIONS_BUILD_MODULES ON)
+endif()
+
 if(BOOST_PROGRAM_OPTIONS_BUILD_MODULES)
 
   if(CMAKE_GENERATOR MATCHES "Visual Studio")
@@ -129,13 +143,32 @@ if(BOOST_PROGRAM_OPTIONS_BUILD_MODULES)
       Boost::tokenizer
   )
 
-  # Consume the standard library through 'import std;' in the module
-  # interface when the toolchain provides the std module (CMake 3.30+,
-  # -DCMAKE_CXX_MODULE_STD=ON and a C++ standard listed in
-  # CMAKE_CXX_COMPILER_IMPORT_STD), like other modularized Boost libraries.
-  # The textual preloads in the interface stay: the library's headers are not
-  # converted to compatibility headers yet.
-  if(CMAKE_CXX_MODULE_STD AND CMAKE_CXX_STANDARD IN_LIST CMAKE_CXX_COMPILER_IMPORT_STD)
+  # Standard-library consumption of the module units.
+  #
+  # BOOST_USE_MODULES (the flag used by the compatibility guards, following
+  # boostorg/config PR #535) activates the modules mode: the guards replace
+  # the textual standard includes with 'import std;'. It requires the
+  # std module (CMake 3.30+, -DCMAKE_CXX_MODULE_STD=ON and a C++ standard
+  # listed in CMAKE_CXX_COMPILER_IMPORT_STD).
+  #
+  # Without it, the standard library is preloaded textually in the global
+  # module fragment of each module unit, and 'import std;' is additionally
+  # used when the toolchain provides it (like in other modularized Boost
+  # libraries).
+  if(BOOST_USE_MODULES)
+    if(NOT (CMAKE_CXX_MODULE_STD AND CMAKE_CXX_STANDARD IN_LIST CMAKE_CXX_COMPILER_IMPORT_STD))
+      message(FATAL_ERROR
+        "BOOST_USE_MODULES requires the C++ std module: use CMake 3.30+, set "
+        "-DCMAKE_CXX_MODULE_STD=ON, choose a -DCMAKE_CXX_STANDARD=... listed in "
+        "CMAKE_CXX_COMPILER_IMPORT_STD, and, where required by the CMake version, "
+        "set CMAKE_EXPERIMENTAL_CXX_IMPORT_STD.")
+    endif()
+    set_target_properties(boost_program_options_modules PROPERTIES CXX_MODULE_STD ON)
+    target_compile_definitions(boost_program_options_modules
+      PRIVATE BOOST_USE_MODULES
+      PUBLIC BOOST_PROGRAM_OPTIONS_USE_STD_MODULE)
+    message(STATUS "boost_program_options_modules: modules mode (BOOST_USE_MODULES), 'import std;'")
+  elseif(CMAKE_CXX_MODULE_STD AND CMAKE_CXX_STANDARD IN_LIST CMAKE_CXX_COMPILER_IMPORT_STD)
     set_target_properties(boost_program_options_modules PROPERTIES CXX_MODULE_STD ON)
     target_compile_definitions(boost_program_options_modules PUBLIC BOOST_PROGRAM_OPTIONS_USE_STD_MODULE)
     message(STATUS "boost_program_options_modules: using 'import std;' (C++${CMAKE_CXX_STANDARD})")

@@ -37,14 +37,15 @@ classic builds the same files compile unchanged. (The header export-block
 style of Boost.Any/Boost.PFR is not needed for this: no header carries
 module machinery at all.)
 
-The standard-header includes in the module units go through local
-compatibility shims in `src/cppm/std/`, following the pattern of
+The standard-header includes in the library's headers and sources are
+wrapped in a compatibility guard following the pattern of
 `<boost/config/std/...>` from [boostorg/config PR
 #535](https://github.com/boostorg/config/pull/535) ("Adds support for
 C++20 modules", not merged yet): plain `#include <...>` today, `import
-std;` in the future modules mode. Once that PR is merged, the shims are
-to be replaced with `<boost/config/std/...>` (TODO comments in the
-shims).
+std;` in the modules mode (`-DBOOST_USE_MODULES=ON`, which requires a
+toolchain-provided std module). Once that PR is merged, the guards are
+to be replaced with `<boost/config/std/...>` (TODO comments at each
+guard).
 
 The module is not built by default. Enable it by configuring CMake with
 `-DBOOST_PROGRAM_OPTIONS_BUILD_MODULES=ON`, which creates the additional

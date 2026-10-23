@@ -9,21 +9,36 @@ module;
 // so that nothing foreign is attached to the module. The library's own
 // headers included below are no-ops (guards predefined after the module
 // declaration): their declarations come from the imported interface.
-#include "cppm/std/cassert.hpp"
-#include "cppm/std/cctype.hpp"
-#include "cppm/std/climits.hpp"
-#include "cppm/std/cstdio.hpp"
-#include "cppm/std/cstring.hpp"
-#include "cppm/std/iostream.hpp"
-#include "cppm/std/string.hpp"
-#include "cppm/std/utility.hpp"
-#include "cppm/std/vector.hpp"
 #include <boost/bind/bind.hpp>
 #include <boost/throw_exception.hpp>
-#include "cppm/std/cstddef.hpp"
 #include <boost/program_options/config.hpp>
 
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see src/cppm/boost/program_options.cppm).
+#ifdef BOOST_USE_MODULES
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
+#include <cassert>
+#include <cctype>
+#include <climits>
+#include <cstdio>
+#include <cstring>
+#include <iostream>
+#include <string>
+#include <utility>
+#include <vector>
+#include <cstddef>
+#endif // standard library compatibility guard
+
 module boost.program_options;
+
+// Purview marker of the boost.program_options module units, per the
+// convention used by <boost/config/std/...> (boostorg/config PR #535).
+#define BOOST_IN_MODULE_PURVIEW
 
 #define BOOST_CMDLINE_VP_2003_05_19
 #define BOOST_ERRORS_VP_2003_01_02
@@ -53,6 +68,15 @@ module boost.program_options;
 
 #include <boost/bind/bind.hpp>
 
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see src/cppm/boost/program_options.cppm).
+#ifdef BOOST_USE_MODULES
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
 #include <string>
 #include <utility>
 #include <vector>
@@ -64,6 +88,7 @@ module boost.program_options;
 #include <cstdio>
 
 #include <iostream>
+#endif // standard library compatibility guard
 
 using namespace boost::placeholders;
 
@@ -749,3 +774,4 @@ namespace boost { namespace program_options { namespace detail {
 
 
 }}}
+

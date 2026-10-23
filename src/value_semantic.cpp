@@ -9,13 +9,28 @@ module;
 // so that nothing foreign is attached to the module. The library's own
 // headers included below are no-ops (guards predefined after the module
 // declaration): their declarations come from the imported interface.
-#include "cppm/std/cctype.hpp"
-#include "cppm/std/cstddef.hpp"
-#include "cppm/std/set.hpp"
 #include <boost/throw_exception.hpp>
 #include <boost/program_options/config.hpp>
 
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see src/cppm/boost/program_options.cppm).
+#ifdef BOOST_USE_MODULES
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
+#include <cctype>
+#include <cstddef>
+#include <set>
+#endif // standard library compatibility guard
+
 module boost.program_options;
+
+// Purview marker of the boost.program_options module units, per the
+// convention used by <boost/config/std/...> (boostorg/config PR #535).
+#define BOOST_IN_MODULE_PURVIEW
 
 #define BOOST_CMDLINE_VP_2003_05_19
 #define BOOST_CONVERT_HPP_VP_2004_04_28
@@ -34,9 +49,19 @@ module boost.program_options;
 #include <boost/program_options/value_semantic.hpp>
 #include <boost/program_options/detail/convert.hpp>
 #include <boost/program_options/detail/cmdline.hpp>
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see src/cppm/boost/program_options.cppm).
+#ifdef BOOST_USE_MODULES
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
 #include <set>
 
 #include <cctype>
+#endif // standard library compatibility guard
 
 namespace boost { namespace program_options {
 
@@ -454,3 +479,4 @@ namespace boost { namespace program_options {
     }
 
 }}
+
