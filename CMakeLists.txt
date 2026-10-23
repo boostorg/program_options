@@ -108,8 +108,8 @@ if(BOOST_PROGRAM_OPTIONS_BUILD_MODULES)
 
   target_sources(boost_program_options_modules
     PUBLIC FILE_SET CXX_MODULES
-      BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/src/cppm"
-      FILES src/cppm/boost/program_options.cppm
+      BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/modules"
+      FILES modules/boost_program_options.cppm
   )
 
   target_compile_features(boost_program_options_modules PUBLIC cxx_std_20)
@@ -180,7 +180,7 @@ if(BOOST_PROGRAM_OPTIONS_BUILD_MODULES)
     # Install the module interface source next to the headers, so that it is
     # available to build systems that do not produce BMIs from installed
     # packages (e.g. MSBuild projects adding the .cppm/.ixx directly).
-    install(FILES src/cppm/boost/program_options.cppm DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/boost")
+    install(FILES modules/boost_program_options.cppm DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/boost")
   endif()
 
 endif()

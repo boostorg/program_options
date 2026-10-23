@@ -46,9 +46,9 @@ int main(int argc, char* argv[])
   declared by the umbrella header <code>&lt;boost/program_options.hpp&gt;</code>,
   so existing code only needs to replace the
   <code>#include</code> with an <code>import</code>. A minimal, compilable
-  example is provided in <code>src/cppm/usage_sample.cpp</code>.</para>
+  example is provided in <code>modules/usage_sample.cpp</code>.</para>
 
-  <para>The interface (<code>src/cppm/boost/program_options.cppm</code>)
+  <para>The interface (<code>modules/boost_program_options.cppm</code>)
   preloads the library's dependencies in the global module fragment and
   includes the umbrella header in the module purview inside an
   <code>export { ... }</code> block, so the public declarations are

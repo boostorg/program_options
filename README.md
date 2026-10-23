@@ -26,7 +26,7 @@ import boost.program_options;
 
 and keep using the `boost::program_options` namespace unchanged.
 
-The interface (`src/cppm/boost/program_options.cppm`) preloads the library's
+The interface (`modules/boost_program_options.cppm`) preloads the library's
 dependencies in the global module fragment and includes the umbrella header
 in the module purview inside an `export { ... }` block, so the public
 declarations are exported without modifying any header. The library's
@@ -87,8 +87,8 @@ changes to re-align with the evolution of Boost C++ Libraries and C++.
 | `doc`     | documentation                    |
 | `example` | use case examples                |
 | `include` | headers                          |
-| `src`     | source code for link library and  |
-|           | C++20 module interface           |
+| `modules` | C++20 module interface           |
+| `src`     | source code for link library     |
 | `test`    | unit tests                       |
 
 ### More information

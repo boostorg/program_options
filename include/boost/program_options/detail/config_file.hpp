@@ -10,7 +10,7 @@
 // Standard library compatibility guard, following the pattern of
 // <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
 // C++20 modules"). TODO: when that PR is merged, replace the textual
-// includes with <boost/config/std/...> (see src/cppm/boost/program_options.cppm).
+// includes with <boost/config/std/...> (see modules/boost_program_options.cppm).
 #ifdef BOOST_USE_MODULES
 #ifndef BOOST_IN_MODULE_PURVIEW
 import std;

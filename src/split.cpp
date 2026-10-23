@@ -1,7 +1,7 @@
 #ifdef BOOST_PROGRAM_OPTIONS_MODULE_UNIT
 // In the boost.program_options module build, this translation unit is a
 // module implementation unit providing the module-attached definitions
-// matching the interface in src/cppm/boost/program_options.cppm. In the
+// matching the interface in modules/boost_program_options.cppm. In the
 // classic build (below) this file is compiled unchanged.
 module;
 
@@ -16,7 +16,7 @@ module;
 // Standard library compatibility guard, following the pattern of
 // <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
 // C++20 modules"). TODO: when that PR is merged, replace the textual
-// includes with <boost/config/std/...> (see src/cppm/boost/program_options.cppm).
+// includes with <boost/config/std/...> (see modules/boost_program_options.cppm).
 #ifdef BOOST_USE_MODULES
 #ifndef BOOST_IN_MODULE_PURVIEW
 import std;
@@ -51,7 +51,7 @@ module boost.program_options;
 // Standard library compatibility guard, following the pattern of
 // <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
 // C++20 modules"). TODO: when that PR is merged, replace the textual
-// includes with <boost/config/std/...> (see src/cppm/boost/program_options.cppm).
+// includes with <boost/config/std/...> (see modules/boost_program_options.cppm).
 #ifdef BOOST_USE_MODULES
 #ifndef BOOST_IN_MODULE_PURVIEW
 import std;
