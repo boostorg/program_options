@@ -9,12 +9,12 @@ module;
 // so that nothing foreign is attached to the module. The library's own
 // headers included below are no-ops (guards predefined after the module
 // declaration): their declarations come from the imported interface.
-#include <cassert>
-#include <fstream>
-#include <iostream>
-#include <sstream>
+#include "cppm/std/cassert.hpp"
+#include "cppm/std/fstream.hpp"
+#include "cppm/std/iostream.hpp"
+#include "cppm/std/sstream.hpp"
 #include <boost/throw_exception.hpp>
-#include <cstddef>
+#include "cppm/std/cstddef.hpp"
 #include <boost/program_options/config.hpp>
 
 module boost.program_options;

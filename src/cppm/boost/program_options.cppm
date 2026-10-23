@@ -37,21 +37,25 @@
 
 module;
 
-// Standard headers used by the library's headers.
-#include <cassert>
-#include <cwchar>
-#include <iosfwd>
-#include <iterator>
-#include <limits>
-#include <locale>
-#include <map>
-#include <optional>
-#include <set>
-#include <stdexcept>
-#include <string>
-#include <typeinfo>
-#include <utility>
-#include <vector>
+// Standard headers used by the library's headers, through the local
+// compatibility shims in std/ (counterparts of <boost/config/std/*> from
+// boostorg/config PR #535 "Adds support for C++20 modules").
+// TODO: when that PR is merged, replace the shims with
+// <boost/config/std/...> includes.
+#include "../std/cassert.hpp"
+#include "../std/cwchar.hpp"
+#include "../std/iosfwd.hpp"
+#include "../std/iterator.hpp"
+#include "../std/limits.hpp"
+#include "../std/locale.hpp"
+#include "../std/map.hpp"
+#include "../std/optional.hpp"
+#include "../std/set.hpp"
+#include "../std/stdexcept.hpp"
+#include "../std/string.hpp"
+#include "../std/typeinfo.hpp"
+#include "../std/utility.hpp"
+#include "../std/vector.hpp"
 
 // Boost dependencies used by the library's headers.
 #include <boost/config.hpp>

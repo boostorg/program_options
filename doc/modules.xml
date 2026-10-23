@@ -85,6 +85,15 @@ ctest --output-on-failure
     <code>BOOST_PROGRAM_OPTIONS_VERSION</code> are not exported; code that
     needs those macros must include the classic headers.</para>
 
+    <para>The standard-header includes of the module units go through
+    local compatibility shims in <code>src/cppm/std/</code>, following
+    the pattern of <code>&lt;boost/config/std/...&gt;</code> from
+    boostorg/config PR #535 (<code>Adds support for C++20
+    modules</code>): a plain <code>#include</code> today, and
+    <code>import std;</code> in the future modules mode. Once that PR
+    is merged, the shims should be replaced with the Boost.Config
+    headers (see the TODO comments in the shims).</para>
+
   </section>
 
 </section>

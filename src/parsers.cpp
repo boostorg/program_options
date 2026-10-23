@@ -9,17 +9,17 @@ module;
 // so that nothing foreign is attached to the module. The library's own
 // headers included below are no-ops (guards predefined after the module
 // declaration): their declarations come from the imported interface.
-#include <cctype>
-#include <cstdlib>
-#include <algorithm>
-#include <fstream>
-#include <iostream>
-#include <istream>
+#include "cppm/std/cctype.hpp"
+#include "cppm/std/cstdlib.hpp"
+#include "cppm/std/algorithm.hpp"
+#include "cppm/std/fstream.hpp"
+#include "cppm/std/iostream.hpp"
+#include "cppm/std/istream.hpp"
 #include <boost/bind/bind.hpp>
 #include <boost/throw_exception.hpp>
 #include <boost/iterator/iterator_facade.hpp>
-#include <cstddef>
-#include <stdlib.h>
+#include "cppm/std/cstddef.hpp"
+#include "cppm/std/cstdlib.hpp"
 #include <boost/program_options/config.hpp>
 
 #ifndef _WIN32
