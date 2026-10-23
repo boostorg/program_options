@@ -1,14 +1,14 @@
 #ifdef BOOST_PROGRAM_OPTIONS_MODULE_UNIT
 // In the boost.program_options module build, this translation unit is a
 // module implementation unit providing the module-attached definitions
-// matching the interface in modules/boost_program_options.cppm. In the
-// classic build (below) this file is compiled unchanged.
+// matching the interface in modules/boost_program_options.cppm. The
+// classic code below is compiled unchanged except that its includes are
+// skipped: their declarations come from the imported interface, and the
+// non-program_options headers are preloaded here instead.
 module;
 
-// The headers this file includes, preloaded in the global module fragment
-// so that nothing foreign is attached to the module. The library's own
-// headers included below are no-ops (guards predefined after the module
-// declaration): their declarations come from the imported interface.
+// Dependencies of the classic code below, preloaded in the global module
+// fragment so that nothing foreign is attached to the module.
 #include <boost/throw_exception.hpp>
 #include <boost/program_options/config.hpp>
 
@@ -21,11 +21,9 @@ module;
 import std;
 #endif
 #else
-#include <cassert>
-#include <fstream>
 #include <iostream>
-#include <sstream>
-#include <cstddef>
+#include <fstream>
+#include <cassert>
 #endif // standard library compatibility guard
 
 module boost.program_options;
@@ -33,10 +31,6 @@ module boost.program_options;
 // Purview marker of the boost.program_options module units, per the
 // convention used by <boost/config/std/...> (boostorg/config PR #535).
 #define BOOST_IN_MODULE_PURVIEW
-
-#define BOOST_CONFIG_FILE_VP_2003_01_02
-#define BOOST_CONVERT_HPP_VP_2004_04_28
-#define BOOST_ERRORS_VP_2003_01_02
 #endif
 
 // Copyright Vladimir Prus 2002-2004.
@@ -47,12 +41,14 @@ module boost.program_options;
 #ifndef BOOST_PROGRAM_OPTIONS_SOURCE
 # define BOOST_PROGRAM_OPTIONS_SOURCE
 #endif
+#ifndef BOOST_PROGRAM_OPTIONS_MODULE_UNIT
 #include <boost/program_options/config.hpp>
 
 #include <boost/program_options/detail/config_file.hpp>
 #include <boost/program_options/errors.hpp>
 #include <boost/program_options/detail/convert.hpp>
 #include <boost/throw_exception.hpp>
+#endif // !BOOST_PROGRAM_OPTIONS_MODULE_UNIT
 
 // Standard library compatibility guard, following the pattern of
 // <boost/config/std/...> from boostorg/config PR #535 ("Adds support for

@@ -1,14 +1,14 @@
 #ifdef BOOST_PROGRAM_OPTIONS_MODULE_UNIT
 // In the boost.program_options module build, this translation unit is a
 // module implementation unit providing the module-attached definitions
-// matching the interface in modules/boost_program_options.cppm. In the
-// classic build (below) this file is compiled unchanged.
+// matching the interface in modules/boost_program_options.cppm. The
+// classic code below is compiled unchanged except that its includes are
+// skipped: their declarations come from the imported interface, and the
+// non-program_options headers are preloaded here instead.
 module;
 
-// The headers this file includes, preloaded in the global module fragment
-// so that nothing foreign is attached to the module. The library's own
-// headers included below are no-ops (guards predefined after the module
-// declaration): their declarations come from the imported interface.
+// Dependencies of the classic code below, preloaded in the global module
+// fragment so that nothing foreign is attached to the module.
 #include <boost/bind/bind.hpp>
 #include <boost/throw_exception.hpp>
 #include <boost/iterator/iterator_facade.hpp>
@@ -24,13 +24,11 @@ import std;
 #endif
 #else
 #include <cctype>
-#include <cstdlib>
-#include <stdlib.h>
 #include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <istream>
-#include <cstddef>
+#include <stdlib.h>
 #endif // standard library compatibility guard
 #ifndef _WIN32
 #include <unistd.h>
@@ -41,14 +39,6 @@ module boost.program_options;
 // Purview marker of the boost.program_options module units, per the
 // convention used by <boost/config/std/...> (boostorg/config PR #535).
 #define BOOST_IN_MODULE_PURVIEW
-
-#define BOOST_CMDLINE_VP_2003_05_19
-#define BOOST_CONFIG_FILE_VP_2003_01_02
-#define BOOST_CONVERT_HPP_VP_2004_04_28
-#define BOOST_ENVIRONMENT_ITERATOR_VP_2004_05_14
-#define BOOST_OPTION_DESCRIPTION_VP_2003_05_19
-#define BOOST_PARSERS_VP_2003_05_19
-#define BOOST_PROGRAM_OPTIONS_POSITIONAL_OPTIONS_VP_2004_03_02
 #endif
 
 // Copyright Vladimir Prus 2002-2004.
@@ -57,6 +47,7 @@ module boost.program_options;
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 
+#ifndef BOOST_PROGRAM_OPTIONS_MODULE_UNIT
 #include <boost/config.hpp>
 
 #ifndef BOOST_PROGRAM_OPTIONS_SOURCE
@@ -73,6 +64,7 @@ module boost.program_options;
 
 #include <boost/bind/bind.hpp>
 #include <boost/throw_exception.hpp>
+#endif // !BOOST_PROGRAM_OPTIONS_MODULE_UNIT
 
 // Standard library compatibility guard, following the pattern of
 // <boost/config/std/...> from boostorg/config PR #535 ("Adds support for

@@ -1,16 +1,15 @@
 #ifdef BOOST_PROGRAM_OPTIONS_MODULE_UNIT
 // In the boost.program_options module build, this translation unit is a
 // module implementation unit providing the module-attached definitions
-// matching the interface in modules/boost_program_options.cppm. In the
-// classic build (below) this file is compiled unchanged.
+// matching the interface in modules/boost_program_options.cppm. The
+// classic code below is compiled unchanged except that its includes are
+// skipped: their declarations come from the imported interface, and the
+// non-program_options headers are preloaded here instead.
 module;
 
-// The headers this file includes, preloaded in the global module fragment
-// so that nothing foreign is attached to the module. The library's own
-// headers included below are no-ops (guards predefined after the module
-// declaration): their declarations come from the imported interface.
+// Dependencies of the classic code below, preloaded in the global module
+// fragment so that nothing foreign is attached to the module.
 #include <boost/limits.hpp>
-#include <boost/throw_exception.hpp>
 #include <boost/program_options/config.hpp>
 
 #define BOOST_UTF8_BEGIN_NAMESPACE \
@@ -33,7 +32,6 @@ import std;
 #else
 #include <cassert>
 #include <cstdlib>
-#include <cstddef>
 #endif // standard library compatibility guard
 
 module boost.program_options;
@@ -41,7 +39,6 @@ module boost.program_options;
 // Purview marker of the boost.program_options module units, per the
 // convention used by <boost/config/std/...> (boostorg/config PR #535).
 #define BOOST_IN_MODULE_PURVIEW
-
 #endif
 
 // Copyright Vladimir Prus 2004.
@@ -52,7 +49,9 @@ module boost.program_options;
 #ifndef BOOST_PROGRAM_OPTIONS_SOURCE
 # define BOOST_PROGRAM_OPTIONS_SOURCE
 #endif
+#ifndef BOOST_PROGRAM_OPTIONS_MODULE_UNIT
 #include <boost/program_options/config.hpp>
+#endif // !BOOST_PROGRAM_OPTIONS_MODULE_UNIT
 
 #define BOOST_UTF8_BEGIN_NAMESPACE \
      namespace boost { namespace program_options { namespace detail {

@@ -1,16 +1,15 @@
 #ifdef BOOST_PROGRAM_OPTIONS_MODULE_UNIT
 // In the boost.program_options module build, this translation unit is a
 // module implementation unit providing the module-attached definitions
-// matching the interface in modules/boost_program_options.cppm. In the
-// classic build (below) this file is compiled unchanged.
+// matching the interface in modules/boost_program_options.cppm. The
+// classic code below is compiled unchanged except that its includes are
+// skipped: their declarations come from the imported interface, and the
+// non-program_options headers are preloaded here instead.
 module;
 
-// The headers this file includes, preloaded in the global module fragment
-// so that nothing foreign is attached to the module. The library's own
-// headers included below are no-ops (guards predefined after the module
-// declaration): their declarations come from the imported interface.
+// Dependencies of the classic code below, preloaded in the global module
+// fragment so that nothing foreign is attached to the module.
 #include <boost/tokenizer.hpp>
-#include <boost/throw_exception.hpp>
 #include <boost/program_options/config.hpp>
 
 // Standard library compatibility guard, following the pattern of
@@ -24,7 +23,6 @@ import std;
 #else
 #include <string>
 #include <vector>
-#include <cstddef>
 #endif // standard library compatibility guard
 
 module boost.program_options;
@@ -32,8 +30,6 @@ module boost.program_options;
 // Purview marker of the boost.program_options module units, per the
 // convention used by <boost/config/std/...> (boostorg/config PR #535).
 #define BOOST_IN_MODULE_PURVIEW
-
-#define BOOST_PARSERS_VP_2003_05_19
 #endif
 
 // Copyright Sascha Ochsenknecht 2009.
@@ -45,8 +41,10 @@ module boost.program_options;
 # define BOOST_PROGRAM_OPTIONS_SOURCE
 #endif
 
+#ifndef BOOST_PROGRAM_OPTIONS_MODULE_UNIT
 #include <boost/program_options/parsers.hpp>
 #include <boost/tokenizer.hpp>
+#endif // !BOOST_PROGRAM_OPTIONS_MODULE_UNIT
 
 // Standard library compatibility guard, following the pattern of
 // <boost/config/std/...> from boostorg/config PR #535 ("Adds support for

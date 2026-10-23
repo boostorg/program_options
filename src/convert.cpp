@@ -1,16 +1,16 @@
 #ifdef BOOST_PROGRAM_OPTIONS_MODULE_UNIT
 // In the boost.program_options module build, this translation unit is a
 // module implementation unit providing the module-attached definitions
-// matching the interface in modules/boost_program_options.cppm. In the
-// classic build (below) this file is compiled unchanged.
+// matching the interface in modules/boost_program_options.cppm. The
+// classic code below is compiled unchanged except that its includes are
+// skipped: their declarations come from the imported interface, and the
+// non-program_options headers are preloaded here instead.
 module;
 
-// The headers this file includes, preloaded in the global module fragment
-// so that nothing foreign is attached to the module. The library's own
-// headers included below are no-ops (guards predefined after the module
-// declaration): their declarations come from the imported interface.
-#include <boost/bind/bind.hpp>
+// Dependencies of the classic code below, preloaded in the global module
+// fragment so that nothing foreign is attached to the module.
 #include <boost/throw_exception.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/program_options/config.hpp>
 
 #define BOOST_UTF8_BEGIN_NAMESPACE \
@@ -32,12 +32,11 @@ import std;
 #endif
 #else
 #include <fstream>
-#include <iostream>
-#include <locale>
 #include <locale.h>
-#include <stdexcept>
+#include <locale>
+#include <iostream>
 #include <string>
-#include <cstddef>
+#include <stdexcept>
 #endif // standard library compatibility guard
 
 module boost.program_options;
@@ -45,15 +44,26 @@ module boost.program_options;
 // Purview marker of the boost.program_options module units, per the
 // convention used by <boost/config/std/...> (boostorg/config PR #535).
 #define BOOST_IN_MODULE_PURVIEW
-
-#define BOOST_CONVERT_HPP_VP_2004_04_28
-#define BOOST_PROGRAM_OPTIONS_UTF8_CODECVT_FACET_HPP
 #endif
 
 // Copyright Vladimir Prus 2004.
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+
+#ifndef BOOST_PROGRAM_OPTIONS_MODULE_UNIT
+#include <boost/config.hpp>
+
+#ifndef BOOST_PROGRAM_OPTIONS_SOURCE
+# define BOOST_PROGRAM_OPTIONS_SOURCE
+#endif
+#include <boost/program_options/config.hpp>
+#include <boost/program_options/detail/convert.hpp>
+#include <boost/program_options/detail/utf8_codecvt_facet.hpp>
+#include <boost/throw_exception.hpp>
+
+#include <boost/bind/bind.hpp>
 
 // Standard library compatibility guard, following the pattern of
 // <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
@@ -72,18 +82,7 @@ import std;
 #include <locale>
 #include <stdexcept>
 #endif // standard library compatibility guard
-
-#include <boost/config.hpp>
-
-#ifndef BOOST_PROGRAM_OPTIONS_SOURCE
-# define BOOST_PROGRAM_OPTIONS_SOURCE
-#endif
-#include <boost/program_options/config.hpp>
-#include <boost/program_options/detail/convert.hpp>
-#include <boost/program_options/detail/utf8_codecvt_facet.hpp>
-#include <boost/throw_exception.hpp>
-
-#include <boost/bind/bind.hpp>
+#endif // !BOOST_PROGRAM_OPTIONS_MODULE_UNIT
 
 using namespace std;
 using namespace boost::placeholders;
