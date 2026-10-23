@@ -13,6 +13,24 @@ module;
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see modules/boost_program_options.cppm).
+#ifdef BOOST_USE_MODULES
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
+#include <fstream>
+#include <locale.h>
+#include <locale>
+#include <iostream>
+#include <string>
+#include <locale>
+#include <stdexcept>
+#endif // standard library compatibility guard
+
 #include <boost/config.hpp>
 
 #ifndef BOOST_PROGRAM_OPTIONS_SOURCE
@@ -29,25 +47,14 @@ module;
 
 #include <boost/bind/bind.hpp>
 
-// Standard library compatibility guard, following the pattern of
-// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
-// C++20 modules"). TODO: when that PR is merged, replace the textual
-// includes with <boost/config/std/...> (see modules/boost_program_options.cppm).
-#if defined(BOOST_USE_MODULES) || defined(BOOST_PROGRAM_OPTIONS_USE_STD_MODULE)
-#ifndef BOOST_IN_MODULE_PURVIEW
+#ifdef BOOST_PROGRAM_OPTIONS_MODULE_UNIT
+#if defined(BOOST_PROGRAM_OPTIONS_USE_STD_MODULE)
+// The standard module declarations: like the other module units, this one
+// needs an explicit 'import std;' after its textual includes (MSVC requires
+// textual includes before the import), and this file's standard headers sit
+// above the Boost dependencies, so the import is issued here.
 import std;
 #endif
-#else
-#include <fstream>
-#include <locale.h>
-#include <locale>
-#include <iostream>
-#include <string>
-#include <locale>
-#include <stdexcept>
-#endif // standard library compatibility guard
-
-#ifdef BOOST_PROGRAM_OPTIONS_MODULE_UNIT
 module boost.program_options;
 
 // Purview marker of the boost.program_options module units, per the
