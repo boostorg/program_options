@@ -108,6 +108,9 @@ namespace boost { namespace program_options {
         abstract_variables_map();
         abstract_variables_map(const abstract_variables_map* next);
 
+        abstract_variables_map(const abstract_variables_map&) = default;
+        abstract_variables_map& operator=(const abstract_variables_map&) = default;
+
         virtual ~abstract_variables_map() {}
 
         /** Obtains the value of variable 'name', from *this and
