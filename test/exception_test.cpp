@@ -117,6 +117,12 @@ void test_unknown_option()
    }
 }
 
+void test_unknown_option_placeholder()
+{
+   unknown_option err("-%canonical_option%");
+   BOOST_CHECK_EQUAL(string(err.what()), "unrecognised option '-%canonical_option%'");
+}
+
 
 
 void test_multiple_values() 
@@ -253,6 +259,7 @@ int main(int /*ac*/, char** /*av*/)
    test_ambiguous_long();
    test_ambiguous_multiple_long_names();
    test_unknown_option();
+   test_unknown_option_placeholder();
    test_multiple_values();
    test_multiple_occurrences();
    test_multiple_occurrences_with_different_names();
@@ -261,4 +268,3 @@ int main(int /*ac*/, char** /*av*/)
 
    return 0;
 }
-
