@@ -12,15 +12,45 @@
 
 #include <boost/detail/workaround.hpp>
 
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see modules/boost_program_options.cppm).
+#ifdef BOOST_USE_MODULES
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
 #include <string>
 #include <vector>
 #include <locale>
+#endif // standard library compatibility guard
 // for mbstate_t
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see modules/boost_program_options.cppm).
+#ifdef BOOST_USE_MODULES
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
 #include <cwchar>
 #include <stdexcept>
+#endif // standard library compatibility guard
 
 #if defined(BOOST_NO_STDC_NAMESPACE)
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see modules/boost_program_options.cppm).
+#ifdef BOOST_USE_MODULES
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
 #include <wchar.h>
+#endif // standard library compatibility guard
 namespace std
 {
     using ::mbstate_t;
@@ -87,8 +117,18 @@ namespace boost {
 }
 
 #else
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see modules/boost_program_options.cppm).
+#ifdef BOOST_USE_MODULES
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
 #include <vector>
 #include <string>
+#endif // standard library compatibility guard
 namespace boost{
    namespace program_options{
         BOOST_PROGRAM_OPTIONS_DECL std::string to_internal(const std::string&);

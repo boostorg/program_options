@@ -1,3 +1,12 @@
+#ifdef BOOST_PROGRAM_OPTIONS_MODULE_UNIT
+// In the boost.program_options module build, this translation unit is a module
+// implementation unit. The global module fragment starts here: the textual
+// includes below attach their declarations to the global module, the library's
+// own declaration headers are skipped (their declarations come from the
+// imported primary interface), and the module declaration closes the fragment.
+module;
+#endif
+
 // Copyright Vladimir Prus 2002-2004.
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt
@@ -8,14 +17,40 @@
 #endif
 #include <boost/program_options/config.hpp>
 
+// The library's own declaration headers are skipped in module builds:
+// the imported primary interface provides them.
+#ifndef BOOST_PROGRAM_OPTIONS_MODULE_UNIT
 #include <boost/program_options/detail/config_file.hpp>
 #include <boost/program_options/errors.hpp>
 #include <boost/program_options/detail/convert.hpp>
+#endif
 #include <boost/throw_exception.hpp>
 
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see modules/boost_program_options.cppm).
+// 'assert' is a macro, which 'import std;' does not provide; keep the
+// macro-only header textual in the global module fragment.
+#include <cassert>
+
+#if defined(BOOST_USE_MODULES) || defined(BOOST_PROGRAM_OPTIONS_USE_STD_MODULE)
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
 #include <iostream>
 #include <fstream>
 #include <cassert>
+#endif // standard library compatibility guard
+
+#ifdef BOOST_PROGRAM_OPTIONS_MODULE_UNIT
+module boost.program_options;
+
+// Purview marker of the boost.program_options module units, per the
+// convention used by <boost/config/std/...> (boostorg/config PR #535).
+#define BOOST_IN_MODULE_PURVIEW
+#endif
 
 namespace boost { namespace program_options { namespace detail {
 
@@ -171,8 +206,18 @@ namespace boost { namespace program_options { namespace detail {
 #if 0
 using boost::program_options::config_file;
 
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see modules/boost_program_options.cppm).
+#if defined(BOOST_USE_MODULES) || defined(BOOST_PROGRAM_OPTIONS_USE_STD_MODULE)
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
 #include <sstream>
 #include <cassert>
+#endif // standard library compatibility guard
 
 int main()
 {
@@ -199,3 +244,5 @@ int main()
     }
 }
 #endif
+
+

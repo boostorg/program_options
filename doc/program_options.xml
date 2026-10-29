@@ -80,6 +80,7 @@
   <xi:include href="overview.xml"/>  
   
   <xi:include href="howto.xml"/>
+  <xi:include href="modules.xml"/>
   <xi:include href="design.xml"/>
   <xi:include href="acknowledgements.xml"/>    
    

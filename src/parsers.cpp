@@ -1,3 +1,12 @@
+#ifdef BOOST_PROGRAM_OPTIONS_MODULE_UNIT
+// In the boost.program_options module build, this translation unit is a module
+// implementation unit. The global module fragment starts here: the textual
+// includes below attach their declarations to the global module, the library's
+// own declaration headers are skipped (their declarations come from the
+// imported primary interface), and the module declaration closes the fragment.
+module;
+#endif
+
 // Copyright Vladimir Prus 2002-2004.
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt
@@ -10,6 +19,9 @@
 # define BOOST_PROGRAM_OPTIONS_SOURCE
 #endif
 #include <boost/program_options/config.hpp>
+// The library's own declaration headers are skipped in module builds:
+// the imported primary interface provides them.
+#ifndef BOOST_PROGRAM_OPTIONS_MODULE_UNIT
 #include <boost/program_options/parsers.hpp>
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/positional_options.hpp>
@@ -17,21 +29,77 @@
 #include <boost/program_options/detail/config_file.hpp>
 #include <boost/program_options/environment_iterator.hpp>
 #include <boost/program_options/detail/convert.hpp>
+#endif
 
 #include <boost/bind/bind.hpp>
 #include <boost/throw_exception.hpp>
 
+#ifdef BOOST_PROGRAM_OPTIONS_MODULE_UNIT
+// Declarations the classic build gets transitively through the
+// library's own headers (skipped above in this mode).
+#include <algorithm>
+#include <boost/iterator/iterator_facade.hpp>
+#endif
+
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see modules/boost_program_options.cppm).
+#if defined(BOOST_USE_MODULES) || defined(BOOST_PROGRAM_OPTIONS_USE_STD_MODULE)
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
 #include <cctype>
 #include <fstream>
+#endif // standard library compatibility guard
+
+#ifdef BOOST_PROGRAM_OPTIONS_MODULE_UNIT
+module boost.program_options;
+
+// Purview marker of the boost.program_options module units, per the
+// convention used by <boost/config/std/...> (boostorg/config PR #535).
+#define BOOST_IN_MODULE_PURVIEW
+#endif
 
 #if !defined(__GNUC__) || __GNUC__ < 3
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see modules/boost_program_options.cppm).
+#if defined(BOOST_USE_MODULES) || defined(BOOST_PROGRAM_OPTIONS_USE_STD_MODULE)
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
 #include <iostream>
+#endif // standard library compatibility guard
+#else
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see modules/boost_program_options.cppm).
+#if defined(BOOST_USE_MODULES) || defined(BOOST_PROGRAM_OPTIONS_USE_STD_MODULE)
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
 #else
 #include <istream>
+#endif // standard library compatibility guard
 #endif
 
 #ifdef _WIN32
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see modules/boost_program_options.cppm).
+#if defined(BOOST_USE_MODULES) || defined(BOOST_PROGRAM_OPTIONS_USE_STD_MODULE)
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
 #include <stdlib.h>
+#endif // standard library compatibility guard
 #else
 #include <unistd.h>
 #endif
@@ -259,3 +327,5 @@ namespace boost { namespace program_options {
 
 
 }}
+
+

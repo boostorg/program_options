@@ -8,6 +8,57 @@ Distributed under the [Boost Software License, Version 1.0](http://www.boost.org
 
 * C++11
 * Requires Linking
+* Optional C++20 module interface (`import boost.program_options;`)
+
+### C++20 module support
+
+The library ships an optional C++20 module interface, so that instead of
+
+```cpp
+#include <boost/program_options.hpp>
+```
+
+you can write
+
+```cpp
+import boost.program_options;
+```
+
+and keep using the `boost::program_options` namespace unchanged.
+
+The interface (`modules/boost_program_options.cppm`) preloads the library's
+dependencies in the global module fragment and includes the umbrella header
+in the module purview inside an `export { ... }` block, so the public
+declarations are exported without modifying any header. The library's
+sources in `src/*.cpp` carry a `BOOST_PROGRAM_OPTIONS_MODULE_UNIT`
+conditional that compiles them, in the module build, as module
+implementation units providing matching module-attached definitions; in
+classic builds the same files compile unchanged. (The header export-block
+style of Boost.Any/Boost.PFR is not needed for this: no header carries
+module machinery at all.)
+
+The standard-header includes in the library's headers and sources are
+wrapped in a compatibility guard following the pattern of
+`<boost/config/std/...>` from [boostorg/config PR
+#535](https://github.com/boostorg/config/pull/535) ("Adds support for
+C++20 modules", not merged yet): plain `#include <...>` today, `import
+std;` in the modules mode (`-DBOOST_USE_MODULES=ON`, which requires a
+toolchain-provided std module). Once that PR is merged, the guards are
+to be replaced with `<boost/config/std/...>` (TODO comments at each
+guard).
+
+The module is not built by default. Enable it by configuring CMake with
+`-DBOOST_PROGRAM_OPTIONS_BUILD_MODULES=ON`, which creates the additional
+`Boost::program_options_modules` target (it links the classic compiled
+library automatically). Building the module requires CMake 3.28+ with the
+Ninja generator (CMake 3.30+ with the Visual Studio generator) and a compiler
+with C++20 modules support. The `test/module_test.cpp` test verifies that the
+exported interface is complete and functional, without including any Boost
+header.
+
+Macros (e.g. `BOOST_PROGRAM_OPTIONS_VERSION`) are not exported by C++20
+modules; include the classic headers where macros are needed. See
+`doc/modules.xml` for details.
 
 ### Development
 
@@ -29,15 +80,16 @@ changes to re-align with the evolution of Boost C++ Libraries and C++.
  
 ### Directories
 
-| Name      | Purpose                        |
-| --------- | ------------------------------ |
-| `build`   | build script for link library  |
-| `ci`      | continuous integration scripts |
-| `doc`     | documentation                  |
-| `example` | use case examples              |
-| `include` | headers                        |
-| `src`     | source code for link library   |
-| `test`    | unit tests                     |
+| Name      | Purpose                          |
+| --------- | -------------------------------- |
+| `build`   | build script for link library    |
+| `ci`      | continuous integration scripts   |
+| `doc`     | documentation                    |
+| `example` | use case examples                |
+| `include` | headers                          |
+| `modules` | C++20 module interface           |
+| `src`     | source code for link library     |
+| `test`    | unit tests                       |
 
 ### More information
 

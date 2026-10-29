@@ -55,6 +55,136 @@ else()
   target_compile_definitions(boost_program_options PUBLIC BOOST_PROGRAM_OPTIONS_STATIC_LINK)
 endif()
 
+# C++20 module interface for the library ('import boost.program_options;').
+# Entirely optional and off by default: the header-based interface is unchanged.
+
+option(BOOST_PROGRAM_OPTIONS_BUILD_MODULES "Build the C++20 module interface (boost.program_options)" OFF)
+
+# Modules mode of the boostorg/config PR #535 pattern ("Adds support for
+# C++20 modules"): the standard-library compatibility guards in the headers
+# and sources route their #include <...> directives to 'import std;'.
+# Requires the module build above and a toolchain-provided std module.
+# Note: full activation also needs the PR #535 ecosystem (modularized
+# dependencies): under this flag, already-converted dependencies such as
+# Boost.TypeIndex switch their headers to importing their own modules,
+# which supersedes the textual preloads used here until then.
+option(BOOST_USE_MODULES "Modules mode: consume the standard library through 'import std;' (boostorg/config#535 pattern)" OFF)
+
+if(BOOST_USE_MODULES AND NOT BOOST_PROGRAM_OPTIONS_BUILD_MODULES)
+  set(BOOST_PROGRAM_OPTIONS_BUILD_MODULES ON)
+endif()
+
+if(BOOST_PROGRAM_OPTIONS_BUILD_MODULES)
+
+  if(CMAKE_GENERATOR MATCHES "Visual Studio")
+    if(CMAKE_VERSION VERSION_LESS 3.30)
+      message(FATAL_ERROR "boost_program_options_modules: the ${CMAKE_GENERATOR} generator requires CMake 3.30 or later for C++20 modules.")
+    endif()
+  elseif(CMAKE_VERSION VERSION_LESS 3.28)
+    message(FATAL_ERROR "boost_program_options_modules: building C++20 modules requires CMake 3.28 or later and a Ninja generator.")
+  endif()
+
+  # The module interface plus the library sources, compiled as module
+  # implementation units (BOOST_PROGRAM_OPTIONS_MODULE_UNIT in src/*.cpp):
+  # declarations in the module purview attach to the module, and their
+  # definitions must carry the same attachment (some compilers mangle
+  # module-attached functions differently), so they cannot be taken from
+  # the classic library. In classic builds the same sources compile
+  # unchanged.
+  add_library(boost_program_options_modules
+    src/cmdline.cpp
+    src/config_file.cpp
+    src/convert.cpp
+    src/options_description.cpp
+    src/parsers.cpp
+    src/positional_options.cpp
+    src/split.cpp
+    src/utf8_codecvt_facet.cpp
+    src/value_semantic.cpp
+    src/variables_map.cpp
+    src/winmain.cpp
+  )
+  add_library(Boost::program_options_modules ALIAS boost_program_options_modules)
+
+  target_sources(boost_program_options_modules
+    PUBLIC FILE_SET CXX_MODULES
+      BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/modules"
+      FILES modules/boost_program_options.cppm
+  )
+
+  target_compile_features(boost_program_options_modules PUBLIC cxx_std_20)
+
+  # Scan all sources of the target: the src/*.cpp module implementation
+  # units are recognized as such and compiled against the interface's BMI.
+  set_target_properties(boost_program_options_modules PROPERTIES CXX_SCAN_FOR_MODULES ON)
+
+  target_include_directories(boost_program_options_modules PRIVATE include)
+
+  target_compile_definitions(boost_program_options_modules
+    PUBLIC BOOST_PROGRAM_OPTIONS_NO_LIB
+    PRIVATE BOOST_PROGRAM_OPTIONS_SOURCE BOOST_PROGRAM_OPTIONS_MODULE_UNIT
+  )
+
+  # Same dependencies as the classic library.
+  target_link_libraries(boost_program_options_modules
+    PUBLIC
+      Boost::any
+      Boost::config
+      Boost::core
+      Boost::detail
+      Boost::function
+      Boost::iterator
+      Boost::lexical_cast
+      Boost::smart_ptr
+      Boost::throw_exception
+      Boost::type_traits
+    PRIVATE
+      Boost::bind
+      Boost::tokenizer
+  )
+
+  # Standard-library consumption of the module units.
+  #
+  # BOOST_USE_MODULES (the flag used by the compatibility guards, following
+  # boostorg/config PR #535) activates the modules mode: the guards replace
+  # the textual standard includes with 'import std;'. It requires the
+  # std module (CMake 3.30+, -DCMAKE_CXX_MODULE_STD=ON and a C++ standard
+  # listed in CMAKE_CXX_COMPILER_IMPORT_STD).
+  #
+  # Without it, the standard library is preloaded textually in the global
+  # module fragment of each module unit, and 'import std;' is additionally
+  # used when the toolchain provides it (like in other modularized Boost
+  # libraries).
+  if(BOOST_USE_MODULES)
+    if(NOT (CMAKE_CXX_MODULE_STD AND CMAKE_CXX_STANDARD IN_LIST CMAKE_CXX_COMPILER_IMPORT_STD))
+      message(FATAL_ERROR
+        "BOOST_USE_MODULES requires the C++ std module: use CMake 3.30+, set "
+        "-DCMAKE_CXX_MODULE_STD=ON, choose a -DCMAKE_CXX_STANDARD=... listed in "
+        "CMAKE_CXX_COMPILER_IMPORT_STD, and, where required by the CMake version, "
+        "set CMAKE_EXPERIMENTAL_CXX_IMPORT_STD.")
+    endif()
+    set_target_properties(boost_program_options_modules PROPERTIES CXX_MODULE_STD ON)
+    target_compile_definitions(boost_program_options_modules
+      PRIVATE BOOST_USE_MODULES
+      PUBLIC BOOST_PROGRAM_OPTIONS_USE_STD_MODULE)
+    message(STATUS "boost_program_options_modules: modules mode (BOOST_USE_MODULES), 'import std;'")
+  elseif(CMAKE_CXX_MODULE_STD AND CMAKE_CXX_STANDARD IN_LIST CMAKE_CXX_COMPILER_IMPORT_STD)
+    set_target_properties(boost_program_options_modules PROPERTIES CXX_MODULE_STD ON)
+    target_compile_definitions(boost_program_options_modules PUBLIC BOOST_PROGRAM_OPTIONS_USE_STD_MODULE)
+    message(STATUS "boost_program_options_modules: using 'import std;' (C++${CMAKE_CXX_STANDARD})")
+  else()
+    message(STATUS "boost_program_options_modules: using textual standard library preloads")
+  endif()
+
+  if(NOT BOOST_SKIP_INSTALL_RULES AND NOT CMAKE_SKIP_INSTALL_RULES)
+    # Install the module interface source next to the headers, so that it is
+    # available to build systems that do not produce BMIs from installed
+    # packages (e.g. MSBuild projects adding the .cppm/.ixx directly).
+    install(FILES modules/boost_program_options.cppm DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/boost")
+  endif()
+
+endif()
+
 if(BUILD_TESTING AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt")
 
   add_subdirectory(test)

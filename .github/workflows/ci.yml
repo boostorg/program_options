@@ -612,3 +612,116 @@ jobs:
         run: |
           cd ../boost-root/__build__
           ctest --output-on-failure --no-tests=error -C Release
+
+  posix-cmake-modules:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: "gcc-15"
+            packages: "g++-15 ninja-build"
+            cmake-args: "-DCMAKE_CXX_COMPILER=g++-15"
+          - name: "clang-21"
+            packages: "clang-21 ninja-build"
+            cmake-args: "-DCMAKE_CXX_COMPILER=clang++-21"
+
+    name: CMake modules ${{ matrix.name }}
+
+    runs-on: ubuntu-latest
+    container: ubuntu:26.04
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Setup container environment
+        run: |
+          apt-get update
+          apt-get -y install sudo python3 git g++ cmake
+
+      - name: Install packages
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install ${{matrix.packages}}
+
+      - uses: actions/checkout@v6
+
+      - name: Setup Boost
+        run: |
+          echo GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+          LIBRARY=${GITHUB_REPOSITORY#*/}
+          echo LIBRARY: $LIBRARY
+          echo "LIBRARY=$LIBRARY" >> $GITHUB_ENV
+          echo GITHUB_BASE_REF: $GITHUB_BASE_REF
+          echo GITHUB_REF: $GITHUB_REF
+          REF=${GITHUB_BASE_REF:-$GITHUB_REF}
+          REF=${REF#refs/heads/}
+          echo REF: $REF
+          BOOST_BRANCH=develop && [ "$REF" == "master" ] && BOOST_BRANCH=master || true
+          echo BOOST_BRANCH: $BOOST_BRANCH
+          cd ..
+          git clone -b $BOOST_BRANCH --depth 1 https://github.com/boostorg/boost.git boost-root
+          cd boost-root
+          cp -r $GITHUB_WORKSPACE/* libs/$LIBRARY
+          git submodule update --init tools/boostdep
+          python3 tools/boostdep/depinst/depinst.py --git_args "--jobs 3" $LIBRARY
+
+      - name: Configure
+        run: |
+          cd ../boost-root
+          mkdir __build__ && cd __build__
+          cmake -DBOOST_INCLUDE_LIBRARIES=$LIBRARY -DBUILD_TESTING=ON -DBOOST_PROGRAM_OPTIONS_BUILD_MODULES=ON -DCMAKE_CXX_STANDARD=20 ${{matrix.cmake-args}} -G Ninja ..
+
+      - name: Build and run module test
+        run: |
+          cd ../boost-root/__build__
+          cmake --build . --target program_options_module_test
+          ctest --output-on-failure --no-tests=error -R program_options_module_test
+
+  windows-cmake-modules:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Boost
+        shell: cmd
+        run: |
+          echo GITHUB_REPOSITORY: %GITHUB_REPOSITORY%
+          for /f %%i in ("%GITHUB_REPOSITORY%") do set LIBRARY=%%~nxi
+          echo LIBRARY: %LIBRARY%
+          echo LIBRARY=%LIBRARY%>>%GITHUB_ENV%
+          echo GITHUB_BASE_REF: %GITHUB_BASE_REF%
+          echo GITHUB_REF: %GITHUB_REF%
+          if "%GITHUB_BASE_REF%" == "" set GITHUB_BASE_REF=%GITHUB_REF%
+          set BOOST_BRANCH=develop
+          for /f %%i in ("%GITHUB_BASE_REF%") do if "%%~nxi" == "master" set BOOST_BRANCH=master
+          echo BOOST_BRANCH: %BOOST_BRANCH%
+          cd ..
+          git clone -b %BOOST_BRANCH% --depth 1 https://github.com/boostorg/boost.git boost-root
+          cd boost-root
+          xcopy /s /e /q %GITHUB_WORKSPACE% libs\%LIBRARY%\
+          git submodule update --init tools/boostdep
+          python tools/boostdep/depinst/depinst.py --git_args "--jobs 3" %LIBRARY%
+
+      - name: Configure
+        shell: cmd
+        run: |
+          cd ../boost-root
+          mkdir __build__ && cd __build__
+          cmake -DBOOST_INCLUDE_LIBRARIES=%LIBRARY% -DBUILD_TESTING=ON -DBOOST_PROGRAM_OPTIONS_BUILD_MODULES=ON -G "Visual Studio 17 2022" ..
+
+      - name: Build and run module test (Debug)
+        shell: cmd
+        run: |
+          cd ../boost-root/__build__
+          cmake --build . --config Debug --target program_options_module_test
+          ctest --output-on-failure --no-tests=error -C Debug -R program_options_module_test
+
+      - name: Build and run module test (Release)
+        shell: cmd
+        run: |
+          cd ../boost-root/__build__
+          cmake --build . --config Release --target program_options_module_test
+          ctest --output-on-failure --no-tests=error -C Release -R program_options_module_test

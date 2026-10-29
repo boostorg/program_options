@@ -1,0 +1,100 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE library PUBLIC "-//Boost//DTD BoostBook XML V1.0//EN"
+     "http://www.boost.org/tools/boostbook/dtd/boostbook.dtd"
+[
+    <!ENTITY % entities SYSTEM "program_options.ent" >
+    %entities;
+]>
+<section id="program_options.modules">
+
+  <title>Using C++20 Modules</title>
+
+  <indexterm><primary>modules</primary></indexterm>
+  <indexterm><primary>import</primary></indexterm>
+
+  <para>For projects compiled with C++20 or later, the library can be
+  consumed through a C++20 module interface, as an alternative to including
+  the classic headers:</para>
+
+  <para>
+    <programlisting>
+import boost.program_options;
+
+int main(int argc, char* argv[])
+{
+    namespace po = boost::program_options;
+
+    po::options_description desc("Allowed options");
+    desc.add_options()
+        ("help,h", "produce help message")
+        ("compression", po::value&lt;int&gt;(), "set compression level")
+        ;
+
+    po::variables_map vm;
+    po::store(po::parse_command_line(argc, argv, desc), vm);
+    po::notify(vm);
+
+    if (vm.count("help")) {
+        std::cout &lt;&lt; desc;
+    }
+}
+</programlisting>
+  </para>
+
+  <para>The module, <code>boost.program_options</code>, exports the same
+  declarations in namespace <code>boost::program_options</code> that are
+  declared by the umbrella header <code>&lt;boost/program_options.hpp&gt;</code>,
+  so existing code only needs to replace the
+  <code>#include</code> with an <code>import</code>. A minimal, compilable
+  example is provided in <code>modules/usage_sample.cpp</code>.</para>
+
+  <para>The interface (<code>modules/boost_program_options.cppm</code>)
+  preloads the library's dependencies in the global module fragment and
+  includes the umbrella header in the module purview inside an
+  <code>export { ... }</code> block, so the public declarations are
+  exported without modifying any header. The library's sources in
+  <code>src/*.cpp</code> carry a <code>BOOST_PROGRAM_OPTIONS_MODULE_UNIT</code>
+  conditional that compiles them, in the module build, as module
+  implementation units providing matching module-attached definitions; in
+  classic builds the same files compile unchanged.</para>
+
+  <section>
+    <title>Building and Using</title>
+
+    <para>The module interface is entirely optional. It is built by CMake
+    when the <code>BOOST_PROGRAM_OPTIONS_BUILD_MODULES</code> option is
+    enabled, producing an additional
+    <code>Boost::program_options_modules</code> target which also links the
+    classic compiled library. Building modules requires CMake 3.28 or later
+    with the Ninja generator, or CMake 3.30 or later with the Visual Studio
+    generator, and a compiler with C++20 modules support (MSVC 19.28+,
+    GCC 15+, or Clang 16+). For example:</para>
+
+    <para>
+      <programlisting>
+cmake -DBOOST_INCLUDE_LIBRARIES=program_options \
+      -DBOOST_PROGRAM_OPTIONS_BUILD_MODULES=ON \
+      -G Ninja ..
+cmake --build . --target tests
+ctest --output-on-failure
+</programlisting>
+    </para>
+
+    <para>The <literal>import</literal> statement only makes the library's
+    declarations available. As usual with modules, macros such as
+    <code>BOOST_PROGRAM_OPTIONS_VERSION</code> are not exported; code that
+    needs those macros must include the classic headers.</para>
+
+    <para>The standard-header includes of the library's headers and
+    sources are wrapped in a compatibility guard following the pattern
+    of <code>&lt;boost/config/std/...&gt;</code> from boostorg/config
+    PR #535 (<code>Adds support for C++20 modules</code>): a plain
+    <code>#include</code> today, and <code>import std;</code> in the
+    modules mode (<code>-DBOOST_USE_MODULES=ON</code>, which requires a
+    toolchain-provided std module). Once that PR is merged, the guards
+    should be replaced with the Boost.Config headers (see the TODO
+    comments at each guard).</para>
+
+  </section>
+
+</section>

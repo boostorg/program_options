@@ -7,9 +7,19 @@
 #ifndef BOOST_CONFIG_FILE_VP_2003_01_02
 #define BOOST_CONFIG_FILE_VP_2003_01_02
 
+// Standard library compatibility guard, following the pattern of
+// <boost/config/std/...> from boostorg/config PR #535 ("Adds support for
+// C++20 modules"). TODO: when that PR is merged, replace the textual
+// includes with <boost/config/std/...> (see modules/boost_program_options.cppm).
+#ifdef BOOST_USE_MODULES
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
 #include <iosfwd>
 #include <string>
 #include <set>
+#endif // standard library compatibility guard
 
 #include <boost/noncopyable.hpp>
 #include <boost/program_options/config.hpp>

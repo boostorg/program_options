@@ -9,7 +9,13 @@
 #include <boost/throw_exception.hpp>
 
 #ifndef BOOST_NO_CXX17_HDR_OPTIONAL
+#ifdef BOOST_USE_MODULES
+#ifndef BOOST_IN_MODULE_PURVIEW
+import std;
+#endif
+#else
 #   include <optional>
+#endif // standard library compatibility guard
 #endif
 
 // forward declaration
