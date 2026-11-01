@@ -118,6 +118,9 @@ namespace boost { namespace program_options {
                                const std::string& original_token = "",
                                int option_style = 0);
 
+        error_with_option_name(const error_with_option_name&) = default;
+        error_with_option_name& operator=(const error_with_option_name&) = default;
+
         /** gcc says that throw specification on dtor is loosened 
          *  without this line                                     
          *  */ 
@@ -209,6 +212,9 @@ namespace boost { namespace program_options {
         multiple_values() 
          : error_with_option_name("option '%canonical_option%' only takes a single argument"){}
 
+        multiple_values(const multiple_values&) = default;
+        multiple_values& operator=(const multiple_values&) = default;
+
         BOOST_DEFAULTED_FUNCTION(~multiple_values() BOOST_NOEXCEPT_OR_NOTHROW, {})
     };
 
@@ -219,6 +225,9 @@ namespace boost { namespace program_options {
     public:
         multiple_occurrences() 
          : error_with_option_name("option '%canonical_option%' cannot be specified more than once"){}
+
+        multiple_occurrences(const multiple_occurrences&) = default;
+        multiple_occurrences& operator=(const multiple_occurrences&) = default;
 
         BOOST_DEFAULTED_FUNCTION(~multiple_occurrences() BOOST_NOEXCEPT_OR_NOTHROW, {})
 
@@ -232,6 +241,9 @@ namespace boost { namespace program_options {
        : error_with_option_name("the option '%canonical_option%' is required but missing", "", option_name)
        {
        }
+
+       required_option(const required_option&) = default;
+       required_option& operator=(const required_option&) = default;
 
        BOOST_DEFAULTED_FUNCTION(~required_option() BOOST_NOEXCEPT_OR_NOTHROW, {})
     };
@@ -255,6 +267,9 @@ namespace boost { namespace program_options {
         {
         }
 
+        error_with_no_option_name(const error_with_no_option_name&) = default;
+        error_with_no_option_name& operator=(const error_with_no_option_name&) = default;
+
         /** Does NOT set option name, because no option name makes sense */
         virtual void set_option_name(const std::string&) override {}
 
@@ -270,6 +285,9 @@ namespace boost { namespace program_options {
         {
         }
 
+        unknown_option(const unknown_option&) = default;
+        unknown_option& operator=(const unknown_option&) = default;
+
         BOOST_DEFAULTED_FUNCTION(~unknown_option() BOOST_NOEXCEPT_OR_NOTHROW, {})
     };
 
@@ -282,6 +300,9 @@ namespace boost { namespace program_options {
         : error_with_no_option_name("option '%canonical_option%' is ambiguous"),
             m_alternatives(xalternatives)
         {}
+
+        ambiguous_option(const ambiguous_option&) = default;
+        ambiguous_option& operator=(const ambiguous_option&) = default;
 
         BOOST_DEFAULTED_FUNCTION(~ambiguous_option() BOOST_NOEXCEPT_OR_NOTHROW, {})
 
@@ -320,6 +341,9 @@ namespace boost { namespace program_options {
         {
         }
 
+        invalid_syntax(const invalid_syntax&) = default;
+        invalid_syntax& operator=(const invalid_syntax&) = default;
+
         BOOST_DEFAULTED_FUNCTION(~invalid_syntax() BOOST_NOEXCEPT_OR_NOTHROW, {})
 
         kind_t kind() const {return m_kind;}
@@ -340,6 +364,9 @@ namespace boost { namespace program_options {
             m_substitutions["invalid_line"] = invalid_line;
         }
 
+        invalid_config_file_syntax(const invalid_config_file_syntax&) = default;
+        invalid_config_file_syntax& operator=(const invalid_config_file_syntax&) = default;
+
         BOOST_DEFAULTED_FUNCTION(~invalid_config_file_syntax() BOOST_NOEXCEPT_OR_NOTHROW, {})
 
         /** Convenience functions for backwards compatibility */
@@ -355,6 +382,9 @@ namespace boost { namespace program_options {
                        const std::string& original_token = "",
                        int option_style              = 0):
             invalid_syntax(kind, option_name, original_token, option_style) {}
+        invalid_command_line_syntax(const invalid_command_line_syntax&) = default;
+        invalid_command_line_syntax& operator=(const invalid_command_line_syntax&) = default;
+
         BOOST_DEFAULTED_FUNCTION(~invalid_command_line_syntax() BOOST_NOEXCEPT_OR_NOTHROW, {})
     };
 
@@ -379,6 +409,9 @@ namespace boost { namespace program_options {
         m_kind(kind)
         {
         }
+
+        validation_error(const validation_error&) = default;
+        validation_error& operator=(const validation_error&) = default;
 
         BOOST_DEFAULTED_FUNCTION(~validation_error() BOOST_NOEXCEPT_OR_NOTHROW, {})
 
